@@ -3,54 +3,54 @@ import Logo from '../components/common/Logo';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-600 to-primary-800 dark:from-primary-800 dark:to-primary-950 text-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="flex justify-center mb-8">
-            <Logo size={128}/>
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* Background Image with Blur */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1459865264687-595d652de67e?q=80&w=2070&auto=format&fit=crop)',
+          filter: 'blur(4px)',
+          transform: 'scale(1.1)'
+        }}
+      />
+      
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/50" />
+
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <div className="bg-white/10 backdrop-blur-md rounded-full p-3 shadow-2xl">
+              <Logo size={100}/>
+            </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+
+          {/* Name/Title */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 text-white drop-shadow-2xl">
             It's <span className="text-primary-300">Our Game</span>!
           </h1>
-          <p className="text-xl md:text-2xl mb-4 text-primary-100">
+          
+          <p className="text-base md:text-lg mb-8 text-white/90 drop-shadow-lg max-w-xl mx-auto">
             Community Football for Everyone
           </p>
-          <p className="text-lg mb-12 text-primary-100">
-            An inclusive, welcoming environment where everyone can enjoy football.
-            Join our community of players, coaches, and fans today.
-          </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Link to="/register" className="btn-lg bg-white text-primary-700 hover:bg-primary-50">
-              Join Our Club
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <Link 
+              to="/register" 
+              className="group relative px-8 py-3 text-base font-semibold bg-white text-primary-700 rounded-full hover:bg-primary-50 transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden"
+            >
+              <span className="relative z-10">Sign Up</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary-100 to-primary-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
-            <Link to="/login" className="btn-lg bg-primary-500 text-white hover:bg-primary-400 border-2 border-white">
-              Sign In
+            <Link 
+              to="/login" 
+              className="group relative px-8 py-3 text-base font-semibold bg-transparent text-white rounded-full transition-all duration-300 border-2 border-white/80 hover:border-white shadow-lg hover:shadow-xl backdrop-blur-sm hover:bg-white/10"
+            >
+              <span className="relative z-10">Login</span>
             </Link>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mt-16">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl mb-4">⚽</div>
-              <h3 className="text-xl font-semibold mb-2">All Ages & Abilities</h3>
-              <p className="text-primary-100">
-                From kids to adults, beginners to experienced players - everyone is welcome.
-              </p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-xl font-semibold mb-2">Player Development</h3>
-              <p className="text-primary-100">
-                Track progress, receive coaching feedback, and reach your potential.
-              </p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-              <div className="text-4xl mb-4">🏆</div>
-              <h3 className="text-xl font-semibold mb-2">Community First</h3>
-              <p className="text-primary-100">
-                More than just a club - we're a family building connections that last.
-              </p>
-            </div>
           </div>
         </div>
       </div>
