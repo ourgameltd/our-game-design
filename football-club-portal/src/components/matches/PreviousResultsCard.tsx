@@ -7,13 +7,17 @@ interface PreviousResultsCardProps {
   viewAllLink?: string;
   getMatchLink?: (matchId: string, match: Match) => string;
   title?: string;
+  showTeamInfo?: boolean;
+  getTeamInfo?: (match: Match) => { teamName: string; ageGroupName: string } | null;
 }
 
 const PreviousResultsCard: React.FC<PreviousResultsCardProps> = ({ 
   matches, 
   viewAllLink,
   getMatchLink,
-  title = 'Recent Results'
+  title = 'Recent Results',
+  showTeamInfo = false,
+  getTeamInfo
 }) => {
   return (
     <div className="card">
@@ -37,12 +41,14 @@ const PreviousResultsCard: React.FC<PreviousResultsCardProps> = ({
             const isDraw = match.score && match.score.home === match.score.away;
             
             const matchLink = getMatchLink ? getMatchLink(match.id, match) : undefined;
+            const teamInfo = showTeamInfo && getTeamInfo ? getTeamInfo(match) : null;
             
             const content = (
               <>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-gray-600 dark:text-gray-400">
                     {new Date(match.date).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })}
+                    {teamInfo ? ` - ${teamInfo.teamName} (${teamInfo.ageGroupName})` : ''}
                   </span>
                   <span className={`badge ${
                     isWin ? 'badge-success' : isDraw ? 'badge-warning' : 'badge-danger'

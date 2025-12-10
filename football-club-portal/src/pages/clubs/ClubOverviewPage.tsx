@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClubById } from '@data/clubs';
-import { getAgeGroupsByClubId } from '@data/ageGroups';
+import { getAgeGroupsByClubId, getAgeGroupById } from '@data/ageGroups';
 import { getClubStatistics } from '@data/statistics';
 import { getTeamById } from '@data/teams';
 import StatsGrid from '@components/stats/StatsGrid';
@@ -42,6 +42,18 @@ export default function ClubOverviewPage() {
           <PreviousResultsCard 
             matches={stats.previousResults.slice(0, 3)}
             viewAllLink={Routes.club(clubId!)}
+            showTeamInfo={true}
+            getTeamInfo={(match) => {
+              const team = getTeamById(match.teamId);
+              if (team) {
+                const ageGroup = getAgeGroupById(team.ageGroupId);
+                return {
+                  teamName: team.name,
+                  ageGroupName: ageGroup?.name || 'Unknown'
+                };
+              }
+              return null;
+            }}
             getMatchLink={(matchId, match) => {
               const team = getTeamById(match.teamId);
               if (team) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { getAgeGroupById } from '../../data/ageGroups';
-import { getTeamsByAgeGroupId } from '../../data/teams';
+import { getTeamsByAgeGroupId, getTeamById } from '../../data/teams';
 import { getAgeGroupStatistics } from '../../data/statistics';
 import { samplePlayers } from '../../data/players';
 import StatsGrid from '../../components/stats/StatsGrid';
@@ -63,6 +63,17 @@ const AgeGroupOverviewPage: React.FC = () => {
         />
         <PreviousResultsCard 
           matches={stats.previousResults}
+          showTeamInfo={true}
+          getTeamInfo={(match) => {
+            const team = getTeamById(match.teamId);
+            if (team) {
+              return {
+                teamName: team.name,
+                ageGroupName: ageGroup.name
+              };
+            }
+            return null;
+          }}
           getMatchLink={(matchId, match) => {
             return Routes.matchReport(clubId!, ageGroupId!, match.teamId, matchId);
           }}
