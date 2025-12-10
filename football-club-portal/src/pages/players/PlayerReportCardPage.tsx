@@ -3,6 +3,7 @@ import { samplePlayers } from '@/data/players';
 import { getLatestReportForPlayer } from '@/data/reports';
 import PageNavigation from '@components/navigation/PageNavigation';
 import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
+import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
 
 export default function PlayerReportCardPage() {
   const { clubId, ageGroupId, teamId, playerId } = useParams();
@@ -43,16 +44,6 @@ export default function PlayerReportCardPage() {
     );
   }
   
-  const calculateAge = (birthDate: Date) => {
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-  
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Navigation Tabs */}
@@ -61,35 +52,8 @@ export default function PlayerReportCardPage() {
       <main className="container mx-auto px-4 py-8">
         {/* Player Header */}
         <div className="card mb-6">
-          <div className="flex items-start gap-6 mb-6">
-            {player.photo ? (
-              <img 
-                src={player.photo} 
-                alt={`${player.firstName} ${player.lastName}`}
-                className="w-24 h-24 rounded-full object-cover flex-shrink-0"
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
-                {player.firstName[0]}{player.lastName[0]}
-              </div>
-            )}
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
-                {player.firstName} {player.lastName}
-              </h1>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-                <span>Age: {calculateAge(player.dateOfBirth)}</span>
-                <span>•</span>
-                <span>Positions: {player.preferredPositions.join(', ')}</span>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Rating</div>
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-                {report.overallRating}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">/ 10</div>
-            </div>
+          <div className="mb-6">
+            <PlayerDetailsHeader player={player} customColorClass="from-blue-500 to-blue-600" />
           </div>
           
           {/* Report Period */}

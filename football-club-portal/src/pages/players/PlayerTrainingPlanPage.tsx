@@ -4,6 +4,7 @@ import { getActiveTrainingPlanForPlayer } from '@/data/trainingPlans';
 import { getDrillById } from '@/data/training';
 import PageNavigation from '@components/navigation/PageNavigation';
 import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
+import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
 
 export default function PlayerTrainingPlanPage() {
   const { clubId, ageGroupId, teamId, playerId } = useParams();
@@ -44,16 +45,6 @@ export default function PlayerTrainingPlanPage() {
     );
   }
   
-  const calculateAge = (birthDate: Date) => {
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-  
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
@@ -78,31 +69,10 @@ export default function PlayerTrainingPlanPage() {
         {/* Player & Plan Header */}
         <div className="card mb-6">
           <div className="flex items-start gap-6 mb-6">
-            {player.photo ? (
-              <img 
-                src={player.photo} 
-                alt={`${player.firstName} ${player.lastName}`}
-                className="w-24 h-24 rounded-full object-cover flex-shrink-0"
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
-                {player.firstName[0]}{player.lastName[0]}
-              </div>
-            )}
             <div className="flex-1">
-              <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
-                Individual Training Plan
-              </h1>
-              <h2 className="text-xl text-gray-600 dark:text-gray-400 mb-2">
-                {player.firstName} {player.lastName}
-              </h2>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-                <span>Age: {calculateAge(player.dateOfBirth)}</span>
-                <span>•</span>
-                <span>Positions: {player.preferredPositions.join(', ')}</span>
-              </div>
+              <PlayerDetailsHeader player={player} customColorClass="from-purple-500 to-purple-600" />
             </div>
-            <div className="text-right">
+            <div className="text-right flex-shrink-0">
               <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Progress</div>
               <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">
                 {overallProgress}%

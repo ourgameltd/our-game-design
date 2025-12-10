@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { getPlayerById } from '@data/players';
 import PageNavigation from '@components/navigation/PageNavigation';
 import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
+import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
 
 export default function PlayerProfilePage() {
   const { clubId, ageGroupId, teamId, playerId } = useParams();
@@ -22,10 +23,6 @@ export default function PlayerProfilePage() {
     );
   }
 
-  const age = new Date().getFullYear() - player.dateOfBirth.getFullYear();
-  // Use the overall rating from the player object (already calculated)
-  const overallRating = player.overallRating;
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Navigation Tabs */}
@@ -34,40 +31,11 @@ export default function PlayerProfilePage() {
       <main className="container mx-auto px-4 py-8">
         {/* Player Header */}
         <div className="card mb-6">
-          <div className="flex items-start gap-6">
-            {player.photo ? (
-              <img 
-                src={player.photo} 
-                alt={`${player.firstName} ${player.lastName}`}
-                className="w-24 h-24 rounded-full object-cover flex-shrink-0"
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
-                {player.firstName[0]}{player.lastName[0]}
-              </div>
-            )}
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
-                {player.firstName} {player.lastName}
-              </h1>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-                <span>Age: {age} years old</span>
-                <span>•</span>
-                <span>Positions: {player.preferredPositions.join(', ')}</span>
-                <span>•</span>
-                <span>Overall Rating: {overallRating}</span>
-              </div>
-            </div>
-          </div>
+          <PlayerDetailsHeader player={player} />
         </div>
 
         {/* Player Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <div className="card">
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Rating</div>
-            <div className="text-4xl font-bold text-gray-900 dark:text-white">{overallRating}</div>
-            <div className="text-sm text-gray-500 mt-1">out of 99</div>
-          </div>
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="card">
             <div className="text-sm text-gray-600 mb-1">Appearances</div>
             <div className="text-4xl font-bold text-gray-900 dark:text-white">12</div>
@@ -98,7 +66,9 @@ export default function PlayerProfilePage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Age</span>
-                <span className="font-medium text-gray-900 dark:text-white">{age} years old</span>
+                <span className="font-medium text-gray-900 dark:text-white">
+                  {new Date().getFullYear() - player.dateOfBirth.getFullYear()} years old
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Preferred Positions</span>
