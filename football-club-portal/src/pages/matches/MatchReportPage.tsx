@@ -1,9 +1,8 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { sampleMatches } from '@/data/matches';
 import { samplePlayers } from '@/data/players';
 import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
-import { Routes } from '@utils/routes';
 import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 import PageNavigation from '@/components/navigation/PageNavigation';
 
