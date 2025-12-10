@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { samplePlayers } from '@/data/players';
-import { getActiveTrainingPlanForPlayer } from '@/data/trainingPlans';
+import { getTrainingPlansByPlayerId } from '@/data/trainingPlans';
 import { getDrillById } from '@/data/training';
 import PageNavigation from '@components/navigation/PageNavigation';
 import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
@@ -10,7 +11,10 @@ export default function PlayerTrainingPlanPage() {
   const { clubId, ageGroupId, teamId, playerId } = useParams();
   
   const player = samplePlayers.find(p => p.id === playerId);
-  const plan = playerId ? getActiveTrainingPlanForPlayer(playerId) : undefined;
+  const plans = playerId ? getTrainingPlansByPlayerId(playerId) : [];
+  const [selectedPlanIndex, setSelectedPlanIndex] = useState(0);
+  
+  const plan = plans[selectedPlanIndex];
   
   if (!player) {
     return (
@@ -27,7 +31,7 @@ export default function PlayerTrainingPlanPage() {
     );
   }
   
-  if (!plan) {
+  if (plans.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Navigation Tabs */}
@@ -37,7 +41,7 @@ export default function PlayerTrainingPlanPage() {
           <div className="card">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">No Training Plan Available</h2>
             <p className="text-gray-600 dark:text-gray-400">
-              No active training plan has been created for {player.firstName} {player.lastName} yet.
+              No training plans have been created for {player.firstName} {player.lastName} yet.
             </p>
           </div>
         </main>
@@ -56,9 +60,9 @@ export default function PlayerTrainingPlanPage() {
     }
   };
   
-  const overallProgress = Math.round(
+  const overallProgress = plan ? Math.round(
     plan.objectives.reduce((sum, obj) => sum + obj.progress, 0) / plan.objectives.length
-  );
+  ) : 0;
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -66,11 +70,67 @@ export default function PlayerTrainingPlanPage() {
       <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, teamId!, playerId!)} />
       
       <main className="container mx-auto px-4 py-8">
-        {/* Player & Plan Header */}
+        {/* Player Header with Plan Selector */}
         <div className="card mb-6">
-          <div className="flex items-start gap-6 mb-6">
-            <div className="flex-1">
-              <PlayerDetailsHeader player={player} customColorClass="from-purple-500 to-purple-600" />
+          <PlayerDetailsHeader player={player} customColorClass="from-purple-500 to-purple-600" />
+          
+          {/* Plan Selector */}
+          {plans.length > 1 && (
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-700 mt-6">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex-1">
+                  <label htmlFor="plan-selector" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Select Training Plan Period
+                  </label>
+                  <select
+                    id="plan-selector"
+                    value={selectedPlanIndex}
+                    onChange={(e) => setSelectedPlanIndex(Number(e.target.value))}
+                    className="w-full max-w-md px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent"
+                  >
+                    {plans.map((p, index) => (
+                      <option key={p.id} value={index}>
+                        {index === 0 ? '🎯 Active Plan' : `📋 Plan ${plans.length - index}`} - {p.period.start.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })} to {p.period.end.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })} ({p.status})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Total Plans</div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{plans.length}</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Current Plan Header */}
+        <div className="card mb-6">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                {selectedPlanIndex === 0 ? 'Active Training Plan' : `Training Plan #${plans.length - selectedPlanIndex}`}
+              </h2>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                <p>
+                  Period: {plan.period.start.toLocaleDateString('en-GB', { 
+                    day: 'numeric',
+                    month: 'short', 
+                    year: 'numeric' 
+                  })} - {plan.period.end.toLocaleDateString('en-GB', { 
+                    day: 'numeric',
+                    month: 'short', 
+                    year: 'numeric' 
+                  })}
+                </p>
+                <p>
+                  Created: {plan.createdAt.toLocaleDateString('en-GB', { 
+                    day: 'numeric',
+                    month: 'long', 
+                    year: 'numeric' 
+                  })}
+                </p>
+              </div>
             </div>
             <div className="text-right flex-shrink-0">
               <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Progress</div>
@@ -82,28 +142,6 @@ export default function PlayerTrainingPlanPage() {
               </span>
             </div>
           </div>
-          
-          {/* Plan Period */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Plan Period: {plan.period.start.toLocaleDateString('en-GB', { 
-                day: 'numeric',
-                month: 'long', 
-                year: 'numeric' 
-              })} - {plan.period.end.toLocaleDateString('en-GB', { 
-                day: 'numeric',
-                month: 'long', 
-                year: 'numeric' 
-              })}
-            </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Created: {plan.createdAt.toLocaleDateString('en-GB', { 
-                day: 'numeric',
-                month: 'long', 
-                year: 'numeric' 
-              })}
-            </p>
-          </div>
         </div>
         
         {/* Objectives */}
@@ -112,49 +150,94 @@ export default function PlayerTrainingPlanPage() {
             <span className="text-2xl">🎯</span>
             Development Objectives
           </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            Track iterative objectives over the training period. Mark objectives as completed when achieved.
+          </p>
           <div className="space-y-4">
             {plan.objectives.map((objective) => (
               <div 
                 key={objective.id}
-                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                className={`border rounded-lg p-4 ${
+                  objective.completed 
+                    ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20' 
+                    : 'border-gray-200 dark:border-gray-700'
+                }`}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-1">
-                      {objective.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                      {objective.description}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">
-                      Target: {objective.targetDate.toLocaleDateString('en-GB', { 
-                        day: 'numeric',
-                        month: 'long', 
-                        year: 'numeric' 
-                      })}
-                    </p>
-                  </div>
-                  <span className={`ml-4 px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(objective.status)}`}>
-                    {objective.status.replace('-', ' ')}
-                  </span>
-                </div>
-                
-                {/* Progress Bar */}
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Progress</span>
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">{objective.progress}%</span>
-                  </div>
-                  <div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div 
-                      className={`h-full transition-all duration-300 ${
-                        objective.progress >= 75 ? 'bg-green-500' : 
-                        objective.progress >= 50 ? 'bg-blue-500' : 
-                        objective.progress >= 25 ? 'bg-amber-500' : 
-                        'bg-red-500'
-                      }`}
-                      style={{ width: `${objective.progress}%` }}
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="flex-shrink-0 mt-1">
+                    <input 
+                      type="checkbox" 
+                      checked={objective.completed}
+                      readOnly
+                      className="w-5 h-5 rounded cursor-pointer"
                     />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h3 className={`font-semibold text-lg mb-1 ${
+                          objective.completed 
+                            ? 'text-green-900 dark:text-green-100 line-through' 
+                            : 'text-gray-900 dark:text-white'
+                        }`}>
+                          {objective.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                          {objective.description}
+                        </p>
+                        <div className="flex flex-wrap gap-4 text-xs">
+                          <span className="text-gray-500 dark:text-gray-500">
+                            <span className="font-medium">Started:</span> {objective.startDate.toLocaleDateString('en-GB', { 
+                              day: 'numeric',
+                              month: 'short', 
+                              year: 'numeric' 
+                            })}
+                          </span>
+                          <span className="text-gray-500 dark:text-gray-500">
+                            <span className="font-medium">Target:</span> {objective.targetDate.toLocaleDateString('en-GB', { 
+                              day: 'numeric',
+                              month: 'short', 
+                              year: 'numeric' 
+                            })}
+                          </span>
+                          {objective.completed && objective.completedDate && (
+                            <span className="text-green-600 dark:text-green-400 font-medium">
+                              ✓ Completed: {objective.completedDate.toLocaleDateString('en-GB', { 
+                                day: 'numeric',
+                                month: 'short', 
+                                year: 'numeric' 
+                              })}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {!objective.completed && (
+                        <span className={`ml-4 px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(objective.status)}`}>
+                          {objective.status.replace('-', ' ')}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Progress Bar - only show if not completed */}
+                    {!objective.completed && (
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Progress</span>
+                          <span className="text-sm font-bold text-gray-900 dark:text-white">{objective.progress}%</span>
+                        </div>
+                        <div className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full transition-all duration-300 ${
+                              objective.progress >= 75 ? 'bg-green-500' : 
+                              objective.progress >= 50 ? 'bg-blue-500' : 
+                              objective.progress >= 25 ? 'bg-amber-500' : 
+                              'bg-red-500'
+                            }`}
+                            style={{ width: `${objective.progress}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -260,7 +343,7 @@ export default function PlayerTrainingPlanPage() {
         
         {/* Progress Notes */}
         {plan.progressNotes.length > 0 && (
-          <div className="card">
+          <div className="card mb-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span className="text-2xl">📝</span>
               Progress Notes

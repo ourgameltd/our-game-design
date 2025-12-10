@@ -22,21 +22,56 @@ export const sampleReports: PlayerReport[] = [
       'Decision making in final third could be quicker',
       'Physical conditioning - stamina in latter stages of games'
     ],
-    developmentPlan: {
-      goals: [
-        'Improve aerial duel success rate by 20%',
-        'Increase pressing actions per game',
-        'Complete individual conditioning program',
-        'Work on first-time finishing'
-      ],
-      actions: [
-        'Additional heading practice sessions twice per week',
-        'Study video analysis of pressing systems',
-        'Follow personalized fitness plan with strength coach',
-        'Practice shooting drills focusing on one-touch finishes'
-      ],
-      targetDate: new Date('2025-02-28')
-    },
+    developmentPlans: [
+      {
+        id: 'dp-1-1',
+        goal: 'Improve aerial duel success rate by 20%',
+        actions: [
+          'Additional heading practice sessions twice per week',
+          'Study video analysis of aerial duels',
+          'Work on timing of jumps and body positioning'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-02-28'),
+        completed: false
+      },
+      {
+        id: 'dp-1-2',
+        goal: 'Increase pressing actions per game',
+        actions: [
+          'Study video analysis of pressing systems',
+          'Practice pressing drills in training',
+          'Track pressing actions in matches'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-02-28'),
+        completed: false
+      },
+      {
+        id: 'dp-1-3',
+        goal: 'Complete individual conditioning program',
+        actions: [
+          'Follow personalized fitness plan with strength coach',
+          'Weekly strength training sessions',
+          'Monitor stamina levels in matches'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-02-28'),
+        completed: false
+      },
+      {
+        id: 'dp-1-4',
+        goal: 'Work on first-time finishing',
+        actions: [
+          'Practice shooting drills focusing on one-touch finishes',
+          'Study professional strikers\' finishing techniques',
+          'Apply in small-sided games'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-01-31'),
+        completed: false
+      }
+    ],
     coachComments: 'Carlos has been exceptional this term with 12 goals in 10 games. His natural finishing ability is outstanding, and he\'s showing great maturity in his link-up play. The focus now should be on becoming a more complete forward by improving his aerial game and defensive work rate. If he can add these elements to his game, he has the potential to play at a higher level.',
     createdBy: 'c0d1e2f3-a4b5-6c7d-8e9f-0a1b2c3d4e5f',
     createdAt: new Date('2024-12-01'),
@@ -76,21 +111,56 @@ export const sampleReports: PlayerReport[] = [
       'Decision making on when to pass vs. dribble',
       'Physical strength to hold off defenders'
     ],
-    developmentPlan: {
-      goals: [
-        'Increase goal contributions to 1 per game',
-        'Improve team play in final third',
-        'Develop physical strength',
-        'Better shot selection'
-      ],
-      actions: [
-        'Finish training sessions with shooting drills',
-        'Video analysis of when to pass vs. dribble',
-        'Strength and conditioning program',
-        'Study professional wingers\' decision making'
-      ],
-      targetDate: new Date('2025-02-28')
-    },
+    developmentPlans: [
+      {
+        id: 'dp-2-1',
+        goal: 'Increase goal contributions to 1 per game',
+        actions: [
+          'Finish training sessions with shooting drills',
+          'Practice finishing in various scenarios',
+          'Review match footage to identify missed opportunities'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-02-28'),
+        completed: false
+      },
+      {
+        id: 'dp-2-2',
+        goal: 'Improve team play in final third',
+        actions: [
+          'Video analysis of when to pass vs. dribble',
+          'Practice combination play drills',
+          'Study professional wingers\' decision making'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-02-28'),
+        completed: false
+      },
+      {
+        id: 'dp-2-3',
+        goal: 'Develop physical strength',
+        actions: [
+          'Strength and conditioning program',
+          'Core stability exercises',
+          'Upper body strength training'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-03-31'),
+        completed: false
+      },
+      {
+        id: 'dp-2-4',
+        goal: 'Better shot selection',
+        actions: [
+          'Analyze shooting statistics from matches',
+          'Practice identifying high percentage shooting opportunities',
+          'Work on technique for different shooting scenarios'
+        ],
+        startDate: new Date('2024-12-08'),
+        targetDate: new Date('2025-01-31'),
+        completed: false
+      }
+    ],
     coachComments: 'Jake is a joy to watch with the ball at his feet. His technical ability is among the best in the league. The challenge now is to turn those dribbles and chances created into tangible goals and assists. He needs to understand when to beat his man and when to play the simple pass. With better decision making, he can be a match-winner.',
     createdBy: 'c0d1e2f3-a4b5-6c7d-8e9f-0a1b2c3d4e5f',
     createdAt: new Date('2024-12-01'),
@@ -130,21 +200,57 @@ export const sampleReports: PlayerReport[] = [
       'Physical development',
       'Positioning without the ball'
     ],
-    developmentPlan: {
-      goals: [
-        'Use left foot in games regularly',
-        'Improve reaction time in small-sided games',
-        'Build confidence in defensive positions',
-        'Continue technical development'
-      ],
-      actions: [
-        'Left foot only drills in warm-ups',
-        'Play more small-sided games',
-        'Practice positional awareness exercises',
-        'Individual ball mastery homework'
-      ],
-      targetDate: new Date('2025-03-31')
-    },
+    developmentPlans: [
+      {
+        id: 'dp-3-1',
+        goal: 'Use left foot in games regularly',
+        actions: [
+          'Left foot only drills in warm-ups',
+          'Practice passing and shooting with left foot',
+          'Challenge to use left foot 5+ times per game'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-03-31'),
+        completed: false
+      },
+      {
+        id: 'dp-3-2',
+        goal: 'Improve reaction time in small-sided games',
+        actions: [
+          'Play more small-sided games',
+          'Quick decision making drills',
+          'React to visual and audio cues'
+        ],
+        startDate: new Date('2024-12-01'),
+        targetDate: new Date('2025-02-28'),
+        completed: false
+      },
+      {
+        id: 'dp-3-3',
+        goal: 'Build confidence in defensive positions',
+        actions: [
+          'Practice positional awareness exercises',
+          'Study where to be without the ball',
+          'Review match footage with coach'
+        ],
+        startDate: new Date('2024-12-05'),
+        targetDate: new Date('2025-03-31'),
+        completed: false
+      },
+      {
+        id: 'dp-3-4',
+        goal: 'Continue technical development',
+        actions: [
+          'Individual ball mastery homework',
+          'Daily practice routine (15 minutes)',
+          'Attend additional skills sessions'
+        ],
+        startDate: new Date('2024-11-15'),
+        targetDate: new Date('2025-03-31'),
+        completed: true,
+        completedDate: new Date('2024-12-01')
+      }
+    ],
     coachComments: 'Ethan has made excellent progress this term. His technical ability is very good for his age group, and he\'s starting to understand the game better. He\'s a pleasure to coach due to his attitude and willingness to learn. Focus on developing both feet and game understanding will help him continue to improve.',
     createdBy: 'staff-3',
     createdAt: new Date('2024-12-01'),
@@ -178,21 +284,56 @@ export const sampleReports: PlayerReport[] = [
       'Technical ability with ball',
       'Composure in possession'
     ],
-    developmentPlan: {
-      goals: [
-        'Improve passing accuracy to 80%+',
-        'Develop comfort on the ball',
-        'Enhance decision making speed',
-        'Continue leadership development'
-      ],
-      actions: [
-        'Extra passing and control sessions',
-        'Rondos and possession drills',
-        'Video analysis of modern defenders',
-        'Captain\'s responsibilities in matches'
-      ],
-      targetDate: new Date('2025-03-31')
-    },
+    developmentPlans: [
+      {
+        id: 'dp-4-1',
+        goal: 'Improve passing accuracy to 80%+',
+        actions: [
+          'Extra passing and control sessions',
+          'Practice under pressure scenarios',
+          'Track passing stats in matches'
+        ],
+        startDate: new Date('2024-12-02'),
+        targetDate: new Date('2025-03-31'),
+        completed: false
+      },
+      {
+        id: 'dp-4-2',
+        goal: 'Develop comfort on the ball',
+        actions: [
+          'Rondos and possession drills',
+          'Practice receiving under pressure',
+          'Build confidence through small-sided games'
+        ],
+        startDate: new Date('2024-12-02'),
+        targetDate: new Date('2025-02-28'),
+        completed: false
+      },
+      {
+        id: 'dp-4-3',
+        goal: 'Enhance decision making speed',
+        actions: [
+          'Quick thinking drills',
+          'Practice scanning before receiving',
+          'Video analysis of modern defenders'
+        ],
+        startDate: new Date('2024-12-02'),
+        targetDate: new Date('2025-03-31'),
+        completed: false
+      },
+      {
+        id: 'dp-4-4',
+        goal: 'Continue leadership development',
+        actions: [
+          'Captain\'s responsibilities in matches',
+          'Study great captains and leaders',
+          'Mentor younger players'
+        ],
+        startDate: new Date('2024-11-01'),
+        targetDate: new Date('2025-03-31'),
+        completed: false
+      }
+    ],
     coachComments: 'Oliver is a natural leader and his defensive instincts are excellent. He reads the game well and is brave in the tackle. To progress to the next level, he needs to become more comfortable on the ball and improve his distribution. Modern defenders need to be able to play out from the back, and this is an area we\'re working on with him.',
     createdBy: 'staff-2',
     createdAt: new Date('2024-12-02'),
@@ -202,6 +343,80 @@ export const sampleReports: PlayerReport[] = [
         team: 'Manchester City',
         position: 'Centre Back',
         reason: 'Shows how a defender can be strong defensively while being comfortable on the ball and contributing to team play.'
+      }
+    ]
+  },
+  // Previous report for Carlos Silva - to show history
+  {
+    id: 'r5-previous',
+    playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', // Carlos Silva
+    period: {
+      start: new Date('2024-06-01'),
+      end: new Date('2024-08-31')
+    },
+    overallRating: 8.2,
+    strengths: [
+      'Natural goal scorer with good instincts',
+      'Quick in the box',
+      'Good with both feet',
+      'Positive attitude and work ethic'
+    ],
+    areasForImprovement: [
+      'Heading ability',
+      'Defensive work rate',
+      'Physical strength',
+      'Consistency across full 90 minutes'
+    ],
+    developmentPlans: [
+      {
+        id: 'dp-5-1',
+        goal: 'Improve shooting technique',
+        actions: [
+          'Extra shooting practice after training',
+          'Work on body positioning when striking the ball',
+          'Practice different types of finishes'
+        ],
+        startDate: new Date('2024-06-01'),
+        targetDate: new Date('2024-08-31'),
+        completed: true,
+        completedDate: new Date('2024-08-25')
+      },
+      {
+        id: 'dp-5-2',
+        goal: 'Build physical strength',
+        actions: [
+          'Start gym program with strength coach',
+          'Core stability exercises',
+          'Weekly strength assessments'
+        ],
+        startDate: new Date('2024-06-15'),
+        targetDate: new Date('2024-09-30'),
+        completed: true,
+        completedDate: new Date('2024-09-15')
+      },
+      {
+        id: 'dp-5-3',
+        goal: 'Improve movement off the ball',
+        actions: [
+          'Study video of professional strikers',
+          'Practice runs in behind defense',
+          'Work on timing of runs'
+        ],
+        startDate: new Date('2024-07-01'),
+        targetDate: new Date('2024-08-31'),
+        completed: true,
+        completedDate: new Date('2024-08-30')
+      }
+    ],
+    coachComments: 'Carlos had an excellent pre-season. His finishing improved significantly through dedicated practice. He scored 8 goals in 6 pre-season friendlies. The strength work is paying off and he\'s holding the ball up much better. Very pleased with his progress and attitude.',
+    createdBy: 'c0d1e2f3-a4b5-6c7d-8e9f-0a1b2c3d4e5f',
+    createdAt: new Date('2024-09-01'),
+    similarProfessionalPlayers: [
+      {
+        name: 'Gabriel Jesus',
+        team: 'Arsenal',
+        position: 'Striker',
+        reason: 'Mobile striker who shows great movement and finishing. Good role model for development.'
       }
     ]
   }

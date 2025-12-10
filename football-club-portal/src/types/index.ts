@@ -347,11 +347,15 @@ export interface PlayerReport {
   overallRating: number;
   strengths: string[];
   areasForImprovement: string[];
-  developmentPlan: {
-    goals: string[];
+  developmentPlans: {
+    id: string;
+    goal: string;
     actions: string[];
+    startDate: Date;
     targetDate: Date;
-  };
+    completed: boolean;
+    completedDate?: Date;
+  }[];
   coachComments: string;
   createdBy: string;
   createdAt: Date;
@@ -378,9 +382,12 @@ export interface TrainingPlan {
     id: string;
     title: string;
     description: string;
+    startDate: Date;
     targetDate: Date;
     status: 'not-started' | 'in-progress' | 'completed';
     progress: number; // 0-100
+    completed: boolean;
+    completedDate?: Date;
   }[];
   sessions: {
     id: string;

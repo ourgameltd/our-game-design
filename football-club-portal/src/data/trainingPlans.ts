@@ -16,33 +16,41 @@ export const sampleTrainingPlans: TrainingPlan[] = [
         id: 'obj1a2b3-c4d5-e6f7-a8b9-c0d1e2f3a4b5',
         title: 'Improve Aerial Ability',
         description: 'Increase heading accuracy and success rate in aerial duels. Target: 60% aerial duel success rate in matches.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-02-28'),
         status: 'in-progress',
-        progress: 25
+        progress: 25,
+        completed: false
       },
       {
         id: 'obj2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6',
         title: 'Enhance Defensive Work Rate',
         description: 'Increase pressing actions and defensive contributions. Target: 10+ pressing actions per game.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-02-28'),
         status: 'in-progress',
-        progress: 40
+        progress: 40,
+        completed: false
       },
       {
         id: 'obj3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7',
         title: 'Physical Conditioning',
         description: 'Complete strength and stamina program to maintain performance in final 15 minutes of games.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-02-28'),
         status: 'in-progress',
-        progress: 50
+        progress: 50,
+        completed: false
       },
       {
         id: 'obj4d5e6-f7a8-b9c0-d1e2-f3a4b5c6d7e8',
         title: 'First-Time Finishing',
         description: 'Develop ability to finish chances with first touch. Practice in training to translate to matches.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-01-31'),
         status: 'in-progress',
-        progress: 60
+        progress: 60,
+        completed: false
       }
     ],
     sessions: [
@@ -111,33 +119,42 @@ export const sampleTrainingPlans: TrainingPlan[] = [
         id: 'obj-5',
         title: 'Increase Goal Contributions',
         description: 'Target 1 goal or assist per game. Focus on end product in final third.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-02-28'),
         status: 'in-progress',
-        progress: 35
+        progress: 35,
+        completed: false
       },
       {
         id: 'obj-6',
         title: 'Improve Decision Making',
         description: 'Better recognition of when to dribble vs. when to pass. Use video analysis to improve.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-01-31'),
         status: 'in-progress',
-        progress: 45
+        progress: 45,
+        completed: false
       },
       {
         id: 'obj-7',
         title: 'Physical Development',
         description: 'Build upper body strength to hold off defenders better.',
+        startDate: new Date('2024-12-05'),
         targetDate: new Date('2025-02-28'),
         status: 'in-progress',
-        progress: 30
+        progress: 30,
+        completed: false
       },
       {
         id: 'obj-8',
         title: 'Shot Selection',
         description: 'Improve quality of shots - when to shoot, when to create for others.',
+        startDate: new Date('2024-11-20'),
         targetDate: new Date('2025-01-31'),
-        status: 'in-progress',
-        progress: 40
+        status: 'completed',
+        progress: 100,
+        completed: true,
+        completedDate: new Date('2024-12-08')
       }
     ],
     sessions: [
@@ -206,33 +223,41 @@ export const sampleTrainingPlans: TrainingPlan[] = [
         id: 'obj-9',
         title: 'Develop Left Foot',
         description: 'Use left foot confidently in games. Practice daily at home and in training.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-03-31'),
         status: 'in-progress',
-        progress: 20
+        progress: 20,
+        completed: false
       },
       {
         id: 'obj-10',
         title: 'Faster Decision Making',
         description: 'Improve reaction time and speed of thought in small-sided games.',
+        startDate: new Date('2024-12-01'),
         targetDate: new Date('2025-02-28'),
         status: 'in-progress',
-        progress: 30
+        progress: 30,
+        completed: false
       },
       {
         id: 'obj-11',
         title: 'Positional Awareness',
         description: 'Better understanding of where to be when team doesn\'t have the ball.',
+        startDate: new Date('2024-12-05'),
         targetDate: new Date('2025-03-31'),
         status: 'in-progress',
-        progress: 25
+        progress: 25,
+        completed: false
       },
       {
         id: 'obj-12',
         title: 'Technical Foundation',
         description: 'Continue building strong technical base through ball mastery.',
+        startDate: new Date('2024-11-15'),
         targetDate: new Date('2025-03-31'),
         status: 'in-progress',
-        progress: 55
+        progress: 55,
+        completed: false
       }
     ],
     sessions: [
@@ -292,33 +317,41 @@ export const sampleTrainingPlans: TrainingPlan[] = [
         id: 'obj-13',
         title: 'Passing Accuracy',
         description: 'Improve passing success rate to 80%+ in matches. Focus on technique under pressure.',
+        startDate: new Date('2024-12-02'),
         targetDate: new Date('2025-03-31'),
         status: 'in-progress',
-        progress: 35
+        progress: 35,
+        completed: false
       },
       {
         id: 'obj-14',
         title: 'Ball Comfort',
         description: 'Become more confident on the ball. Able to receive under pressure and turn.',
+        startDate: new Date('2024-12-02'),
         targetDate: new Date('2025-02-28'),
         status: 'in-progress',
-        progress: 40
+        progress: 40,
+        completed: false
       },
       {
         id: 'obj-15',
         title: 'Speed of Play',
         description: 'Improve decision making speed. Play quicker, think faster.',
+        startDate: new Date('2024-12-02'),
         targetDate: new Date('2025-03-31'),
         status: 'in-progress',
-        progress: 30
+        progress: 30,
+        completed: false
       },
       {
         id: 'obj-16',
         title: 'Leadership Skills',
         description: 'Continue developing as team captain. Vocal, organized, leads by example.',
+        startDate: new Date('2024-11-01'),
         targetDate: new Date('2025-03-31'),
         status: 'in-progress',
-        progress: 65
+        progress: 65,
+        completed: false
       }
     ],
     sessions: [
