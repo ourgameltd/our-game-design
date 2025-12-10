@@ -46,9 +46,9 @@ export default function TrainingSessionPage() {
         <div className="card mb-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2 text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 {isUpcoming ? 'Upcoming Training Session' : 'Training Session Report'}
-              </h1>
+              </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">
                 {ageGroup?.name || 'N/A'} - {team.name}
               </p>

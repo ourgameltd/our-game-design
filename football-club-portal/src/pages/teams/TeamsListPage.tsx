@@ -27,7 +27,7 @@ export default function TeamsListPage() {
       <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
       
       <main className="container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
           {ageGroup.name} Teams
         </h2>
         {ageGroup.description && (

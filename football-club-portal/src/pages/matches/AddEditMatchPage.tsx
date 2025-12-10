@@ -188,15 +188,9 @@ export default function AddEditMatchPage() {
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <Link
-            to={Routes.matches(clubId!, ageGroupId!, teamId!)}
-            className="text-blue-600 dark:text-blue-400 hover:underline mb-2 inline-block"
-          >
-            ← Back to Matches
-          </Link>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
             {isEditing ? 'Edit Match' : 'Add New Match'}
-          </h1>
+          </h2>
           <p className="text-gray-600 dark:text-gray-400">
             {team.name} - {club.name}
           </p>

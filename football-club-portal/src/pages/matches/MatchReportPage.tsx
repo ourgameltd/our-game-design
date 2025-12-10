@@ -112,23 +112,13 @@ export default function MatchReportPage() {
       <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
 
       <main className="container mx-auto px-4 py-8">     
-        {/* Breadcrumb */}
-        <div className="mb-4">
-          <Link
-            to={Routes.matches(clubId!, ageGroupId!, teamId!)}
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            ← Back to Matches
-          </Link>
-        </div>
-
         {/* Match Header */}
         <div className="card mb-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2 text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 {isUpcoming ? 'Upcoming Match' : 'Match Report'}
-              </h1>
+              </h2>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {match.competition}
               </p>

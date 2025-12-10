@@ -203,9 +203,9 @@ export default function PlayerAbilitiesPage() {
         {/* Header with Action Button */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               {player.firstName} {player.lastName} - Abilities
-            </h1>
+            </h2>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
               Overall Rating: {calculateOverallRating(averageAttributes)}/99
               {player.evaluations.length > 0 && (

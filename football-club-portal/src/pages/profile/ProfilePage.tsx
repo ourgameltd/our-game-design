@@ -36,13 +36,7 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <Link
-            to="/clubs"
-            className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 mb-4 inline-block"
-          >
-            ← Back to Clubs
-          </Link>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Profile</h1>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">My Profile</h2>
           <p className="text-gray-600 dark:text-gray-400 mt-1">Manage your account settings and preferences</p>
         </div>
 
