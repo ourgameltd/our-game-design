@@ -5,6 +5,7 @@ import PageNavigation from '@components/navigation/PageNavigation';
 import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
 import { groupAttributes, getQualityColor, calculateOverallRating } from '@utils/attributeHelpers';
 import { PlayerAttributes, AttributeEvaluation } from '@/types';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function PlayerAbilitiesPage() {
   const { clubId, ageGroupId, teamId, playerId } = useParams();
@@ -143,15 +144,15 @@ export default function PlayerAbilitiesPage() {
   // Calculate historical data from evaluations
   const getHistoricalData = () => {
     if (!player.evaluations || player.evaluations.length === 0) {
-      return [{ month: 'Current', overall: player.overallRating }];
+      return [{ date: 'Current', rating: player.overallRating }];
     }
 
     return player.evaluations
       .sort((a, b) => new Date(a.evaluatedAt).getTime() - new Date(b.evaluatedAt).getTime())
       .slice(-6) // Last 6 evaluations
       .map(e => ({
-        month: new Date(e.evaluatedAt).toLocaleDateString('en-US', { month: 'short' }),
-        overall: e.overallRating / 10 // Scale to 0-10 for display
+        date: new Date(e.evaluatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        rating: e.overallRating
       }));
   };
 
@@ -225,10 +226,14 @@ export default function PlayerAbilitiesPage() {
         {/* Progress Summary */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="card">
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Evaluations</div>
-            <div className="text-4xl font-bold text-primary-600">{player.evaluations.length}</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              {player.evaluations.filter(e => e.evaluatedBy === currentCoachId).length} by you
+            <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Score</div>
+            <div className="text-4xl font-bold text-primary-600">
+              {player.evaluations.length > 0 
+                ? Math.round(player.evaluations.reduce((sum, e) => sum + e.overallRating, 0) / player.evaluations.length)
+                : calculateOverallRating(averageAttributes)}/99
+            </div>
+            <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              {player.evaluations.length} evaluation{player.evaluations.length !== 1 ? 's' : ''}
             </div>
           </div>
           <div className="card">
@@ -380,16 +385,39 @@ export default function PlayerAbilitiesPage() {
           {/* Overall Rating Chart */}
           <div className="card">
             <h3 className="text-xl font-semibold mb-4">Overall Rating Over Time</h3>
-            <div className="h-64 flex items-end justify-around gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              {abilitiesData.map((data, index) => (
-                <div key={index} className="flex flex-col items-center flex-1">
-                  <div className="w-full bg-primary-600 rounded-t-lg transition-all hover:bg-primary-700" 
-                      style={{ height: `${(data.overall / 10) * 100}%` }}
+            <div className="h-64 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={abilitiesData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                  <XAxis 
+                    dataKey="date" 
+                    stroke="#6B7280"
+                    style={{ fontSize: '12px' }}
                   />
-                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mt-2">{data.month}</div>
-                  <div className="text-sm font-bold text-gray-900 dark:text-white">{data.overall.toFixed(1)}</div>
-                </div>
-              ))}
+                  <YAxis 
+                    stroke="#6B7280"
+                    style={{ fontSize: '12px' }}
+                    domain={[0, 100]}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#1F2937', 
+                      border: '1px solid #374151',
+                      borderRadius: '8px',
+                      color: '#fff'
+                    }}
+                    labelStyle={{ color: '#9CA3AF' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="rating" 
+                    stroke="#2563EB" 
+                    strokeWidth={3}
+                    dot={{ fill: '#2563EB', r: 5 }}
+                    activeDot={{ r: 7 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
             <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
               📈 Track progress based on coach evaluations
@@ -526,7 +554,7 @@ export default function PlayerAbilitiesPage() {
         </div>
 
         {/* Evaluation History */}
-        {/* {player.evaluations.length > 0 && (
+        {player.evaluations.length > 0 && (
           <div className="card mt-6">
             <h3 className="text-xl font-semibold mb-4">Evaluation History</h3>
             <div className="overflow-x-auto">
@@ -536,7 +564,6 @@ export default function PlayerAbilitiesPage() {
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Date</th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Coach</th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Overall Rating</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Attributes Evaluated</th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Notes</th>
                   </tr>
                 </thead>
@@ -554,9 +581,6 @@ export default function PlayerAbilitiesPage() {
                         <td className="py-3 px-4 text-sm">
                           <span className="font-bold text-primary-600">{evaluation.overallRating}/99</span>
                         </td>
-                        <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">
-                          {evaluation.attributes.length} attributes
-                        </td>
                         <td className="py-3 px-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
                           {evaluation.coachNotes || '-'}
                         </td>
@@ -566,7 +590,7 @@ export default function PlayerAbilitiesPage() {
               </table>
             </div>
           </div>
-        )} */}
+        )}
       </main>
     </div>
   );
