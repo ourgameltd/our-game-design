@@ -256,6 +256,88 @@ export const sampleMatches: Match[] = [
       ],
       playerOfTheMatch: 'p11c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e'
     }
+  },
+  // Seniors Team matches - Carlos Rodriguez
+  {
+    id: 'm8b9c0d1-e2f3-a4b5-c6d7-e8f9a0b1c2d3',
+    teamId: 'd4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a',
+    opposition: 'Riverside United',
+    date: new Date('2024-12-01T15:00:00'),
+    location: 'Community Sports Ground',
+    isHome: true,
+    competition: 'County League Division 1',
+    status: 'completed',
+    kit: {
+      primary: 'Home Kit'
+    },
+    score: {
+      home: 3,
+      away: 1
+    },
+    lineup: {
+      formationId: 'f1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6',
+      starting: [
+        { playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', position: 'ST' }
+      ],
+      substitutes: []
+    },
+    report: {
+      summary: 'Dominant performance with Carlos scoring two goals. Team controlled the game throughout.',
+      goalScorers: [
+        { playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', minute: 23 },
+        { playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', minute: 67 }
+      ],
+      cards: [],
+      injuries: [],
+      performanceRatings: [
+        { playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', rating: 9.0 }
+      ],
+      playerOfTheMatch: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c'
+    },
+    weather: {
+      condition: 'Clear',
+      temperature: 10
+    }
+  },
+  {
+    id: 'm9c0d1e2-f3a4-b5c6-d7e8-f9a0b1c2d3e4',
+    teamId: 'd4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a',
+    opposition: 'Hillside Athletic',
+    date: new Date('2024-11-24T15:00:00'),
+    location: 'Hillside Park',
+    isHome: false,
+    competition: 'County League Division 1',
+    status: 'completed',
+    kit: {
+      primary: 'Away Kit'
+    },
+    score: {
+      home: 2,
+      away: 2
+    },
+    lineup: {
+      formationId: 'f1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6',
+      starting: [
+        { playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', position: 'ST' }
+      ],
+      substitutes: []
+    },
+    report: {
+      summary: 'Hard-fought draw away from home. Carlos scored a crucial equalizer in the dying minutes.',
+      goalScorers: [
+        { playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', minute: 88 }
+      ],
+      cards: [],
+      injuries: [],
+      performanceRatings: [
+        { playerId: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c', rating: 7.5 }
+      ],
+      playerOfTheMatch: 'p21a3b4c-5d6e-7f8a-9b0c-1d2e3f4a5b6c'
+    },
+    weather: {
+      condition: 'Rainy',
+      temperature: 8
+    }
   }
 ];
 
@@ -271,4 +353,27 @@ export const getUpcomingMatches = (): Match[] => {
 export const getPastMatches = (): Match[] => {
   const now = new Date();
   return sampleMatches.filter(match => match.date <= now).sort((a, b) => b.date.getTime() - a.date.getTime());
+};
+
+export const getPlayerRecentPerformances = (playerId: string, limit: number = 5) => {
+  const now = new Date();
+  const completedMatches = sampleMatches
+    .filter(match => 
+      match.status === 'completed' && 
+      match.date <= now &&
+      match.report?.performanceRatings?.some(rating => rating.playerId === playerId)
+    )
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .slice(0, limit);
+
+  return completedMatches.map(match => {
+    const rating = match.report!.performanceRatings!.find(r => r.playerId === playerId);
+    return {
+      matchId: match.id,
+      opposition: match.opposition,
+      date: match.date,
+      rating: rating?.rating || 0,
+      isHome: match.isHome
+    };
+  });
 };

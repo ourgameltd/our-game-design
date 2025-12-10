@@ -1,12 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { getPlayerById } from '@data/players';
+import { getPlayerRecentPerformances } from '@data/matches';
 import PageNavigation from '@components/navigation/PageNavigation';
 import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
 import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
+import RecentPerformanceCard from '@components/player/RecentPerformanceCard';
 
 export default function PlayerProfilePage() {
   const { clubId, ageGroupId, teamId, playerId } = useParams();
   const player = getPlayerById(playerId!);
+  const recentPerformances = getPlayerRecentPerformances(playerId!, 5);
 
   if (!player) {
       return (
@@ -86,31 +89,12 @@ export default function PlayerProfilePage() {
           </div>
 
           {/* Recent Performance */}
-          <div className="card">
-            <h3 className="text-xl font-semibold mb-4">Recent Performance</h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">vs Riverside United</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Dec 1, 2024</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-green-600">9.0</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">Rating</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">@ Hillside Athletic</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Nov 24, 2024</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-yellow-600">7.5</div>
-                  <div className="text-xs text-gray-600">Rating</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <RecentPerformanceCard 
+            performances={recentPerformances}
+            clubId={clubId!}
+            ageGroupId={ageGroupId!}
+            teamId={teamId!}
+          />
         </div>
       </main>
     </div>
