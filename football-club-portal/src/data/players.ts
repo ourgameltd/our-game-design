@@ -11,6 +11,7 @@ export const samplePlayers: Player[] = [
     firstName: 'Oliver',
     lastName: 'Thompson',
     dateOfBirth: new Date('2014-03-15'),
+    photo: 'https://placehold.co/150/4A90E2/FFFFFF?text=OT',
     preferredPositions: ['GK'],
     attributes: {
       // Skills
@@ -147,6 +148,7 @@ export const samplePlayers: Player[] = [
     firstName: 'Lucas',
     lastName: 'Martinez',
     dateOfBirth: new Date('2014-01-10'),
+    photo: 'https://placehold.co/150/E94B3C/FFFFFF?text=LM',
     preferredPositions: ['CB', 'LB'],
     attributes: {
       // Skills
@@ -283,6 +285,7 @@ export const samplePlayers: Player[] = [
     firstName: 'Noah',
     lastName: 'Anderson',
     dateOfBirth: new Date('2014-09-25'),
+    photo: 'https://placehold.co/150/6FCF97/FFFFFF?text=NA',
     preferredPositions: ['ST', 'CF'],
     attributes: {
       // Skills
@@ -421,6 +424,7 @@ export const samplePlayers: Player[] = [
     firstName: 'William',
     lastName: 'Brown',
     dateOfBirth: new Date('2014-04-12'),
+    photo: 'https://placehold.co/150/F5A623/FFFFFF?text=WB',
     preferredPositions: ['CM', 'CDM'],
     attributes: {
       // Skills
@@ -559,6 +563,7 @@ export const samplePlayers: Player[] = [
     firstName: 'Mason',
     lastName: 'Evans',
     dateOfBirth: new Date('2014-02-20'),
+    photo: 'https://placehold.co/150/9013FE/FFFFFF?text=ME',
     preferredPositions: ['RW', 'LW'],
     attributes: {
       // Skills
@@ -695,6 +700,7 @@ export const samplePlayers: Player[] = [
     firstName: 'George',
     lastName: 'Harris',
     dateOfBirth: new Date('2014-10-28'),
+    photo: 'https://placehold.co/150/50E3C2/FFFFFF?text=GH',
     preferredPositions: ['LB', 'CB'],
     attributes: {
       // Skills
