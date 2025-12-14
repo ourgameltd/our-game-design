@@ -22,7 +22,7 @@ export const sampleReports: PlayerReport[] = [
       'Decision making in final third could be quicker',
       'Physical conditioning - stamina in latter stages of games'
     ],
-    developmentPlans: [
+    developmentActions: [
       {
         id: 'dp-1-1',
         goal: 'Improve aerial duel success rate by 20%',
@@ -111,7 +111,7 @@ export const sampleReports: PlayerReport[] = [
       'Decision making on when to pass vs. dribble',
       'Physical strength to hold off defenders'
     ],
-    developmentPlans: [
+    developmentActions: [
       {
         id: 'dp-2-1',
         goal: 'Increase goal contributions to 1 per game',
@@ -200,7 +200,7 @@ export const sampleReports: PlayerReport[] = [
       'Physical development',
       'Positioning without the ball'
     ],
-    developmentPlans: [
+    developmentActions: [
       {
         id: 'dp-3-1',
         goal: 'Use left foot in games regularly',
@@ -284,7 +284,7 @@ export const sampleReports: PlayerReport[] = [
       'Technical ability with ball',
       'Composure in possession'
     ],
-    developmentPlans: [
+    developmentActions: [
       {
         id: 'dp-4-1',
         goal: 'Improve passing accuracy to 80%+',
@@ -367,7 +367,7 @@ export const sampleReports: PlayerReport[] = [
       'Physical strength',
       'Consistency across full 90 minutes'
     ],
-    developmentPlans: [
+    developmentActions: [
       {
         id: 'dp-5-1',
         goal: 'Improve shooting technique',
@@ -431,3 +431,4 @@ export const getLatestReportForPlayer = (playerId: string): PlayerReport | undef
   const reports = getReportsByPlayerId(playerId);
   return reports.length > 0 ? reports[0] : undefined;
 };
+

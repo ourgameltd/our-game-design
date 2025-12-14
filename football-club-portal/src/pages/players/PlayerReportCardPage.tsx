@@ -160,18 +160,18 @@ export default function PlayerReportCardPage() {
           </ul>
         </div>
         
-        {/* Development Plan */}
+        {/* Development Actions */}
         <div className="card mb-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
             <span className="text-2xl">📋</span>
-            Development Plans
+            Development Actions
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Iterative development plans to track progress over time. Each plan can be marked as completed.
+            Recommended actions based on this report card. For comprehensive development tracking, see the Development Plans section.
           </p>
           
           <div className="space-y-4">
-            {report.developmentPlans.map((plan) => (
+            {report.developmentActions.map((plan) => (
               <div 
                 key={plan.id}
                 className={`border rounded-lg p-4 ${

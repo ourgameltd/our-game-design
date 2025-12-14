@@ -119,13 +119,13 @@ export class Routes {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-card`;
   }
 
-  static playerTrainingPlan(
+  static playerDevelopmentPlans(
     clubId: string,
     ageGroupId: string,
     teamId: string,
     playerId: string
   ): string {
-    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development`;
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plans`;
   }
 
   static playerSettings(

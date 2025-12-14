@@ -227,7 +227,7 @@ export default function Header() {
           </nav>
 
           {/* Right side actions */}
-          <div className="flex items-center gap-2 ml-4">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {/* Theme toggle */}
             <button
               onClick={toggleTheme}

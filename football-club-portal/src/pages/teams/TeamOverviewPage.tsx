@@ -48,18 +48,20 @@ export default function TeamOverviewPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Navigation Tabs */}
       <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
-
+      
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-6">
-          <PageTitle
-            title={team.name}
-            subtitle="Team Overview"
-            action={{
-              label: '⚙️ Settings',
-              onClick: () => navigate(Routes.teamSettings(clubId!, ageGroupId!, teamId!)),
-              variant: 'primary'
-            }}
-          />
+          <div className="flex-grow">
+            <PageTitle
+              title={team.name}
+              subtitle="Team Overview"
+              action={{
+                label: '⚙️ Settings',
+                onClick: () => navigate(Routes.teamSettings(clubId!, ageGroupId!, teamId!)),
+                variant: 'primary'
+              }}
+            />
+          </div>
           {team.isArchived && (
             <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 self-start">
               🗄️ Archived

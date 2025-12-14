@@ -362,6 +362,33 @@ export interface GroupStatistics {
   }[];
 }
 
+// Development Plan Types
+export interface DevelopmentPlan {
+  id: string;
+  playerId: string;
+  createdBy: string;
+  createdAt: Date;
+  period: {
+    start: Date;
+    end: Date;
+  };
+  status: 'active' | 'completed' | 'archived';
+  title: string;
+  description: string;
+  goals: {
+    id: string;
+    goal: string;
+    actions: string[];
+    startDate: Date;
+    targetDate: Date;
+    completed: boolean;
+    completedDate?: Date;
+    progress: number; // 0-100
+  }[];
+  coachNotes?: string;
+  linkedReportCardId?: string; // Optional link to a report card
+}
+
 // Report Types
 export interface PlayerReport {
   id: string;
@@ -373,7 +400,7 @@ export interface PlayerReport {
   overallRating: number;
   strengths: string[];
   areasForImprovement: string[];
-  developmentPlans: {
+  developmentActions: {
     id: string;
     goal: string;
     actions: string[];
