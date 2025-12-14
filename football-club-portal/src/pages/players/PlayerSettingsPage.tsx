@@ -20,10 +20,20 @@ export default function PlayerSettingsPage() {
     // Medical Information
     allergies: player?.medicalInfo?.allergies?.join(', ') || '',
     conditions: player?.medicalInfo?.conditions?.join(', ') || '',
-    emergencyContactName: player?.medicalInfo?.emergencyContact?.name || '',
-    emergencyContactPhone: player?.medicalInfo?.emergencyContact?.phone || '',
-    emergencyContactRelationship: player?.medicalInfo?.emergencyContact?.relationship || '',
   });
+
+  const [emergencyContacts, setEmergencyContacts] = useState<{
+    id: string;
+    name: string;
+    phone: string;
+    relationship: string;
+    isPrimary: boolean;
+  }[]>(
+    (player?.medicalInfo?.emergencyContacts || []).map(contact => ({
+      ...contact,
+      isPrimary: contact.isPrimary ?? false
+    }))
+  );
 
   const [showArchiveConfirm, setShowArchiveConfirm] = useState(false);
 
@@ -56,11 +66,52 @@ export default function PlayerSettingsPage() {
     }));
   };
 
+  const handleAddEmergencyContact = () => {
+    const newContact = {
+      id: `ec-${Date.now()}`,
+      name: '',
+      phone: '',
+      relationship: '',
+      isPrimary: emergencyContacts.length === 0, // First contact is primary by default
+    };
+    setEmergencyContacts(prev => [...prev, newContact]);
+  };
+
+  const handleRemoveEmergencyContact = (contactId: string) => {
+    setEmergencyContacts(prev => {
+      const filtered = prev.filter(c => c.id !== contactId);
+      // If we removed the primary contact and there are others, make the first one primary
+      if (filtered.length > 0 && !filtered.some(c => c.isPrimary)) {
+        filtered[0].isPrimary = true;
+      }
+      return filtered;
+    });
+  };
+
+  const handleEmergencyContactChange = (contactId: string, field: 'name' | 'phone' | 'relationship', value: string) => {
+    setEmergencyContacts(prev =>
+      prev.map(contact =>
+        contact.id === contactId
+          ? { ...contact, [field]: value }
+          : contact
+      )
+    );
+  };
+
+  const handleSetPrimaryContact = (contactId: string) => {
+    setEmergencyContacts(prev =>
+      prev.map(contact => ({
+        ...contact,
+        isPrimary: contact.id === contactId
+      }))
+    );
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // In a real app, this would save to the backend
-    console.log('Saving player settings:', formData);
+    console.log('Saving player settings:', { ...formData, emergencyContacts });
     alert('Player settings updated successfully! (Demo - not saved to backend)');
     navigate(Routes.player(clubId!, ageGroupId!, teamId!, playerId!));
   };
@@ -339,56 +390,111 @@ export default function PlayerSettingsPage() {
               </div>
 
               <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  Emergency Contact
-                </h4>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Contact Name
-                    </label>
-                    <input
-                      type="text"
-                      name="emergencyContactName"
-                      value={formData.emergencyContactName}
-                      onChange={handleInputChange}
-                      disabled={player.isArchived}
-                      placeholder="Enter name"
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      name="emergencyContactPhone"
-                      value={formData.emergencyContactPhone}
-                      onChange={handleInputChange}
-                      disabled={player.isArchived}
-                      placeholder="+44 7XXX XXXXXX"
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Relationship
-                    </label>
-                    <input
-                      type="text"
-                      name="emergencyContactRelationship"
-                      value={formData.emergencyContactRelationship}
-                      onChange={handleInputChange}
-                      disabled={player.isArchived}
-                      placeholder="e.g., Parent, Guardian"
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                    />
-                  </div>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Emergency Contacts
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={handleAddEmergencyContact}
+                    disabled={player.isArchived}
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    + Add Contact
+                  </button>
                 </div>
+                
+                {emergencyContacts.length === 0 ? (
+                  <p className="text-gray-500 dark:text-gray-400 text-sm italic">
+                    No emergency contacts added yet.
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {emergencyContacts.map((contact, index) => (
+                      <div key={contact.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                              Contact {index + 1}
+                            </span>
+                            {contact.isPrimary && (
+                              <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded">
+                                Primary
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex gap-2">
+                            {!contact.isPrimary && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetPrimaryContact(contact.id)}
+                                disabled={player.isArchived}
+                                className="text-xs text-blue-600 dark:text-blue-400 hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                Set as Primary
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveEmergencyContact(contact.id)}
+                              disabled={player.isArchived}
+                              className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                              title="Remove contact"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-3 gap-3">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Name *
+                            </label>
+                            <input
+                              type="text"
+                              value={contact.name}
+                              onChange={(e) => handleEmergencyContactChange(contact.id, 'name', e.target.value)}
+                              disabled={player.isArchived}
+                              placeholder="Enter name"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Phone Number *
+                            </label>
+                            <input
+                              type="tel"
+                              value={contact.phone}
+                              onChange={(e) => handleEmergencyContactChange(contact.id, 'phone', e.target.value)}
+                              disabled={player.isArchived}
+                              placeholder="+44 7XXX XXXXXX"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                              Relationship *
+                            </label>
+                            <input
+                              type="text"
+                              value={contact.relationship}
+                              onChange={(e) => handleEmergencyContactChange(contact.id, 'relationship', e.target.value)}
+                              disabled={player.isArchived}
+                              placeholder="e.g., Parent, Guardian"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

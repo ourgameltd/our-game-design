@@ -72,7 +72,26 @@ export const samplePlayers: Player[] = [
           end: new Date('2024-11-30')
         }
       }
-    ]
+    ],
+    medicalInfo: {
+      allergies: ['Pollen'],
+      emergencyContacts: [
+        {
+          id: 'ec-1',
+          name: 'Sarah Thompson',
+          phone: '+44 7890 123456',
+          relationship: 'Mother',
+          isPrimary: true
+        },
+        {
+          id: 'ec-2',
+          name: 'David Thompson',
+          phone: '+44 7891 234567',
+          relationship: 'Father',
+          isPrimary: false
+        }
+      ]
+    }
   },
   {
     id: 'p10b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d',
@@ -142,7 +161,19 @@ export const samplePlayers: Player[] = [
           end: new Date('2024-11-30')
         }
       }
-    ]
+    ],
+    medicalInfo: {
+      conditions: ['Asthma'],
+      emergencyContacts: [
+        {
+          id: 'ec-3',
+          name: 'Emma Wilson',
+          phone: '+44 7892 345678',
+          relationship: 'Mother',
+          isPrimary: true
+        }
+      ]
+    }
   },
   {
     id: 'p11c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e',

@@ -183,11 +183,13 @@ export interface Player {
   medicalInfo?: {
     allergies?: string[];
     conditions?: string[];
-    emergencyContact?: {
+    emergencyContacts?: {
+      id: string;
       name: string;
       phone: string;
       relationship: string;
-    };
+      isPrimary?: boolean;
+    }[];
   };
   isArchived?: boolean; // Whether the player is archived
 }
