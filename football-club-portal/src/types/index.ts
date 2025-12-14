@@ -150,10 +150,12 @@ export interface PlayerAttributes {
   aggression: number;
   attackingPosition: number;
   awareness: number;
+  communication: number;
   composure: number;
   defensivePositioning: number;
   interceptions: number;
   marking: number;
+  positivity: number;
   positioning: number;
   vision: number;
 }

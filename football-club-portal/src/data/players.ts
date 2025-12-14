@@ -44,10 +44,12 @@ export const samplePlayers: Player[] = [
       aggression: 45,
       attackingPosition: 35,
       awareness: 65,
+      communication: 72,
       composure: 60,
       defensivePositioning: 60,
       interceptions: 42,
       marking: 40,
+      positivity: 68,
       positioning: 70,
       vision: 50
     },
@@ -111,15 +113,17 @@ export const samplePlayers: Player[] = [
       // Mental
       aggression: 55,
       attackingPosition: 40,
-      awareness: 60,
+      awareness: 62,
+      communication: 65,
       composure: 58,
-      defensivePositioning: 58,
-      interceptions: 62,
-      marking: 65,
-      positioning: 64,
-      vision: 52
+      defensivePositioning: 68,
+      interceptions: 60,
+      marking: 62,
+      positivity: 58,
+      positioning: 60,
+      vision: 48
     },
-    overallRating: 56,
+    overallRating: 54,
     evaluations: [
       {
         id: 'eval1-p10',
@@ -178,17 +182,19 @@ export const samplePlayers: Player[] = [
       stamina: 65,
       strength: 58,
       // Mental
-      aggression: 50,
-      attackingPosition: 45,
+      aggression: 52,
+      attackingPosition: 70,
       awareness: 62,
+      communication: 55,
       composure: 60,
-      defensivePositioning: 60,
-      interceptions: 64,
-      marking: 62,
-      positioning: 65,
-      vision: 58
+      defensivePositioning: 38,
+      interceptions: 35,
+      marking: 40,
+      positivity: 62,
+      positioning: 68,
+      vision: 55
     },
-    overallRating: 58,
+    overallRating: 56,
     evaluations: [
       {
         id: 'eval1-p11',
@@ -246,17 +252,19 @@ export const samplePlayers: Player[] = [
       stamina: 68,
       strength: 50,
       // Mental
-      aggression: 45,
+      aggression: 48,
       attackingPosition: 58,
       awareness: 65,
+      communication: 70,
       composure: 62,
-      defensivePositioning: 62,
+      defensivePositioning: 55,
       interceptions: 52,
-      marking: 48,
+      marking: 50,
+      positivity: 75,
       positioning: 60,
-      vision: 70
+      vision: 68
     },
-    overallRating: 59,
+    overallRating: 57,
     evaluations: [
       {
         id: 'eval1-p12',
@@ -323,7 +331,9 @@ export const samplePlayers: Player[] = [
       interceptions: 35,
       marking: 32,
       positioning: 70,
-      vision: 62
+      vision: 62,
+      positivity: 60,
+      communication: 60
     },
     overallRating: 62,
     evaluations: [
@@ -383,13 +393,15 @@ export const samplePlayers: Player[] = [
       stamina: 64,
       strength: 52,
       // Mental
-      aggression: 48,
-      attackingPosition: 66,
-      awareness: 62,
-      composure: 60,
-      defensivePositioning: 60,
-      interceptions: 38,
-      marking: 35,
+      aggression: 58,
+      attackingPosition: 48,
+      awareness: 68,
+      communication: 75,
+      composure: 62,
+      defensivePositioning: 70,
+      interceptions: 68,
+      marking: 65,
+      positivity: 60,
       positioning: 65,
       vision: 58
     },
@@ -462,7 +474,9 @@ export const samplePlayers: Player[] = [
       interceptions: 64,
       marking: 60,
       positioning: 65,
-      vision: 66
+      vision: 66,
+      positivity: 60,
+      communication: 60
     },
     overallRating: 59,
     evaluations: [
@@ -522,17 +536,19 @@ export const samplePlayers: Player[] = [
       stamina: 62,
       strength: 65,
       // Mental
-      aggression: 58,
-      attackingPosition: 35,
-      awareness: 62,
-      composure: 58,
-      defensivePositioning: 58,
-      interceptions: 65,
-      marking: 68,
-      positioning: 66,
+      aggression: 52,
+      attackingPosition: 55,
+      awareness: 58,
+      communication: 62,
+      composure: 54,
+      defensivePositioning: 60,
+      interceptions: 56,
+      marking: 58,
+      positivity: 55,
+      positioning: 56,
       vision: 50
     },
-    overallRating: 55,
+    overallRating: 53,
     evaluations: [
       {
         id: 'eval1-p31',
@@ -593,17 +609,19 @@ export const samplePlayers: Player[] = [
       stamina: 64,
       strength: 48,
       // Mental
-      aggression: 45,
-      attackingPosition: 64,
+      aggression: 42,
+      attackingPosition: 70,
       awareness: 60,
+      communication: 58,
       composure: 58,
-      defensivePositioning: 58,
-      interceptions: 35,
-      marking: 32,
-      positioning: 62,
+      defensivePositioning: 42,
+      interceptions: 40,
+      marking: 38,
+      positivity: 72,
+      positioning: 68,
       vision: 62
     },
-    overallRating: 60,
+    overallRating: 59,
     evaluations: [
       {
         id: 'eval1-p32',
@@ -662,16 +680,18 @@ export const samplePlayers: Player[] = [
       strength: 48,
       // Mental
       aggression: 40,
-      attackingPosition: 65,
-      awareness: 70,
-      composure: 68,
-      defensivePositioning: 68,
+      attackingPosition: 72,
+      awareness: 68,
+      communication: 68,
+      composure: 65,
+      defensivePositioning: 45,
       interceptions: 48,
       marking: 42,
-      positioning: 66,
+      positivity: 78,
+      positioning: 70,
       vision: 75
     },
-    overallRating: 63,
+    overallRating: 61,
     evaluations: [
       {
         id: 'eval1-p33',
@@ -730,17 +750,19 @@ export const samplePlayers: Player[] = [
       stamina: 68,
       strength: 56,
       // Mental
-      aggression: 52,
-      attackingPosition: 48,
+      aggression: 58,
+      attackingPosition: 38,
       awareness: 60,
-      composure: 58,
-      defensivePositioning: 58,
-      interceptions: 62,
-      marking: 64,
-      positioning: 62,
-      vision: 54
+      communication: 63,
+      composure: 56,
+      defensivePositioning: 65,
+      interceptions: 58,
+      marking: 60,
+      positivity: 52,
+      positioning: 58,
+      vision: 45
     },
-    overallRating: 57,
+    overallRating: 52,
     evaluations: [
       {
         id: 'eval1-p34',
@@ -808,7 +830,9 @@ export const samplePlayers: Player[] = [
       interceptions: 40,
       marking: 38,
       positioning: 80,
-      vision: 68
+      vision: 68,
+      positivity: 60,
+      communication: 60
     },
     overallRating: 70,
     evaluations: [
