@@ -5,6 +5,8 @@ import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
 import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 import PageNavigation from '@/components/navigation/PageNavigation';
+import MatchPreviewCard from '@/components/match/MatchPreviewCard';
+import { Kit } from '@/types';
 
 export default function MatchReportPage() {
   const { matchId, clubId, ageGroupId, teamId } = useParams();
@@ -30,40 +32,27 @@ export default function MatchReportPage() {
     return player ? `${player.firstName} ${player.lastName}` : 'Unknown';
   };
   
-  const getKitName = (kitId: string) => {
+  const getKitDetails = (kitId: string): Kit | undefined => {
     // Check team kits first
     const teamKit = team.kits?.find(k => k.id === kitId);
-    if (teamKit) return teamKit.name;
+    if (teamKit) return teamKit;
     
     // Then check club kits
     const clubKit = club.kits?.find(k => k.id === kitId);
-    if (clubKit) return clubKit.name;
+    if (clubKit) return clubKit;
     
-    // Fallback to ID if not found
-    return kitId;
+    return undefined;
   };
   
   const isUpcoming = match.date > new Date();
   const homeTeam = match.isHome ? team.name : match.opposition;
   const awayTeam = match.isHome ? match.opposition : team.name;
-  const homeScore = match.isHome ? match.score?.home : match.score?.away;
-  const awayScore = match.isHome ? match.score?.away : match.score?.home;
+  const isLocked = match.isLocked || false;
   
   const playerOfTheMatchId = match.report?.playerOfTheMatch;
   const playerOfTheMatch = playerOfTheMatchId 
     ? samplePlayers.find(p => p.id === playerOfTheMatchId) 
     : null;
-  
-  // Group goal scorers by team (our team's goals)
-  const ourTeamGoalScorers = match.report?.goalScorers
-    ?.reduce((acc, goal) => {
-      const playerName = getPlayerName(goal.playerId);
-      if (!acc[playerName]) {
-        acc[playerName] = 0;
-      }
-      acc[playerName]++;
-      return acc;
-    }, {} as Record<string, number>) || {};
 
   // Group cards by player
   const playerCards = match.report?.cards
@@ -124,150 +113,22 @@ export default function MatchReportPage() {
       <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
 
       <main className="container mx-auto px-4 py-8">     
-        {/* Match Header */}
-        <div className="card mb-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                {isUpcoming ? 'Upcoming Match' : 'Match Report'}
-              </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {match.competition}
-              </p>
-            </div>
-            <div className="mt-4 md:mt-0">
-              <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">
-                {match.isHome ? 'Home' : 'Away'}
-              </span>
-            </div>
-          </div>
-          
-          {/* Score Display */}
-          <div className="grid grid-cols-3 gap-4 items-start text-center mb-4">
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{homeTeam}</h3>
-              {!isUpcoming && match.report && match.isHome && (
-                <div className="space-y-1 mt-3">
-                  {/* Goal Scorers */}
-                  {Object.keys(ourTeamGoalScorers).length > 0 && Object.entries(ourTeamGoalScorers).map(([playerName, goals]) => (
-                    <div key={playerName} className="flex items-center justify-center gap-1 text-sm">
-                      <span className="text-gray-700 dark:text-gray-300">{playerName}</span>
-                      <span className="flex gap-0.5">
-                        {Array.from({ length: goals as number }).map((_, i) => (
-                          <span key={i} className="text-base">⚽</span>
-                        ))}
-                      </span>
-                    </div>
-                  ))}
-                  {/* Cards */}
-                  {match.report.cards && match.report.cards.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      {match.report.cards.map((card, index) => (
-                        <div key={index} className="flex items-center justify-center gap-1 text-sm">
-                          <span className="text-gray-700 dark:text-gray-300">{getPlayerName(card.playerId)}</span>
-                          <span className={card.type === 'yellow' ? 'text-yellow-500' : 'text-red-500'}>
-                            {card.type === 'yellow' ? '🟨' : '🟥'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg py-4">
-              {!isUpcoming && match.score ? (
-                <div className="text-4xl font-bold text-gray-900 dark:text-white">
-                  {homeScore} - {awayScore}
-                </div>
-              ) : (
-                <div className="text-2xl font-semibold text-gray-600 dark:text-gray-400">
-                  VS
-                </div>
-              )}
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{awayTeam}</h3>
-              {!isUpcoming && match.report && !match.isHome && (
-                <div className="space-y-1 mt-3">
-                  {/* Goal Scorers */}
-                  {Object.keys(ourTeamGoalScorers).length > 0 && Object.entries(ourTeamGoalScorers).map(([playerName, goals]) => (
-                    <div key={playerName} className="flex items-center justify-center gap-1 text-sm">
-                      <span className="text-gray-700 dark:text-gray-300">{playerName}</span>
-                      <span className="flex gap-0.5">
-                        {Array.from({ length: goals as number }).map((_, i) => (
-                          <span key={i} className="text-base">⚽</span>
-                        ))}
-                      </span>
-                    </div>
-                  ))}
-                  {/* Cards */}
-                  {match.report.cards && match.report.cards.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      {match.report.cards.map((card, index) => (
-                        <div key={index} className="flex items-center justify-center gap-1 text-sm">
-                          <span className="text-gray-700 dark:text-gray-300">{getPlayerName(card.playerId)}</span>
-                          <span className={card.type === 'yellow' ? 'text-yellow-500' : 'text-red-500'}>
-                            {card.type === 'yellow' ? '🟨' : '🟥'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Match Details */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div>
-              <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Date</h3>
-              <p className="text-sm text-gray-900 dark:text-white">
-                {match.date.toLocaleDateString('en-GB', { 
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric'
-                })}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Kick Off</h3>
-              <p className="text-sm text-gray-900 dark:text-white">
-                {match.date.toLocaleTimeString('en-GB', { 
-                  hour: '2-digit', 
-                  minute: '2-digit' 
-                })}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Location</h3>
-              <p className="text-sm text-gray-900 dark:text-white">
-                📍 {match.location}
-              </p>
-            </div>
-            {match.kit && (
-              <div>
-                <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Kit</h3>
-                <p className="text-sm text-gray-900 dark:text-white">
-                  👕 {getKitName(match.kit.primary)}
-                </p>
-                {match.kit.goalkeeper && (
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                    🧤 GK: {getKitName(match.kit.goalkeeper)}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
+        {/* Match Header - Using unified component */}
+        <MatchPreviewCard 
+          match={match}
+          homeTeamName={homeTeam}
+          awayTeamName={awayTeam}
+          getKitDetails={getKitDetails}
+          getPlayerName={getPlayerName}
+          showFullDetails={false}
+        />
         
         {/* Match Report Content (only for past matches) */}
         {!isUpcoming && match.report && (
           <>
             {/* Player of the Match */}
             {playerOfTheMatch && (
-              <div className="card mb-6 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20">
+              <div className="card mt-6 mb-6 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">⭐</span>
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Player of the Match</h2>
@@ -296,7 +157,7 @@ export default function MatchReportPage() {
 
             {/* Lineup with Ratings */}
             {match.lineup && (
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className="grid md:grid-cols-2 gap-6">
                 <div className="card mb-6">
                   <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Team Sheet & Player Ratings</h2>
                   
@@ -493,75 +354,24 @@ export default function MatchReportPage() {
                 </div>
               </div>
             )}
-          </>
-        )}
-        
-        {/* Upcoming Match Info */}
-        {isUpcoming && (
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Match Preview</h2>
-            
-            {/* Match Details Grid */}
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Kick Off</h3>
-                <p className="text-gray-900 dark:text-white font-medium">
-                  {match.date.toLocaleDateString('en-GB', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}
-                </p>
-                <p className="text-gray-900 dark:text-white font-medium">
-                  {match.date.toLocaleTimeString('en-GB', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  })}
-                </p>
-              </div>
-              
-              {match.meetTime && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Meet Time</h3>
-                  <p className="text-gray-900 dark:text-white font-medium">
-                    {match.meetTime.toLocaleTimeString('en-GB', { 
-                      hour: '2-digit', 
-                      minute: '2-digit' 
-                    })}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Team assembles before kick off
-                  </p>
-                </div>
-              )}
-              
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Location</h3>
-                <p className="text-gray-900 dark:text-white">
-                  📍 {match.location}
-                </p>
-              </div>
-              
-              {match.kit && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Kit</h3>
-                  <p className="text-gray-900 dark:text-white">
-                    👕 {getKitName(match.kit.primary)}
-                  </p>
-                  {match.kit.goalkeeper && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      🧤 GK: {getKitName(match.kit.goalkeeper)}
+
+            {/* Lock Status Indicator */}
+            {isLocked && (
+              <div className="card bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🔒</span>
+                  <div>
+                    <p className="text-amber-800 dark:text-amber-300 font-medium">
+                      This match is locked
                     </p>
-                  )}
+                    <p className="text-sm text-amber-700 dark:text-amber-400">
+                      Match data is locked and cannot be edited. Contact an administrator to unlock this match if changes are needed.
+                    </p>
+                  </div>
                 </div>
-              )}
-            </div>
-            
-            <p className="text-gray-600 dark:text-gray-400 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              Match report will be available after the game.
-            </p>
-          </div>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>

@@ -243,6 +243,7 @@ export interface Match {
     temperature: number;
   };
   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  isLocked?: boolean; // Whether the match is locked from editing
 }
 
 export interface MatchLineup {

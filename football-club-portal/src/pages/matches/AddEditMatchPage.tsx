@@ -97,6 +97,7 @@ export default function AddEditMatchPage() {
     existingMatch?.report?.performanceRatings || []
   );
   const [playerOfTheMatch, setPlayerOfTheMatch] = useState(existingMatch?.report?.playerOfTheMatch || '');
+  const [isLocked, setIsLocked] = useState(existingMatch?.isLocked || false);
 
   const [activeTab, setActiveTab] = useState<'details' | 'lineup' | 'events' | 'report'>('details');
 
@@ -184,7 +185,56 @@ export default function AddEditMatchPage() {
     return ratings.find(r => r.playerId === playerId)?.rating || 0;
   };
 
+  const handleCompleteMatch = () => {
+    // Validate that essential match data is filled
+    if (!homeScore || !awayScore) {
+      alert('Please enter the match score before completing');
+      return;
+    }
+    if (startingPlayers.length === 0) {
+      alert('Please add starting players before completing the match');
+      return;
+    }
+    
+    const confirmComplete = window.confirm(
+      'Are you sure you want to mark this match as completed? The match will be locked automatically.'
+    );
+    
+    if (confirmComplete) {
+      setIsLocked(true);
+      alert('Match marked as completed and locked successfully!');
+      // In a real app, this would update the backend
+      console.log('Match completed and locked');
+    }
+  };
+
+  const handleToggleLock = () => {
+    if (isLocked) {
+      const confirmUnlock = window.confirm(
+        'Are you sure you want to unlock this match? This will allow editing of all match details.'
+      );
+      if (confirmUnlock) {
+        setIsLocked(false);
+        alert('Match unlocked successfully! You can now make changes.');
+      }
+    } else {
+      const confirmLock = window.confirm(
+        'Are you sure you want to lock this match? This will prevent any further edits until unlocked.'
+      );
+      if (confirmLock) {
+        setIsLocked(true);
+        alert('Match locked successfully!');
+      }
+    }
+  };
+
   const handleSave = () => {
+    // Check if match is locked
+    if (isLocked) {
+      alert('This match is locked and cannot be edited. Please unlock it first.');
+      return;
+    }
+
     // Validate required fields
     if (!opposition || !kickOffTime || !location || !competition || !kit) {
       alert('Please fill in all required fields');
@@ -233,12 +283,30 @@ export default function AddEditMatchPage() {
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-            {isEditing ? 'Edit Match' : 'Add New Match'}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            {team.name} - {club.name}
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                {isEditing ? 'Edit Match' : 'Add New Match'}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400">
+                {team.name} - {club.name}
+              </p>
+            </div>
+            {isEditing && (
+              <div className="flex items-center gap-3">
+                {isLocked && (
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded-lg font-medium">
+                    🔒 Locked
+                  </span>
+                )}
+                {!isLocked && existingMatch?.status === 'completed' && (
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-lg font-medium">
+                    ✓ Completed
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Tabs */}
@@ -298,7 +366,8 @@ export default function AddEditMatchPage() {
                     type="text"
                     value={opposition}
                     onChange={(e) => setOpposition(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter opposition team name"
                   />
                 </div>
@@ -311,7 +380,8 @@ export default function AddEditMatchPage() {
                     type="datetime-local"
                     value={kickOffTime}
                     onChange={(e) => setKickOffTime(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -323,7 +393,8 @@ export default function AddEditMatchPage() {
                     type="datetime-local"
                     value={meetTime}
                     onChange={(e) => setMeetTime(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Optional: Team meeting time before kick off"
                   />
                 </div>
@@ -336,7 +407,8 @@ export default function AddEditMatchPage() {
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter match location"
                   />
                 </div>
@@ -351,6 +423,7 @@ export default function AddEditMatchPage() {
                         type="radio"
                         checked={isHome}
                         onChange={() => setIsHome(true)}
+                        disabled={isLocked}
                         className="mr-2"
                       />
                       <span className="text-gray-900 dark:text-white">Home</span>
@@ -360,6 +433,7 @@ export default function AddEditMatchPage() {
                         type="radio"
                         checked={!isHome}
                         onChange={() => setIsHome(false)}
+                        disabled={isLocked}
                         className="mr-2"
                       />
                       <span className="text-gray-900 dark:text-white">Away</span>
@@ -375,7 +449,8 @@ export default function AddEditMatchPage() {
                     type="text"
                     value={competition}
                     onChange={(e) => setCompetition(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="e.g., County League Division 1"
                   />
                 </div>
@@ -387,7 +462,8 @@ export default function AddEditMatchPage() {
                   <select
                     value={kit}
                     onChange={(e) => setKit(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {availableKits.length === 0 ? (
                       <>
@@ -429,7 +505,8 @@ export default function AddEditMatchPage() {
                   <select
                     value={goalkeeperKit}
                     onChange={(e) => setGoalkeeperKit(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <option value="">Select goalkeeper kit (optional)</option>
                     {availableKits.filter(k => k.type === 'goalkeeper').length > 0 ? (
@@ -465,7 +542,8 @@ export default function AddEditMatchPage() {
                   <select
                     value={weather}
                     onChange={(e) => setWeather(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <option value="">Select weather</option>
                     <option>Clear</option>
@@ -486,7 +564,8 @@ export default function AddEditMatchPage() {
                     type="number"
                     value={temperature}
                     onChange={(e) => setTemperature(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="e.g., 15"
                   />
                 </div>
@@ -502,7 +581,8 @@ export default function AddEditMatchPage() {
                     min="0"
                     value={homeScore}
                     onChange={(e) => setHomeScore(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="0"
                   />
                 </div>
@@ -516,7 +596,8 @@ export default function AddEditMatchPage() {
                     min="0"
                     value={awayScore}
                     onChange={(e) => setAwayScore(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="0"
                   />
                 </div>
@@ -534,7 +615,8 @@ export default function AddEditMatchPage() {
                 <select
                   value={formationId}
                   onChange={(e) => setFormationId(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={isLocked}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">Select formation</option>
                   {sampleFormations.map(f => (
@@ -570,7 +652,8 @@ export default function AddEditMatchPage() {
                         </div>
                         <button
                           onClick={() => handleRemoveStartingPlayer(player.playerId)}
-                          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
+                          disabled={isLocked}
+                          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Remove
                         </button>
@@ -579,7 +662,7 @@ export default function AddEditMatchPage() {
                   })}
                 </div>
 
-                {startingPlayers.length < 11 && (
+                {startingPlayers.length < 11 && !isLocked && (
                   <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Add Starting Player</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -636,7 +719,8 @@ export default function AddEditMatchPage() {
                         </div>
                         <button
                           onClick={() => handleRemoveSubstitute(playerId)}
-                          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
+                          disabled={isLocked}
+                          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Remove
                         </button>
@@ -645,7 +729,7 @@ export default function AddEditMatchPage() {
                   })}
                 </div>
 
-                {availablePlayers.length > 0 && (
+                {availablePlayers.length > 0 && !isLocked && (
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Add Substitute</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -735,7 +819,8 @@ export default function AddEditMatchPage() {
                         <div className="flex items-end">
                           <button
                             onClick={() => handleRemoveSubstitution(index)}
-                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                            disabled={isLocked}
+                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Remove
                           </button>
@@ -746,7 +831,8 @@ export default function AddEditMatchPage() {
                 </div>
                 <button
                   onClick={handleAddSubstitution}
-                  className="btn-secondary"
+                  disabled={isLocked}
+                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Substitution
                 </button>
@@ -822,7 +908,8 @@ export default function AddEditMatchPage() {
                         <div className="flex items-end">
                           <button
                             onClick={() => handleRemoveGoal(index)}
-                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                            disabled={isLocked}
+                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Remove
                           </button>
@@ -833,7 +920,8 @@ export default function AddEditMatchPage() {
                 </div>
                 <button
                   onClick={handleAddGoal}
-                  className="btn-secondary"
+                  disabled={isLocked}
+                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Goal
                 </button>
@@ -914,7 +1002,8 @@ export default function AddEditMatchPage() {
                         <div className="flex items-end">
                           <button
                             onClick={() => handleRemoveCard(index)}
-                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                            disabled={isLocked}
+                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Remove
                           </button>
@@ -925,7 +1014,8 @@ export default function AddEditMatchPage() {
                 </div>
                 <button
                   onClick={handleAddCard}
-                  className="btn-secondary"
+                  disabled={isLocked}
+                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Card
                 </button>
@@ -1007,7 +1097,8 @@ export default function AddEditMatchPage() {
                         <div className="flex items-end">
                           <button
                             onClick={() => handleRemoveInjury(index)}
-                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                            disabled={isLocked}
+                            className="w-full px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Remove
                           </button>
@@ -1018,7 +1109,8 @@ export default function AddEditMatchPage() {
                 </div>
                 <button
                   onClick={handleAddInjury}
-                  className="btn-secondary"
+                  disabled={isLocked}
+                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Injury
                 </button>
@@ -1037,8 +1129,9 @@ export default function AddEditMatchPage() {
                 <textarea
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
+                  disabled={isLocked}
                   rows={5}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="Write a summary of the match..."
                 />
               </div>
@@ -1072,7 +1165,8 @@ export default function AddEditMatchPage() {
                               step="0.1"
                               value={rating || ''}
                               onChange={(e) => handleSetRating(playerId, parseFloat(e.target.value) || 0)}
-                              className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-center"
+                              disabled={isLocked}
+                              className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-center disabled:opacity-50 disabled:cursor-not-allowed"
                               placeholder="0.0"
                             />
                             <div className="w-32 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
@@ -1099,7 +1193,8 @@ export default function AddEditMatchPage() {
                 <select
                   value={playerOfTheMatch}
                   onChange={(e) => setPlayerOfTheMatch(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  disabled={isLocked}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">Select player of the match</option>
                   {allPlayersInMatch.map(pId => (
@@ -1112,20 +1207,58 @@ export default function AddEditMatchPage() {
             </div>
           )}
 
+        {isLocked && (
+            <div className="mt-8 pt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+              <p className="text-amber-800 dark:text-amber-300 font-medium">
+                🔒 This match is locked. Unlock it to make changes.
+              </p>
+            </div>
+          )}
+
           {/* Action Buttons */}
-          <div className="mt-8 flex gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <button
-              onClick={handleSave}
-              className="btn-success flex-1"
-            >
-              {isEditing ? 'Save Changes' : 'Create Match'}
-            </button>
-            <Link
-              to={Routes.matches(clubId!, ageGroupId!, teamId!)}
-              className="btn-secondary flex-1 text-center"
-            >
-              Cancel
-            </Link>
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Primary actions */}
+              <div className="flex-1 flex gap-4">
+                <button
+                  onClick={handleSave}
+                  disabled={isLocked}
+                  className="btn-success flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isEditing ? 'Save Changes' : 'Create Match'}
+                </button>
+                <Link
+                  to={Routes.matches(clubId!, ageGroupId!, teamId!)}
+                  className="btn-secondary flex-1 text-center"
+                >
+                  Cancel
+                </Link>
+              </div>
+              
+              {/* Match completion and lock controls */}
+              {isEditing && (
+                <div className="flex gap-4">
+                  {!isLocked && existingMatch?.status !== 'completed' && (
+                    <button
+                      onClick={handleCompleteMatch}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium whitespace-nowrap"
+                    >
+                      ✓ Complete Match
+                    </button>
+                  )}
+                  <button
+                    onClick={handleToggleLock}
+                    className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap ${
+                      isLocked
+                        ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                        : 'bg-gray-600 hover:bg-gray-700 text-white'
+                    }`}
+                  >
+                    {isLocked ? '🔓 Unlock Match' : '🔒 Lock Match'}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
