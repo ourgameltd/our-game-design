@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
 import { sampleClubs } from '@data/clubs';
+import PageTitle from '@components/common/PageTitle';
 import { Routes } from '@utils/routes';
 
 export default function ClubsListPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Clubs You Have Access To</h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Select a club to view details and manage teams</p>
-        </div>
+        <PageTitle
+          title="Clubs You Have Access To"
+          subtitle="Select a club to view details and manage teams"
+        />
 
         {/* Clubs Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

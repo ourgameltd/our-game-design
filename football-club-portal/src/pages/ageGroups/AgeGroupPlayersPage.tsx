@@ -3,6 +3,7 @@ import { getAgeGroupById } from '@data/ageGroups';
 import { getPlayersByAgeGroupId } from '@data/players';
 import PlayerCard from '@components/player/PlayerCard';
 import PageNavigation from '@components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 import { getAgeGroupNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
@@ -33,16 +34,11 @@ export default function AgeGroupPlayersPage() {
       <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {ageGroup.name} - All Players ({ageGroupPlayers.length})
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              All players registered to teams in the {ageGroup.name} age group
-            </p>
-          </div>
-        </div>
+        <PageTitle
+          title={`${ageGroup.name} - All Players`}
+          badge={ageGroupPlayers.length}
+          subtitle={`All players registered to teams in the ${ageGroup.name} age group`}
+        />
 
         {/* Info Banner */}
         <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4 mb-6">

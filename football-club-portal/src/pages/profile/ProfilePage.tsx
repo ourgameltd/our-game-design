@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Shield, Save, Moon, Sun, Monitor } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import UpcomingMatchesCard from '@components/matches/UpcomingMatchesCard';
+import PageTitle from '@components/common/PageTitle';
 import { getUpcomingMatches } from '@data/matches';
 import { getTeamById } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
@@ -41,11 +42,10 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">My Profile</h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Manage your account settings and preferences</p>
-        </div>
+        <PageTitle
+          title="My Profile"
+          subtitle="Manage your account settings and preferences"
+        />
 
         {/* Profile Card */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 mb-6 transition-colors">

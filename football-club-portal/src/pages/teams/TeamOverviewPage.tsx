@@ -9,6 +9,7 @@ import PreviousResultsCard from '@components/matches/PreviousResultsCard';
 import TopPerformersCard from '@components/players/TopPerformersCard';
 import NeedsSupportCard from '@components/players/NeedsSupportCard';
 import PageNavigation from '@components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 import { getTeamNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
@@ -49,26 +50,21 @@ export default function TeamOverviewPage() {
       <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        {/* Header with Settings Button */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{team.name}</h2>
-              {team.isArchived && (
-                <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
-                  🗄️ Archived
-                </span>
-              )}
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">Team Overview</p>
-          </div>
-          <button
-            onClick={() => navigate(Routes.teamSettings(clubId!, ageGroupId!, teamId!))}
-            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2"
-          >
-            <span>⚙️</span>
-            Settings
-          </button>
+        <div className="flex items-center gap-2 mb-6">
+          <PageTitle
+            title={team.name}
+            subtitle="Team Overview"
+            action={{
+              label: '⚙️ Settings',
+              onClick: () => navigate(Routes.teamSettings(clubId!, ageGroupId!, teamId!)),
+              variant: 'primary'
+            }}
+          />
+          {team.isArchived && (
+            <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 self-start">
+              🗄️ Archived
+            </span>
+          )}
         </div>
 
         {/* Archived Notice */}

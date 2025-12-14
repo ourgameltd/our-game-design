@@ -6,6 +6,7 @@ import { Kit } from '@/types';
 import KitBuilder from '@/components/kit/KitBuilder';
 import KitCard from '@/components/kit/KitCard';
 import PageNavigation from '@/components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 
 export default function TeamKitsPage() {
@@ -79,34 +80,23 @@ export default function TeamKitsPage() {
       <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {team.name} - Kit Management
-                </h2>
-                {team.isArchived && (
-                  <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
-                    🗄️ Archived
-                  </span>
-                )}
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
-                Manage team-specific kits
-              </p>
-            </div>
-            {!showBuilder && !team.isArchived && (
-              <button
-                onClick={() => setShowBuilder(true)}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
-              >
-                <span className="text-xl">+</span>
-                Create Kit
-              </button>
-            )}
+        <div className="flex items-center gap-2 mb-6">
+          <div className="flex-grow">
+            <PageTitle
+              title={`${team.name} - Kit Management`}
+              subtitle="Manage team-specific kits"
+              action={!showBuilder && !team.isArchived ? {
+                label: '+ Create Kit',
+                onClick: () => setShowBuilder(true),
+                variant: 'success'
+              } : undefined}
+            />
           </div>
+          {team.isArchived && (
+            <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 self-start">
+              🗄️ Archived
+            </span>
+          )}
         </div>
 
         {/* Archived Notice */}

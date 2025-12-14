@@ -1,4 +1,5 @@
 import { sampleTrainingSessions, sampleDrills } from '@data/training';
+import PageTitle from '@components/common/PageTitle';
 
 export default function TrainingLibraryPage() {
   const upcomingSessions = sampleTrainingSessions.filter(s => new Date(s.date) > new Date());
@@ -9,14 +10,15 @@ export default function TrainingLibraryPage() {
       <main className="container mx-auto px-4 py-8">
         {/* Upcoming Sessions */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Upcoming Sessions ({upcomingSessions.length})
-            </h2>
-            <button className="btn-success btn-md">
-              + Create Session
-            </button>
-          </div>
+          <PageTitle
+            title="Upcoming Sessions"
+            badge={upcomingSessions.length}
+            action={{
+              label: '+ Create Session',
+              onClick: () => {/* TODO: Add session creation */},
+              variant: 'success'
+            }}
+          />
 
           <div className="grid md:grid-cols-2 gap-6">
             {upcomingSessions.map((session) => (

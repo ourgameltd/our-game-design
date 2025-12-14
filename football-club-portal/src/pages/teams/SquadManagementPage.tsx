@@ -4,6 +4,7 @@ import { getTeamById } from '@data/teams';
 import { getPlayersByTeamId, getPlayersByClubId } from '@data/players';
 import PlayerCard from '@components/player/PlayerCard';
 import PageNavigation from '@components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 import { getTeamNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
@@ -41,25 +42,23 @@ export default function SquadManagementPage() {
       <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Squad List ({teamPlayers.length} Players)</h2>
-              {team.isArchived && (
-                <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
-                  🗄️ Archived
-                </span>
-              )}
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">Select players from the club roster to add to this team</p>
+        <div className="flex items-center gap-2 mb-6">
+          <div className="flex-grow">
+            <PageTitle
+              title="Squad List"
+              badge={teamPlayers.length}
+              subtitle="Select players from the club roster to add to this team"
+              action={!team.isArchived ? {
+                label: '+ Add Player from Club',
+                onClick: () => setShowAddModal(true),
+                variant: 'success'
+              } : undefined}
+            />
           </div>
-          {!team.isArchived && (
-            <button 
-              onClick={() => setShowAddModal(true)}
-              className="btn-success btn-md"
-            >
-              + Add Player from Club
-            </button>
+          {team.isArchived && (
+            <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 self-start">
+              🗄️ Archived
+            </span>
           )}
         </div>
 

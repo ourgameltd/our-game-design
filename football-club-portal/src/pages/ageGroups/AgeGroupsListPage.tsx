@@ -4,6 +4,7 @@ import { getAgeGroupsByClubId } from '../../data/ageGroups';
 import { getAgeGroupStatistics } from '../../data/statistics';
 import { sampleClubs } from '../../data/clubs';
 import PageNavigation from '../../components/navigation/PageNavigation';
+import PageTitle from '../../components/common/PageTitle';
 import { getClubNavigationTabs } from '../../utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
@@ -29,20 +30,15 @@ const AgeGroupsListPage: React.FC = () => {
       <PageNavigation tabs={getClubNavigationTabs(clubId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Age Groups</h2>
-            <p className="text-gray-600 dark:text-gray-400">Select an age group to view teams and players</p>
-          </div>
-          <Link
-            to={Routes.ageGroupNew(clubId!)}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
-          >
-            <span>+</span>
-            Add Age Group
-          </Link>
-        </div>
+        <PageTitle
+          title="Age Groups"
+          subtitle="Select an age group to view teams and players"
+          action={{
+            label: '+ Add Age Group',
+            onClick: () => window.location.href = Routes.ageGroupNew(clubId!),
+            variant: 'success'
+          }}
+        />
 
         {/* Age Groups Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

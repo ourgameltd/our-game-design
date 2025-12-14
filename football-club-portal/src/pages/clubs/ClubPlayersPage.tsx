@@ -7,6 +7,7 @@ import { getAgeGroupById } from '@data/ageGroups';
 import { Routes } from '@utils/routes';
 import PlayerCard from '@components/player/PlayerCard';
 import PageNavigation from '@components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 import { getClubNavigationTabs } from '@utils/navigationHelpers';
 
 export default function ClubPlayersPage() {
@@ -120,19 +121,18 @@ export default function ClubPlayersPage() {
       <PageNavigation tabs={getClubNavigationTabs(clubId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">All Club Players ({allPlayers.length})</h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
-              {filteredPlayers.length !== allPlayers.length 
-                ? `Showing ${filteredPlayers.length} of ${allPlayers.length} players`
-                : 'View and manage all players registered to the club'}
-            </p>
-          </div>
-          <button className="btn-success btn-md">
-            + Add New Player
-          </button>
-        </div>
+        <PageTitle
+          title="All Club Players"
+          badge={allPlayers.length}
+          subtitle={filteredPlayers.length !== allPlayers.length 
+            ? `Showing ${filteredPlayers.length} of ${allPlayers.length} players`
+            : 'View and manage all players registered to the club'}
+          action={{
+            label: '+ Add New Player',
+            onClick: () => {/* TODO: Add player navigation */},
+            variant: 'success'
+          }}
+        />
 
         {/* Search and Filter */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">

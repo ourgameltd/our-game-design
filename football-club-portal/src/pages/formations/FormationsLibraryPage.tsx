@@ -1,18 +1,20 @@
 import { sampleFormations } from '@data/formations';
+import PageTitle from '@components/common/PageTitle';
 
 export default function FormationsLibraryPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">All Formations ({sampleFormations.length})</h2>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">Browse and assign formations to your teams</p>
-          </div>
-          <button className="btn-success btn-md">
-            + Create Formation
-          </button>
-        </div>
+        <PageTitle
+          title="All Formations"
+          badge={sampleFormations.length}
+          subtitle="Browse and assign formations to your teams"
+          action={{
+            label: '+ Create Formation',
+            onClick: () => {/* TODO: Add formation creation */},
+            variant: 'success'
+          }}
+        />
 
         <div className="grid md:grid-cols-2 gap-6">
           {sampleFormations.map((formation) => (

@@ -11,6 +11,7 @@ import TopPerformersCard from '../../components/players/TopPerformersCard';
 import NeedsSupportCard from '../../components/players/NeedsSupportCard';
 import TeamCard from '../../components/team/TeamCard';
 import PageNavigation from '../../components/navigation/PageNavigation';
+import PageTitle from '../../components/common/PageTitle';
 import { getAgeGroupNavigationTabs } from '../../utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
@@ -48,27 +49,23 @@ const AgeGroupOverviewPage: React.FC = () => {
       <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        {/* Header with Settings Button */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{ageGroup.name}</h2>
-              {ageGroup.isArchived && (
-                <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
-                  🗄️ Archived
-                </span>
-              )}
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">{ageGroup.description}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Season: {ageGroup.season}</p>
+        <div className="flex items-center gap-2 mb-6">
+          <div className="flex-grow">
+            <PageTitle
+              title={ageGroup.name}
+              subtitle={`${ageGroup.description} • Season: ${ageGroup.season}`}
+              action={{
+                label: '⚙️ Settings',
+                onClick: () => navigate(Routes.ageGroupSettings(clubId!, ageGroupId!)),
+                variant: 'primary'
+              }}
+            />
           </div>
-          <button
-            onClick={() => navigate(Routes.ageGroupSettings(clubId!, ageGroupId!))}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-          >
-            <span>⚙️</span>
-            Settings
-          </button>
+          {ageGroup.isArchived && (
+            <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 self-start">
+              🗄️ Archived
+            </span>
+          )}
         </div>
 
         {/* Archived Notice */}

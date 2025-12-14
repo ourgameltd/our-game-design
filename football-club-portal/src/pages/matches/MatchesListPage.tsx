@@ -6,6 +6,7 @@ import { Match } from '@/types';
 import { Routes } from '@utils/routes';
 import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 import PageNavigation from '@/components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 
 export default function MatchesListPage() {
   const { clubId, ageGroupId, teamId } = useParams();
@@ -155,30 +156,22 @@ export default function MatchesListPage() {
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Matches
-                </h2>
-                {team.isArchived && (
-                  <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
-                    🗄️ Archived
-                  </span>
-                )}
-              </div>
-              <p className="text-gray-600 dark:text-gray-400">
-                {team.name} - {club.name}
-              </p>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex-grow">
+              <PageTitle
+                title="Matches"
+                subtitle={`${team.name} - ${club.name}`}
+                action={!team.isArchived ? {
+                  label: '+ Add Match',
+                  onClick: () => window.location.href = Routes.matchNew(clubId!, ageGroupId!, teamId!),
+                  variant: 'success'
+                } : undefined}
+              />
             </div>
-            {!team.isArchived && (
-              <Link
-                to={Routes.matchNew(clubId!, ageGroupId!, teamId!)}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
-              >
-                <span className="text-xl mr-2">+</span>
-                Add Match
-              </Link>
+            {team.isArchived && (
+              <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 self-start">
+                🗄️ Archived
+              </span>
             )}
           </div>
 

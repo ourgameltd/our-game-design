@@ -5,6 +5,7 @@ import { Kit } from '@/types';
 import KitBuilder from '@/components/kit/KitBuilder';
 import KitCard from '@/components/kit/KitCard';
 import PageNavigation from '@/components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 import { getClubNavigationTabs } from '@/utils/navigationHelpers';
 
 export default function ClubKitsPage() {
@@ -67,28 +68,15 @@ export default function ClubKitsPage() {
       <PageNavigation tabs={getClubNavigationTabs(clubId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {club.name} - Kit Management
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
-                Manage club kits that can be used by all teams
-              </p>
-            </div>
-            {!showBuilder && (
-              <button
-                onClick={() => setShowBuilder(true)}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
-              >
-                <span className="text-xl">+</span>
-                Create Kit
-              </button>
-            )}
-          </div>
-        </div>
+        <PageTitle
+          title={`${club.name} - Kit Management`}
+          subtitle="Manage club kits that can be used by all teams"
+          action={!showBuilder ? {
+            label: '+ Create Kit',
+            onClick: () => setShowBuilder(true),
+            variant: 'success'
+          } : undefined}
+        />
 
         {/* Kit Builder */}
         {showBuilder && (

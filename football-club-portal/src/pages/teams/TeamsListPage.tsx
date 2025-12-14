@@ -4,6 +4,7 @@ import { getTeamsByAgeGroupId } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
 import TeamCard from '@components/team/TeamCard';
 import PageNavigation from '@components/navigation/PageNavigation';
+import PageTitle from '@components/common/PageTitle';
 import { getAgeGroupNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
@@ -27,14 +28,10 @@ export default function TeamsListPage() {
       <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
       
       <main className="container mx-auto px-4 py-8">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-          {ageGroup.name} Teams
-        </h2>
-        {ageGroup.description && (
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
-            {ageGroup.description}
-          </p>
-        )}
+        <PageTitle
+          title={`${ageGroup.name} Teams`}
+          subtitle={ageGroup.description}
+        />
 
         {teams.length === 0 ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
