@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClubById } from '@/data/clubs';
 import PageNavigation from '@/components/navigation/PageNavigation';
+import PageTitle from '@/components/common/PageTitle';
 import { getClubNavigationTabs } from '@/utils/navigationHelpers';
 import { Routes } from '@/utils/routes';
 
@@ -76,14 +77,10 @@ export default function ClubSettingsPage() {
 
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Club Settings
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Manage club information and branding
-          </p>
-        </div>
+        <PageTitle
+          title="Club Settings"
+          subtitle="Manage club information and branding"
+        />
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}

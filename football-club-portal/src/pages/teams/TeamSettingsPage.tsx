@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTeamById } from '@/data/teams';
 import PageNavigation from '@/components/navigation/PageNavigation';
+import PageTitle from '@/components/common/PageTitle';
 import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 import { Routes } from '@/utils/routes';
 
@@ -74,28 +75,18 @@ export default function TeamSettingsPage() {
 
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Team Settings
-            </h2>
-            {team.isArchived && (
-              <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
-                🗄️ Archived
-              </span>
-            )}
+        <PageTitle
+          title="Team Settings"
+          subtitle="Manage team details and configuration"
+          badge={team.isArchived ? "🗄️ Archived" : undefined}
+        />
+        {team.isArchived && (
+          <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-sm text-orange-800 dark:text-orange-300">
+              ⚠️ This team is archived. You cannot modify its settings while it is archived. Unarchive it to make changes.
+            </p>
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Manage team details and configuration
-          </p>
-          {team.isArchived && (
-            <div className="mt-3 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-              <p className="text-sm text-orange-800 dark:text-orange-300">
-                ⚠️ This team is archived. You cannot modify its settings while it is archived. Unarchive it to make changes.
-              </p>
-            </div>
-          )}
-        </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getAgeGroupById } from '../../data/ageGroups';
 import { getTeamById } from '../../data/teams';
 import { sampleClubs } from '../../data/clubs';
+import PageTitle from '@/components/common/PageTitle';
 import { Routes } from '@utils/routes';
 
 type TeamLevel = 'youth' | 'amateur' | 'reserve' | 'senior';
@@ -142,14 +143,10 @@ const AddEditTeamPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            {isEditing ? 'Edit Team' : 'Add New Team'}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            {club.name} - {ageGroup.name}
-          </p>
-        </div>
+        <PageTitle
+          title={isEditing ? 'Edit Team' : 'Add New Team'}
+          subtitle={`${club.name} - ${ageGroup.name}`}
+        />
         
         {/* Form */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-w-2xl">

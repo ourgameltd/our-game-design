@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPlayerById } from '@/data/players';
 import PageNavigation from '@/components/navigation/PageNavigation';
+import PageTitle from '@/components/common/PageTitle';
 import { getPlayerNavigationTabs } from '@/utils/navigationHelpers';
 import { Routes } from '@/utils/routes';
 import { PlayerPosition } from '@/types';
@@ -173,28 +174,18 @@ export default function PlayerSettingsPage() {
 
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Player Settings
-            </h2>
-            {player.isArchived && (
-              <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
-                🗄️ Archived
-              </span>
-            )}
+        <PageTitle
+          title="Player Settings"
+          subtitle={`Manage ${player.firstName} ${player.lastName}'s profile and information`}
+          badge={player.isArchived ? "🗄️ Archived" : undefined}
+        />
+        {player.isArchived && (
+          <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-sm text-orange-800 dark:text-orange-300">
+              ⚠️ This player is archived. You cannot modify their settings while they are archived. Unarchive them to make changes.
+            </p>
           </div>
-          <p className="text-gray-600 dark:text-gray-400">
-            Manage {player.firstName} {player.lastName}'s profile and information
-          </p>
-          {player.isArchived && (
-            <div className="mt-3 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-              <p className="text-sm text-orange-800 dark:text-orange-300">
-                ⚠️ This player is archived. You cannot modify their settings while they are archived. Unarchive them to make changes.
-              </p>
-            </div>
-          )}
-        </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Personal Information */}
