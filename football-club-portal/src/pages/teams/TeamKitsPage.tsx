@@ -128,7 +128,7 @@ export default function TeamKitsPage() {
                   </div>
                 </div>
               ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {teamKits.map((kit) => (
                     <KitCard
                       key={kit.id}
@@ -151,7 +151,7 @@ export default function TeamKitsPage() {
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                   These kits are defined at the club level and available to all teams.
                 </p>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {clubKits.map((kit) => (
                     <KitCard
                       key={kit.id}

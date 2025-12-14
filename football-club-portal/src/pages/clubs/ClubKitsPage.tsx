@@ -122,7 +122,7 @@ export default function ClubKitsPage() {
         {/* Kits Grid */}
         {!showBuilder && kits.length > 0 && (
           <div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {kits.map((kit) => (
                 <KitCard
                   key={kit.id}
