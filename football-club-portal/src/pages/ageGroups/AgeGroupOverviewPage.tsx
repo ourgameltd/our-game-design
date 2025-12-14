@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getAgeGroupById } from '../../data/ageGroups';
 import { getTeamsByAgeGroupId, getTeamById } from '../../data/teams';
 import { getAgeGroupStatistics } from '../../data/statistics';
@@ -15,6 +15,7 @@ import { Routes } from '@utils/routes';
 
 const AgeGroupOverviewPage: React.FC = () => {
   const { clubId, ageGroupId } = useParams<{ clubId: string; ageGroupId: string }>();
+  const navigate = useNavigate();
   
   const ageGroup = getAgeGroupById(ageGroupId || '');
   const teams = getTeamsByAgeGroupId(ageGroupId || '');
@@ -46,11 +47,20 @@ const AgeGroupOverviewPage: React.FC = () => {
       <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
 
       <main className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{ageGroup.name}</h2>
-          <p className="text-gray-600 dark:text-gray-400">{ageGroup.description}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Season: {ageGroup.season}</p>
+        {/* Header with Settings Button */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{ageGroup.name}</h2>
+            <p className="text-gray-600 dark:text-gray-400">{ageGroup.description}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Season: {ageGroup.season}</p>
+          </div>
+          <button
+            onClick={() => navigate(Routes.ageGroupSettings(clubId!, ageGroupId!))}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          >
+            <span>⚙️</span>
+            Settings
+          </button>
         </div>
 
         {/* Statistics Cards */}

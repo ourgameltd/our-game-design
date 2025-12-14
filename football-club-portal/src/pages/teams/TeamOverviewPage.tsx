@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getTeamById } from '@data/teams';
 import { getPlayersByTeamId } from '@data/players';
 import { getTrainingSessionsByTeamId } from '@data/training';
@@ -14,6 +14,7 @@ import { Routes } from '@utils/routes';
 
 export default function TeamOverviewPage() {
   const { clubId, ageGroupId, teamId } = useParams();
+  const navigate = useNavigate();
   const team = getTeamById(teamId!);
   const players = getPlayersByTeamId(teamId!);
   const stats = getTeamStatistics(teamId!);
@@ -48,6 +49,21 @@ export default function TeamOverviewPage() {
       <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
 
       <main className="container mx-auto px-4 py-8">
+        {/* Header with Settings Button */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{team.name}</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">Team Overview</p>
+          </div>
+          <button
+            onClick={() => navigate(Routes.teamSettings(clubId!, ageGroupId!, teamId!))}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          >
+            <span>⚙️</span>
+            Settings
+          </button>
+        </div>
+
         {/* Stats Grid */}
         <StatsGrid stats={stats} />
 
