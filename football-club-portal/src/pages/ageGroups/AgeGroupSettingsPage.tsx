@@ -56,6 +56,17 @@ export default function AgeGroupSettingsPage() {
     }
   };
 
+  const handleArchive = () => {
+    const isCurrentlyArchived = ageGroup.isArchived;
+    const action = isCurrentlyArchived ? 'unarchive' : 'archive';
+    const actionPast = isCurrentlyArchived ? 'unarchived' : 'archived';
+    
+    if (confirm(`Are you sure you want to ${action} this age group? ${isCurrentlyArchived ? 'This will make it active again.' : 'This will lock the age group and prevent modifications.'}`)) {
+      alert(`Age group ${actionPast} successfully! (Demo - not saved to backend)`);
+      navigate(Routes.ageGroup(clubId!, ageGroupId!));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
@@ -63,12 +74,26 @@ export default function AgeGroupSettingsPage() {
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Age Group Settings
-          </h2>
+          <div className="flex items-center gap-3 mb-2">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Age Group Settings
+            </h2>
+            {ageGroup.isArchived && (
+              <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
+                🗄️ Archived
+              </span>
+            )}
+          </div>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
             Manage age group details and configuration
           </p>
+          {ageGroup.isArchived && (
+            <div className="mt-3 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+              <p className="text-sm text-orange-800 dark:text-orange-300">
+                ⚠️ This age group is archived. You cannot modify its settings while it is archived. Unarchive it to make changes.
+              </p>
+            </div>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -89,8 +114,9 @@ export default function AgeGroupSettingsPage() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
+                  disabled={ageGroup.isArchived}
                   placeholder="e.g., 2014s, Reserves, Senior"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -104,8 +130,9 @@ export default function AgeGroupSettingsPage() {
                   value={formData.code}
                   onChange={handleInputChange}
                   required
+                  disabled={ageGroup.isArchived}
                   placeholder="e.g., 2014, reserve, senior"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -118,7 +145,8 @@ export default function AgeGroupSettingsPage() {
                   value={formData.level}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  disabled={ageGroup.isArchived}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="youth">Youth</option>
                   <option value="amateur">Amateur</option>
@@ -137,8 +165,9 @@ export default function AgeGroupSettingsPage() {
                   value={formData.season}
                   onChange={handleInputChange}
                   required
+                  disabled={ageGroup.isArchived}
                   placeholder="e.g., 2024/25"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -152,8 +181,9 @@ export default function AgeGroupSettingsPage() {
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={3}
+                disabled={ageGroup.isArchived}
                 placeholder="Brief description of this age group..."
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -176,13 +206,26 @@ export default function AgeGroupSettingsPage() {
 
           {/* Action Buttons */}
           <div className="flex justify-between">
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Delete Age Group
-            </button>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={handleArchive}
+                className={`px-6 py-2 ${
+                  ageGroup.isArchived
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-orange-600 hover:bg-orange-700'
+                } text-white rounded-lg transition-colors`}
+              >
+                {ageGroup.isArchived ? '📂 Unarchive Age Group' : '🗄️ Archive Age Group'}
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Delete Age Group
+              </button>
+            </div>
             
             <div className="flex gap-4">
               <button
@@ -194,7 +237,8 @@ export default function AgeGroupSettingsPage() {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                disabled={ageGroup.isArchived}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
               >
                 Save Changes
               </button>

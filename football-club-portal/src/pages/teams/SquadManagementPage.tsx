@@ -43,16 +43,34 @@ export default function SquadManagementPage() {
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Squad List ({teamPlayers.length} Players)</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Squad List ({teamPlayers.length} Players)</h2>
+              {team.isArchived && (
+                <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
+                  🗄️ Archived
+                </span>
+              )}
+            </div>
             <p className="text-gray-600 dark:text-gray-400 mt-1">Select players from the club roster to add to this team</p>
           </div>
-          <button 
-            onClick={() => setShowAddModal(true)}
-            className="btn-primary btn-md"
-          >
-            + Add Player from Club
-          </button>
+          {!team.isArchived && (
+            <button 
+              onClick={() => setShowAddModal(true)}
+              className="btn-primary btn-md"
+            >
+              + Add Player from Club
+            </button>
+          )}
         </div>
+
+        {/* Archived Notice */}
+        {team.isArchived && (
+          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-sm text-orange-800 dark:text-orange-300">
+              ⚠️ This team is archived. Players cannot be added or removed while the team is archived.
+            </p>
+          </div>
+        )}
 
         {/* Info Banner */}
         <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4 mb-6">
@@ -85,12 +103,14 @@ export default function SquadManagementPage() {
                   >
                     <PlayerCard player={player} />
                   </Link>
-                  <button
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
-                    title="Remove from team"
-                  >
-                    ✕
-                  </button>
+                  {!team.isArchived && (
+                    <button
+                      className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
+                      title="Remove from team"
+                    >
+                      ✕
+                    </button>
+                  )}
                   {player.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
                       {player.teamIds.length} teams
@@ -116,12 +136,14 @@ export default function SquadManagementPage() {
                   >
                     <PlayerCard player={player} />
                   </Link>
-                  <button
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
-                    title="Remove from team"
-                  >
-                    ✕
-                  </button>
+                  {!team.isArchived && (
+                    <button
+                      className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
+                      title="Remove from team"
+                    >
+                      ✕
+                    </button>
+                  )}
                   {player.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
                       {player.teamIds.length} teams
@@ -147,12 +169,14 @@ export default function SquadManagementPage() {
                   >
                     <PlayerCard player={player} />
                   </Link>
-                  <button
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
-                    title="Remove from team"
-                  >
-                    ✕
-                  </button>
+                  {!team.isArchived && (
+                    <button
+                      className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
+                      title="Remove from team"
+                    >
+                      ✕
+                    </button>
+                  )}
                   {player.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
                       {player.teamIds.length} teams
@@ -178,12 +202,14 @@ export default function SquadManagementPage() {
                   >
                     <PlayerCard player={player} />
                   </Link>
-                  <button
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
-                    title="Remove from team"
-                  >
-                    ✕
-                  </button>
+                  {!team.isArchived && (
+                    <button
+                      className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
+                      title="Remove from team"
+                    >
+                      ✕
+                    </button>
+                  )}
                   {player.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
                       {player.teamIds.length} teams

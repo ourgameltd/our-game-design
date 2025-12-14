@@ -54,6 +54,14 @@ export class Routes {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/settings`;
   }
 
+  static ageGroupNew(clubId: string): string {
+    return `/clubs/${clubId}/age-groups/new`;
+  }
+
+  static ageGroupEdit(clubId: string, ageGroupId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/edit`;
+  }
+
   // Teams
   static teams(clubId: string, ageGroupId: string): string {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/teams`;
@@ -73,6 +81,14 @@ export class Routes {
 
   static teamSettings(clubId: string, ageGroupId: string, teamId: string): string {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/settings`;
+  }
+
+  static teamNew(clubId: string, ageGroupId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/new`;
+  }
+
+  static teamEdit(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/edit`;
   }
 
   // Players

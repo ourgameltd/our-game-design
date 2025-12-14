@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getAgeGroupById } from '../../data/ageGroups';
 import { getTeamsByAgeGroupId, getTeamById } from '../../data/teams';
 import { getAgeGroupStatistics } from '../../data/statistics';
@@ -9,6 +9,7 @@ import UpcomingMatchesCard from '../../components/matches/UpcomingMatchesCard';
 import PreviousResultsCard from '../../components/matches/PreviousResultsCard';
 import TopPerformersCard from '../../components/players/TopPerformersCard';
 import NeedsSupportCard from '../../components/players/NeedsSupportCard';
+import TeamCard from '../../components/team/TeamCard';
 import PageNavigation from '../../components/navigation/PageNavigation';
 import { getAgeGroupNavigationTabs } from '../../utils/navigationHelpers';
 import { Routes } from '@utils/routes';
@@ -50,7 +51,14 @@ const AgeGroupOverviewPage: React.FC = () => {
         {/* Header with Settings Button */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{ageGroup.name}</h2>
+            <div className="flex items-center gap-2 mb-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{ageGroup.name}</h2>
+              {ageGroup.isArchived && (
+                <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
+                  🗄️ Archived
+                </span>
+              )}
+            </div>
             <p className="text-gray-600 dark:text-gray-400">{ageGroup.description}</p>
             <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Season: {ageGroup.season}</p>
           </div>
@@ -63,8 +71,57 @@ const AgeGroupOverviewPage: React.FC = () => {
           </button>
         </div>
 
+        {/* Archived Notice */}
+        {ageGroup.isArchived && (
+          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-sm text-orange-800 dark:text-orange-300">
+              ⚠️ This age group is archived. No new teams can be added and modifications are restricted. Go to Settings to unarchive.
+            </p>
+          </div>
+        )}
+
         {/* Statistics Cards */}
         <StatsGrid stats={stats} />
+
+        {/* Teams Section */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Teams</h3>
+            {!ageGroup.isArchived && (
+              <Link
+                to={Routes.teamNew(clubId!, ageGroupId!)}
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2"
+              >
+                <span>+</span>
+                Add Team
+              </Link>
+            )}
+          </div>
+          
+          {teams.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {teams.map(team => (
+                <TeamCard
+                  key={team.id}
+                  team={team}
+                  onClick={team.isArchived ? undefined : () => navigate(Routes.team(clubId!, ageGroupId!, team.id))}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">No teams yet in this age group</p>
+              {!ageGroup.isArchived && (
+                <Link
+                  to={Routes.teamNew(clubId!, ageGroupId!)}
+                  className="inline-flex px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+                >
+                  Create First Team
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-8">
         <UpcomingMatchesCard 

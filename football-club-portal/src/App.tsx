@@ -15,11 +15,13 @@ import AgeGroupsListPage from '@pages/ageGroups/AgeGroupsListPage';
 import AgeGroupOverviewPage from '@pages/ageGroups/AgeGroupOverviewPage';
 import AgeGroupPlayersPage from '@pages/ageGroups/AgeGroupPlayersPage';
 import AgeGroupSettingsPage from '@pages/ageGroups/AgeGroupSettingsPage';
+import AddEditAgeGroupPage from '@pages/ageGroups/AddEditAgeGroupPage';
 import TeamsListPage from '@pages/teams/TeamsListPage';
 import TeamOverviewPage from '@pages/teams/TeamOverviewPage';
 import SquadManagementPage from '@pages/teams/SquadManagementPage';
 import TeamKitsPage from '@pages/teams/TeamKitsPage';
 import TeamSettingsPage from '@pages/teams/TeamSettingsPage';
+import AddEditTeamPage from '@pages/teams/AddEditTeamPage';
 import PlayerProfilePage from '@pages/players/PlayerProfilePage';
 import PlayerAbilitiesPage from '@pages/players/PlayerAbilitiesPage';
 import MatchReportPage from '@pages/matches/MatchReportPage';
@@ -66,13 +68,17 @@ function AppContent() {
 
         {/* Age Groups */}
         <Route path="/clubs/:clubId/age-groups" element={<AgeGroupsListPage />} />
+        <Route path="/clubs/:clubId/age-groups/new" element={<AddEditAgeGroupPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId" element={<AgeGroupOverviewPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/edit" element={<AddEditAgeGroupPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/players" element={<AgeGroupPlayersPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/settings" element={<AgeGroupSettingsPage />} />
 
         {/* Teams */}
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams" element={<TeamsListPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/new" element={<AddEditTeamPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId" element={<TeamOverviewPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/edit" element={<AddEditTeamPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/squad" element={<SquadManagementPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/kits" element={<TeamKitsPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/settings" element={<TeamSettingsPage />} />

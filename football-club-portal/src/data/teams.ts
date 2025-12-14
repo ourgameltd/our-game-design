@@ -14,7 +14,8 @@ export const sampleTeams: Team[] = [
     colors: {
       primary: '#DC2626', // Red
       secondary: '#FFFFFF'
-    }
+    },
+    isArchived: false
   },
   {
     id: 'b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e',
@@ -29,7 +30,8 @@ export const sampleTeams: Team[] = [
     colors: {
       primary: '#F3F4F6', // Light gray/white
       secondary: '#1F2937'
-    }
+    },
+    isArchived: false
   },
   {
     id: 'c3d4e5f6-a7b8-9c0d-1e2f-3a4b5c6d7e8f',
@@ -44,7 +46,8 @@ export const sampleTeams: Team[] = [
     colors: {
       primary: '#2563EB', // Blue
       secondary: '#FFFFFF'
-    }
+    },
+    isArchived: true
   },
   {
     id: 'd4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a',
@@ -59,7 +62,8 @@ export const sampleTeams: Team[] = [
     colors: {
       primary: '#DC2626',
       secondary: '#FFFFFF'
-    }
+    },
+    isArchived: false
   },
   {
     id: 'e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b',
@@ -74,7 +78,24 @@ export const sampleTeams: Team[] = [
     colors: {
       primary: '#1a472a',
       secondary: '#ffd700'
-    }
+    },
+    isArchived: false
+  },
+  {
+    id: 'f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b1c',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    ageGroupId: '7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d',
+    name: 'Greens',
+    shortName: 'GRN',
+    level: 'youth',
+    season: '2023/24',
+    coachIds: ['c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f'],
+    playerIds: [],
+    colors: {
+      primary: '#16A34A',
+      secondary: '#FFFFFF'
+    },
+    isArchived: true
   }
 ];
 

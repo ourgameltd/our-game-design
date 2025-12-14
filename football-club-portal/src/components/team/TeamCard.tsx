@@ -17,12 +17,23 @@ export default function TeamCard({ team, onClick }: TeamCardProps) {
 
   return (
     <div 
-      className={`card-hover ${onClick ? 'cursor-pointer' : ''}`}
+      className={`card-hover ${
+        onClick ? 'cursor-pointer' : ''
+      } ${
+        team.isArchived ? 'opacity-75 border-2 border-orange-200 dark:border-orange-800' : ''
+      }`}
       onClick={onClick}
     >
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{team.name}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{team.name}</h3>
+            {team.isArchived && (
+              <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 text-xs">
+                🗄️ Archived
+              </span>
+            )}
+          </div>
           <p className="text-sm text-gray-600 dark:text-gray-400">{ageGroup?.name || 'N/A'}</p>
         </div>
         <span className={`badge ${levelColors[team.level]}`}>

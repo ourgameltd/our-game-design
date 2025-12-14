@@ -30,9 +30,18 @@ const AgeGroupCard: React.FC<AgeGroupCardProps> = ({ ageGroup, clubId, clubName,
   return (
     <Link
       to={`/clubs/${clubId}/${clubName}/age-groups/${ageGroup.id}`}
-      className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden"
+      className={`block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden ${
+        ageGroup.isArchived ? 'opacity-75' : ''
+      }`}
     >
-      <div className={`p-6 text-white bg-gradient-to-br ${getLevelColor(ageGroup.level)}`}>
+      <div className={`p-6 text-white bg-gradient-to-br ${getLevelColor(ageGroup.level)} relative`}>
+        {ageGroup.isArchived && (
+          <div className="absolute top-2 right-2">
+            <span className="badge bg-orange-100 text-orange-800 text-xs">
+              🗄️ Archived
+            </span>
+          </div>
+        )}
         <h3 className="text-2xl font-bold mb-1">{ageGroup.name}</h3>
         <p className="text-sm opacity-90">{ageGroup.description}</p>
       </div>

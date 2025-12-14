@@ -27,6 +27,30 @@ export default function AddEditMatchPage() {
   // Get players for this team
   const teamPlayers = samplePlayers.filter(p => team?.playerIds.includes(p.id));
 
+  // Check if team is archived
+  if (team?.isArchived && matchId === 'new') {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <main className="container mx-auto px-4 py-8">
+          <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
+            <h2 className="text-xl font-semibold text-orange-800 dark:text-orange-300 mb-2">
+              Cannot Schedule Match
+            </h2>
+            <p className="text-orange-700 dark:text-orange-400 mb-4">
+              This team is archived. You cannot schedule new matches for an archived team. Please unarchive the team first in Settings.
+            </p>
+            <button
+              onClick={() => navigate(Routes.matches(clubId!, ageGroupId!, teamId!))}
+              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+            >
+              Back to Matches
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   // Form state
   const [opposition, setOpposition] = useState(existingMatch?.opposition || '');
   const [kickOffTime, setKickOffTime] = useState(

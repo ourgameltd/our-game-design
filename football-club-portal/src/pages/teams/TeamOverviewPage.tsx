@@ -52,7 +52,14 @@ export default function TeamOverviewPage() {
         {/* Header with Settings Button */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{team.name}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{team.name}</h2>
+              {team.isArchived && (
+                <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
+                  🗄️ Archived
+                </span>
+              )}
+            </div>
             <p className="text-gray-600 dark:text-gray-400 mt-1">Team Overview</p>
           </div>
           <button
@@ -63,6 +70,15 @@ export default function TeamOverviewPage() {
             Settings
           </button>
         </div>
+
+        {/* Archived Notice */}
+        {team.isArchived && (
+          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-sm text-orange-800 dark:text-orange-300">
+              ⚠️ This team is archived. Modifications are restricted. Go to Settings to unarchive.
+            </p>
+          </div>
+        )}
 
         {/* Stats Grid */}
         <StatsGrid stats={stats} />

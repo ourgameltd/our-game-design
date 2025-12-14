@@ -50,11 +50,19 @@ export default function TeamKitsPage() {
   };
 
   const handleEditKit = (kit: Kit) => {
+    if (team?.isArchived) {
+      alert('Cannot edit kits for an archived team.');
+      return;
+    }
     setEditingKit(kit);
     setShowBuilder(true);
   };
 
   const handleDeleteKit = (kitId: string) => {
+    if (team?.isArchived) {
+      alert('Cannot delete kits for an archived team.');
+      return;
+    }
     if (confirm('Are you sure you want to delete this kit?')) {
       setTeamKits(teamKits.filter(k => k.id !== kitId));
       alert('Kit deleted successfully! (Demo - not saved to backend)');
@@ -75,14 +83,21 @@ export default function TeamKitsPage() {
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {team.name} - Kit Management
-              </h2>
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {team.name} - Kit Management
+                </h2>
+                {team.isArchived && (
+                  <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
+                    🗄️ Archived
+                  </span>
+                )}
+              </div>
               <p className="text-gray-600 dark:text-gray-400 mt-1">
                 Manage team-specific kits
               </p>
             </div>
-            {!showBuilder && (
+            {!showBuilder && !team.isArchived && (
               <button
                 onClick={() => setShowBuilder(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
@@ -93,6 +108,15 @@ export default function TeamKitsPage() {
             )}
           </div>
         </div>
+
+        {/* Archived Notice */}
+        {team.isArchived && (
+          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-sm text-orange-800 dark:text-orange-300">
+              ⚠️ This team is archived. Kits cannot be added, edited, or deleted while the team is archived.
+            </p>
+          </div>
+        )}
 
         {/* Kit Builder */}
         {showBuilder && (
@@ -135,7 +159,7 @@ export default function TeamKitsPage() {
                       kit={kit}
                       onEdit={() => handleEditKit(kit)}
                       onDelete={() => handleDeleteKit(kit.id)}
-                      showActions={true}
+                      showActions={!team.isArchived}
                     />
                   ))}
                 </div>

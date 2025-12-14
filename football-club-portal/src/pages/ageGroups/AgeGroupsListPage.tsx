@@ -28,9 +28,18 @@ const AgeGroupsListPage: React.FC = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Age Groups</h2>
-          <p className="text-gray-600 dark:text-gray-400">Select an age group to view teams and players</p>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Age Groups</h2>
+            <p className="text-gray-600 dark:text-gray-400">Select an age group to view teams and players</p>
+          </div>
+          <Link
+            to={Routes.ageGroupNew(clubId!)}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2"
+          >
+            <span>+</span>
+            Add Age Group
+          </Link>
         </div>
 
         {/* Age Groups Grid */}

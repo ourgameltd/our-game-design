@@ -44,6 +44,7 @@ export interface AgeGroup {
   season: string;
   description?: string;
   coordinatorIds?: string[]; // Age group coordinators
+  isArchived?: boolean; // Whether the age group is archived
 }
 
 // Team Types
@@ -63,6 +64,7 @@ export interface Team {
     secondary: string;
   };
   kits?: Kit[]; // Team-specific kits, falls back to club kits if not defined
+  isArchived?: boolean; // Whether the team is archived
 }
 
 // Player Types

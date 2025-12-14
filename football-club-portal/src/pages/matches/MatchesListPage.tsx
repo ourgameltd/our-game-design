@@ -157,21 +157,39 @@ export default function MatchesListPage() {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Matches
-              </h2>
+              <div className="flex items-center gap-2 mb-2">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Matches
+                </h2>
+                {team.isArchived && (
+                  <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">
+                    🗄️ Archived
+                  </span>
+                )}
+              </div>
               <p className="text-gray-600 dark:text-gray-400">
                 {team.name} - {club.name}
               </p>
             </div>
-            <Link
-              to={Routes.matchNew(clubId!, ageGroupId!, teamId!)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-            >
-              <span className="text-xl mr-2">+</span>
-              Add Match
-            </Link>
+            {!team.isArchived && (
+              <Link
+                to={Routes.matchNew(clubId!, ageGroupId!, teamId!)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              >
+                <span className="text-xl mr-2">+</span>
+                Add Match
+              </Link>
+            )}
           </div>
+
+          {/* Archived Notice */}
+          {team.isArchived && (
+            <div className="mb-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+              <p className="text-sm text-orange-800 dark:text-orange-300">
+                ⚠️ This team is archived. New matches cannot be scheduled while the team is archived.
+              </p>
+            </div>
+          )}
 
           {/* Stats Summary */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
