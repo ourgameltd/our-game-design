@@ -137,20 +137,7 @@ const AddEditTeamPage: React.FC = () => {
   const handleCancel = () => {
     navigate(Routes.ageGroup(clubId!, ageGroupId!));
   };
-  
-  const commonColors = [
-    { name: 'Red', value: '#DC2626' },
-    { name: 'Blue', value: '#2563EB' },
-    { name: 'Green', value: '#16A34A' },
-    { name: 'Yellow', value: '#EAB308' },
-    { name: 'Orange', value: '#EA580C' },
-    { name: 'Purple', value: '#9333EA' },
-    { name: 'Pink', value: '#EC4899' },
-    { name: 'White', value: '#FFFFFF' },
-    { name: 'Black', value: '#000000' },
-    { name: 'Gray', value: '#6B7280' },
-  ];
-  
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="container mx-auto px-4 py-8">

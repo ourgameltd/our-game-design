@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { samplePlayers } from '@/data/players';
 import { getTrainingPlansByPlayerId } from '@/data/trainingPlans';
 import { getDrillById } from '@/data/training';
-import { getTeamById } from '@/data/teams';
 import PageNavigation from '@components/navigation/PageNavigation';
 import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
 import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
@@ -12,7 +11,6 @@ export default function PlayerTrainingPlanPage() {
   const { clubId, ageGroupId, teamId, playerId } = useParams();
   
   const player = samplePlayers.find(p => p.id === playerId);
-  const team = getTeamById(teamId!);
   const plans = playerId ? getTrainingPlansByPlayerId(playerId) : [];
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(0);
   
