@@ -32,6 +32,7 @@ import FormationsLibraryPage from '@pages/formations/FormationsLibraryPage';
 import TrainingLibraryPage from '@pages/training/TrainingLibraryPage';
 import PlayerReportCardPage from '@pages/players/PlayerReportCardPage';
 import PlayerTrainingPlanPage from '@pages/players/PlayerTrainingPlanPage';
+import PlayerSettingsPage from '@pages/players/PlayerSettingsPage';
 import Header from '@components/layout/Header';
 import ScrollToTop from '@components/common/ScrollToTop';
 
@@ -88,6 +89,7 @@ function AppContent() {
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/abilities" element={<PlayerAbilitiesPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/report-card" element={<PlayerReportCardPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/development" element={<PlayerTrainingPlanPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/settings" element={<PlayerSettingsPage />} />
 
         {/* Matches */}
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/matches" element={<MatchesListPage />} />

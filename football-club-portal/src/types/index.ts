@@ -189,6 +189,7 @@ export interface Player {
       relationship: string;
     };
   };
+  isArchived?: boolean; // Whether the player is archived
 }
 
 // Staff Types

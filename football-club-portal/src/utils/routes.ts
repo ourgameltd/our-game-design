@@ -128,6 +128,15 @@ export class Routes {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development`;
   }
 
+  static playerSettings(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/settings`;
+  }
+
   // Matches
   static matches(clubId: string, ageGroupId: string, teamId: string): string {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/matches`;
