@@ -87,6 +87,10 @@ export class Routes {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/squad`;
   }
 
+  static teamCoaches(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/coaches`;
+  }
+
   static teamKits(clubId: string, ageGroupId: string, teamId: string): string {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/kits`;
   }

@@ -189,8 +189,8 @@ export default function MatchPreviewCard({
       {primaryKit && (
         <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Kit to Wear</h3>
-          <div className="flex items-center gap-6">
-            <div className="flex-1">
+          <div className="flex flex-row items-start gap-6">
+            <div className="min-w-0">
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {primaryKit.name}
               </div>
@@ -212,14 +212,11 @@ export default function MatchPreviewCard({
                     title={`Socks: ${primaryKit.socksColor}`}
                   />
                 </div>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  Outfield
-                </span>
               </div>
             </div>
             
             {goalkeeperKit && (
-              <div className="flex-1">
+              <div className="min-w-0">
                 <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {goalkeeperKit.name}
                 </div>
@@ -241,9 +238,6 @@ export default function MatchPreviewCard({
                       title={`Socks: ${goalkeeperKit.socksColor}`}
                     />
                   </div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    Goalkeeper
-                  </span>
                 </div>
               </div>
             )}

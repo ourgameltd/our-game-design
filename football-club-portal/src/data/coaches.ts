@@ -105,9 +105,13 @@ export const getCoachesByClub = (clubId: string): Coach[] => {
   return sampleCoaches.filter(coach => coach.clubId === clubId && !coach.isArchived);
 };
 
+export const getCoachesByClubId = getCoachesByClub; // Alias for consistency
+
 export const getCoachesByTeam = (teamId: string): Coach[] => {
   return sampleCoaches.filter(coach => coach.teamIds.includes(teamId) && !coach.isArchived);
 };
+
+export const getCoachesByTeamId = getCoachesByTeam; // Alias for consistency
 
 export const getCoachById = (coachId: string): Coach | undefined => {
   return sampleCoaches.find(coach => coach.id === coachId);

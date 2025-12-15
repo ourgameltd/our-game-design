@@ -1,40 +1,35 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { getTeamById } from '@data/teams';
-import { getPlayersByTeamId, getPlayersByAgeGroupId } from '@data/players';
-import PlayerCard from '@components/player/PlayerCard';
+import { getCoachesByTeamId, getCoachesByClubId } from '@data/coaches';
+import CoachCard from '@components/coach/CoachCard';
 import PageNavigation from '@components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
 import { getTeamNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
-export default function SquadManagementPage() {
+export default function TeamCoachesPage() {
   const { clubId, ageGroupId, teamId } = useParams();
   const team = getTeamById(teamId!);
-  const teamPlayers = getPlayersByTeamId(teamId!);
-  const ageGroupPlayers = team ? getPlayersByAgeGroupId(team.ageGroupId) : [];
+  const teamCoaches = getCoachesByTeamId(teamId!);
+  const clubCoaches = team ? getCoachesByClubId(team.clubId) : [];
   const [showAddModal, setShowAddModal] = useState(false);
 
   if (!team) {
     return <div>Team not found</div>;
   }
 
-  // Get players from age group who aren't already in this team
-  const availablePlayers = ageGroupPlayers.filter(
-    player => !player.teamIds.includes(teamId!)
+  // Get coaches from club who aren't already assigned to this team
+  const availableCoaches = clubCoaches.filter(
+    coach => !coach.teamIds.includes(teamId!)
   );
 
-  // Group team players by position
-  const goalkeepers = teamPlayers.filter(p => p.preferredPositions.includes('GK'));
-  const defenders = teamPlayers.filter(p => 
-    p.preferredPositions.some(pos => ['LB', 'CB', 'RB', 'LWB', 'RWB'].includes(pos))
-  );
-  const midfielders = teamPlayers.filter(p => 
-    p.preferredPositions.some(pos => ['CDM', 'CM', 'CAM', 'LM', 'RM'].includes(pos))
-  );
-  const forwards = teamPlayers.filter(p => 
-    p.preferredPositions.some(pos => ['LW', 'RW', 'CF', 'ST'].includes(pos))
-  );
+  // Group coaches by role
+  const headCoaches = teamCoaches.filter(c => c.role === 'head-coach');
+  const assistantCoaches = teamCoaches.filter(c => c.role === 'assistant-coach');
+  const goalkeepingCoaches = teamCoaches.filter(c => c.role === 'goalkeeper-coach');
+  const fitnessCoaches = teamCoaches.filter(c => c.role === 'fitness-coach');
+  const otherCoaches = teamCoaches.filter(c => !['head-coach', 'assistant-coach', 'goalkeeper-coach', 'fitness-coach'].includes(c.role));
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -45,11 +40,11 @@ export default function SquadManagementPage() {
         <div className="flex items-center gap-2 mb-6">
           <div className="flex-grow">
             <PageTitle
-              title="Squad List"
-              badge={teamPlayers.length}
-              subtitle="Select players from the club roster to add to this team"
+              title="Coaching Staff"
+              badge={teamCoaches.length}
+              subtitle="Assign coaches from the club to manage this team"
               action={!team.isArchived ? {
-                label: '+ Add Player from Club',
+                label: '+ Assign Coach',
                 onClick: () => setShowAddModal(true),
                 variant: 'success'
               } : undefined}
@@ -66,7 +61,7 @@ export default function SquadManagementPage() {
         {team.isArchived && (
           <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
-              ⚠️ This team is archived. Players cannot be added or removed while the team is archived.
+              ⚠️ This team is archived. Coaches cannot be assigned or removed while the team is archived.
             </p>
           </div>
         )}
@@ -76,31 +71,29 @@ export default function SquadManagementPage() {
           <div className="flex items-start gap-3">
             <span className="text-2xl">ℹ️</span>
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-1">Club-Level Player Management</h4>
+              <h4 className="font-medium text-gray-900 dark:text-white mb-1">Club-Level Coach Management</h4>
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                Players are registered at the club level and can be assigned to multiple teams. 
-                Add players from the club roster below, or{' '}
-                <Link to={Routes.clubPlayers(clubId!)} className="font-medium underline text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
-                  view all club players
+                Coaches are registered at the club level and can be assigned to multiple teams. 
+                Assign coaches from the club roster below, or{' '}
+                <Link to={Routes.clubCoaches(clubId!)} className="font-medium underline text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                  view all club coaches
                 </Link>.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Goalkeepers */}
-        {goalkeepers.length > 0 && (
+        {/* Head Coaches */}
+        {headCoaches.length > 0 && (
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span>🥅</span> Goalkeepers ({goalkeepers.length})
+              <span>👨‍🏫</span> Head Coach{headCoaches.length > 1 ? 'es' : ''} ({headCoaches.length})
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {goalkeepers.map((player) => (
-                <div key={player.id} className="relative group">
-                  <Link
-                    to={Routes.player(clubId!, ageGroupId!, player.id)}
-                  >
-                    <PlayerCard player={player} />
+              {headCoaches.map((coach) => (
+                <div key={coach.id} className="relative group">
+                  <Link to={Routes.coach(clubId!, coach.id)}>
+                    <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
                     <button
@@ -110,9 +103,9 @@ export default function SquadManagementPage() {
                       ✕
                     </button>
                   )}
-                  {player.teamIds.length > 1 && (
+                  {coach.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
-                      {player.teamIds.length} teams
+                      {coach.teamIds.length} teams
                     </div>
                   )}
                 </div>
@@ -121,19 +114,17 @@ export default function SquadManagementPage() {
           </div>
         )}
 
-        {/* Defenders */}
-        {defenders.length > 0 && (
+        {/* Assistant Coaches */}
+        {assistantCoaches.length > 0 && (
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span>🛡️</span> Defenders ({defenders.length})
+              <span>🤝</span> Assistant Coach{assistantCoaches.length > 1 ? 'es' : ''} ({assistantCoaches.length})
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {defenders.map((player) => (
-                <div key={player.id} className="relative group">
-                  <Link
-                    to={Routes.player(clubId!, ageGroupId!, player.id)}
-                  >
-                    <PlayerCard player={player} />
+              {assistantCoaches.map((coach) => (
+                <div key={coach.id} className="relative group">
+                  <Link to={Routes.coach(clubId!, coach.id)}>
+                    <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
                     <button
@@ -143,9 +134,9 @@ export default function SquadManagementPage() {
                       ✕
                     </button>
                   )}
-                  {player.ageGroupIds.length > 1 && (
+                  {coach.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
-                      {player.ageGroupIds.length} teams
+                      {coach.teamIds.length} teams
                     </div>
                   )}
                 </div>
@@ -154,19 +145,17 @@ export default function SquadManagementPage() {
           </div>
         )}
 
-        {/* Midfielders */}
-        {midfielders.length > 0 && (
+        {/* Goalkeeper Coaches */}
+        {goalkeepingCoaches.length > 0 && (
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span>⚙️</span> Midfielders ({midfielders.length})
+              <span>🧤</span> Goalkeeper Coach{goalkeepingCoaches.length > 1 ? 'es' : ''} ({goalkeepingCoaches.length})
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {midfielders.map((player) => (
-                <div key={player.id} className="relative group">
-                  <Link
-                    to={Routes.player(clubId!, ageGroupId!, player.id)}
-                  >
-                    <PlayerCard player={player} />
+              {goalkeepingCoaches.map((coach) => (
+                <div key={coach.id} className="relative group">
+                  <Link to={Routes.coach(clubId!, coach.id)}>
+                    <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
                     <button
@@ -176,9 +165,9 @@ export default function SquadManagementPage() {
                       ✕
                     </button>
                   )}
-                  {player.ageGroupIds.length > 1 && (
+                  {coach.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
-                      {player.ageGroupIds.length} teams
+                      {coach.teamIds.length} teams
                     </div>
                   )}
                 </div>
@@ -187,19 +176,17 @@ export default function SquadManagementPage() {
           </div>
         )}
 
-        {/* Forwards */}
-        {forwards.length > 0 && (
+        {/* Fitness Coaches */}
+        {fitnessCoaches.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <span>⚡</span> Forwards ({forwards.length})
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <span>💪</span> Fitness Coach{fitnessCoaches.length > 1 ? 'es' : ''} ({fitnessCoaches.length})
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {forwards.map((player) => (
-                <div key={player.id} className="relative group">
-                  <Link
-                    to={Routes.player(clubId!, ageGroupId!, player.id)}
-                  >
-                    <PlayerCard player={player} />
+              {fitnessCoaches.map((coach) => (
+                <div key={coach.id} className="relative group">
+                  <Link to={Routes.coach(clubId!, coach.id)}>
+                    <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
                     <button
@@ -209,9 +196,9 @@ export default function SquadManagementPage() {
                       ✕
                     </button>
                   )}
-                  {player.ageGroupIds.length > 1 && (
+                  {coach.teamIds.length > 1 && (
                     <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
-                      {player.ageGroupIds.length} teams
+                      {coach.teamIds.length} teams
                     </div>
                   )}
                 </div>
@@ -220,28 +207,59 @@ export default function SquadManagementPage() {
           </div>
         )}
 
-        {teamPlayers.length === 0 && (
+        {/* Other Coaches */}
+        {otherCoaches.length > 0 && (
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <span>👔</span> Other Staff ({otherCoaches.length})
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {otherCoaches.map((coach) => (
+                <div key={coach.id} className="relative group">
+                  <Link to={Routes.coach(clubId!, coach.id)}>
+                    <CoachCard coach={coach} />
+                  </Link>
+                  {!team.isArchived && (
+                    <button
+                      className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
+                      title="Remove from team"
+                    >
+                      ✕
+                    </button>
+                  )}
+                  {coach.teamIds.length > 1 && (
+                    <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
+                      {coach.teamIds.length} teams
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {teamCoaches.length === 0 && (
           <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
-            <div className="text-gray-400 dark:text-gray-500 text-5xl mb-4">👥</div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No players in this team yet</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">Add players from your club roster to build your squad</p>
+            <div className="text-gray-400 dark:text-gray-500 text-5xl mb-4">👨‍🏫</div>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No coaches assigned yet</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">Assign coaches from your club roster to manage this team</p>
             <button 
               onClick={() => setShowAddModal(true)}
               className="btn-success btn-md"
             >
-              + Add Players from Club
+              + Assign Coaches
             </button>
           </div>
         )}
 
-        {/* Add Player Modal */}
+        {/* Assign Coach Modal */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
               <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Add Players to Team</h2>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">Select players from the club roster ({availablePlayers.length} available)</p>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Assign Coaches to Team</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">Select coaches from the club roster ({availableCoaches.length} available)</p>
                 </div>
                 <button
                   onClick={() => setShowAddModal(false)}
@@ -251,27 +269,27 @@ export default function SquadManagementPage() {
                 </button>
               </div>
               <div className="p-6 overflow-y-auto max-h-[60vh]">
-                {availablePlayers.length > 0 ? (
+                {availableCoaches.length > 0 ? (
                   <div className="grid md:grid-cols-2 gap-4">
-                    {availablePlayers.map((player) => (
-                      <div key={player.id} className="relative">
-                        <PlayerCard player={player} />
+                    {availableCoaches.map((coach) => (
+                      <div key={coach.id} className="relative">
+                        <CoachCard coach={coach} />
                         <button
                           className="absolute top-2 right-2 bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 shadow-lg"
                         >
-                          + Add
+                          + Assign
                         </button>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">All club players are already assigned to this team</p>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">All club coaches are already assigned to this team</p>
                     <Link
-                      to={Routes.clubPlayers(clubId!)}
+                      to={Routes.clubCoaches(clubId!)}
                       className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
                     >
-                      Add new players to the club →
+                      Add new coaches to the club →
                     </Link>
                   </div>
                 )}
@@ -283,4 +301,3 @@ export default function SquadManagementPage() {
     </div>
   );
 }
-
