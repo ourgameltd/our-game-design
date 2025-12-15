@@ -19,6 +19,7 @@ export default function ClubCoachesPage() {
 
   const [searchName, setSearchName] = useState('');
   const [filterRole, setFilterRole] = useState('');
+  const [filterAgeGroup, setFilterAgeGroup] = useState('');
   const [filterTeam, setFilterTeam] = useState('');
   const [showArchived, setShowArchived] = useState(false);
 
@@ -34,6 +35,26 @@ export default function ClubCoachesPage() {
     });
     return Array.from(roles).sort();
   }, [allCoaches]);
+
+  // Get unique age groups from coaches' team assignments
+  const allAgeGroups = useMemo(() => {
+    const ageGroupIds = new Set<string>();
+    allCoaches.forEach(coach => {
+      coach.teamIds.forEach(teamId => {
+        const team = teams.find(t => t.id === teamId);
+        if (team) {
+          ageGroupIds.add(team.ageGroupId);
+        }
+      });
+    });
+    return Array.from(ageGroupIds)
+      .map(id => {
+        const ageGroup = getAgeGroupById(id);
+        return ageGroup ? { id, name: ageGroup.name } : null;
+      })
+      .filter((ag): ag is { id: string; name: string } => ag !== null)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allCoaches, teams]);
 
   const roleDisplay: Record<string, string> = {
     'head-coach': 'Head Coach',
@@ -57,6 +78,14 @@ export default function ClubCoachesPage() {
       // Role filter
       if (filterRole) {
         if (coach.role !== filterRole) {
+          return false;
+        }
+      }
+
+      // Age group filter
+      if (filterAgeGroup) {
+        const coachTeams = coach.teamIds.map(teamId => teams.find(t => t.id === teamId)).filter(Boolean);
+        if (!coachTeams.some(team => team?.ageGroupId === filterAgeGroup)) {
           return false;
         }
       }
@@ -88,6 +117,12 @@ export default function ClubCoachesPage() {
       return acc;
     }, {} as Record<string, typeof filteredCoaches>);
   }, [filteredCoaches]);
+
+  // Filter teams by age group for the team dropdown
+  const filteredTeams = useMemo(() => {
+    if (!filterAgeGroup) return teams;
+    return teams.filter(team => team.ageGroupId === filterAgeGroup);
+  }, [teams, filterAgeGroup]);
 
   // Sort roles by priority
   const roleOrder = ['Head Coach', 'Assistant Coach', 'Goalkeeper Coach', 'Fitness Coach', 'Technical Coach'];
@@ -137,7 +172,7 @@ export default function ClubCoachesPage() {
             </label>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search Name</label>
               <input
@@ -147,6 +182,40 @@ export default function ClubCoachesPage() {
                 onChange={(e) => setSearchName(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-500"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
+              <select 
+                value={filterAgeGroup}
+                onChange={(e) => {
+                  setFilterAgeGroup(e.target.value);
+                  setFilterTeam(''); // Clear team filter when age group changes
+                }}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              >
+                <option value="">All Age Groups</option>
+                {allAgeGroups.map(ageGroup => (
+                  <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
+              <select 
+                value={filterTeam}
+                onChange={(e) => setFilterTeam(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              >
+                <option value="">All Teams</option>
+                {filteredTeams.map(team => {
+                  const ageGroup = getAgeGroupById(team.ageGroupId);
+                  return (
+                    <option key={team.id} value={team.id}>
+                      {ageGroup?.name || ''} - {team.name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role</label>
@@ -161,28 +230,10 @@ export default function ClubCoachesPage() {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
-              <select 
-                value={filterTeam}
-                onChange={(e) => setFilterTeam(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-500"
-              >
-                <option value="">All Teams</option>
-                {teams.map(team => {
-                  const ageGroup = getAgeGroupById(team.ageGroupId);
-                  return (
-                    <option key={team.id} value={team.id}>
-                      {ageGroup?.name || ''} - {team.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
           </div>
           
           {/* Active filters display and clear */}
-          {(searchName || filterRole || filterTeam) && (
+          {(searchName || filterRole || filterAgeGroup || filterTeam) && (
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               <span className="text-sm text-gray-600 dark:text-gray-400">Active filters:</span>
               {searchName && (
@@ -197,6 +248,12 @@ export default function ClubCoachesPage() {
                   <button onClick={() => setFilterRole('')} className="hover:text-secondary-900 dark:hover:text-secondary-100">×</button>
                 </span>
               )}
+              {filterAgeGroup && (
+                <span className="inline-flex items-center gap-1 px-2 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-700 dark:text-secondary-300 rounded text-sm">
+                  Age Group: {allAgeGroups.find(ag => ag.id === filterAgeGroup)?.name}
+                  <button onClick={() => setFilterAgeGroup('')} className="hover:text-secondary-900 dark:hover:text-secondary-100">×</button>
+                </span>
+              )}
               {filterTeam && (
                 <span className="inline-flex items-center gap-1 px-2 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-700 dark:text-secondary-300 rounded text-sm">
                   Team: {teams.find(t => t.id === filterTeam)?.name}
@@ -207,6 +264,7 @@ export default function ClubCoachesPage() {
                 onClick={() => {
                   setSearchName('');
                   setFilterRole('');
+                  setFilterAgeGroup('');
                   setFilterTeam('');
                 }}
                 className="ml-auto text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"

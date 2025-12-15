@@ -53,14 +53,17 @@ export default function ClubPlayersPage() {
 
   // Get unique age groups from all players
   const allAgeGroups = useMemo(() => {
-    const ageGroups = new Set<string>();
+    const ageGroupIds = new Set<string>();
     allPlayers.forEach(player => {
-      ageGroups.add(getAgeGroup(player.dateOfBirth));
+      player.ageGroupIds.forEach(id => ageGroupIds.add(id));
     });
-    const ageGroupOrder = ['U8s', 'U10s', 'U12s', 'U14s', 'U16s', 'U18s', 'Senior'];
-    return Array.from(ageGroups).sort(
-      (a, b) => ageGroupOrder.indexOf(a) - ageGroupOrder.indexOf(b)
-    );
+    return Array.from(ageGroupIds)
+      .map(id => {
+        const ageGroup = getAgeGroupById(id);
+        return ageGroup ? { id, name: ageGroup.name } : null;
+      })
+      .filter((ag): ag is { id: string; name: string } => ag !== null)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [allPlayers]);
 
   // Filter players based on search and filters
@@ -76,7 +79,7 @@ export default function ClubPlayersPage() {
 
       // Age group filter
       if (filterAgeGroup) {
-        if (getAgeGroup(player.dateOfBirth) !== filterAgeGroup) {
+        if (!player.ageGroupIds.includes(filterAgeGroup)) {
           return false;
         }
       }
@@ -90,7 +93,7 @@ export default function ClubPlayersPage() {
 
       // Team filter
       if (filterTeam) {
-        if (!player.ageGroupIds.includes(filterTeam)) {
+        if (!player.teamIds.includes(filterTeam)) {
           return false;
         }
       }
@@ -180,7 +183,7 @@ export default function ClubPlayersPage() {
               >
                 <option value="">All Age Groups</option>
                 {allAgeGroups.map(ageGroup => (
-                  <option key={ageGroup} value={ageGroup}>{ageGroup}</option>
+                  <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
                 ))}
               </select>
             </div>

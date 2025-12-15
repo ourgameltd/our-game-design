@@ -9,8 +9,8 @@ export const getClubNavigationTabs = (clubId: string): NavigationTab[] => [
   { label: 'Players', path: Routes.clubPlayers(clubId) },
   { label: 'Coaches', path: Routes.clubCoaches(clubId) },
   { label: 'Age Groups', path: Routes.ageGroups(clubId) },
-  { label: 'Ethos & Principles', path: Routes.clubEthos(clubId) },
   { label: 'Kits', path: Routes.clubKits(clubId) },
+  { label: 'Ethos & Principles', path: Routes.clubEthos(clubId) },
 ];
 
 /**

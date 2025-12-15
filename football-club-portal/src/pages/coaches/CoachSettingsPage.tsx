@@ -369,36 +369,68 @@ export default function CoachSettingsPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Select which teams this coach is assigned to
             </p>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
-              {allTeams.map(team => {
-                const ageGroup = getAgeGroupById(team.ageGroupId);
-                return (
-                  <label
-                    key={team.id}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedTeams.includes(team.id)}
-                      onChange={() => handleTeamToggle(team.id)}
-                      className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                    />
-                    <div>
-                      <div className="font-medium text-gray-900 dark:text-white">
-                        {team.name}
-                      </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
-                        {ageGroup?.name || 'Unknown'} - {team.season}
-                      </div>
-                    </div>
-                  </label>
-                );
-              })}
-            </div>
-            {allTeams.length === 0 && (
+            {allTeams.length === 0 ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 italic">
                 No teams available. Create teams first to assign coaches.
               </p>
+            ) : (
+              <div className="space-y-6">
+                {/* Group teams by age group and sort */}
+                {(() => {
+                  const teamsByAgeGroup = allTeams.reduce((acc, team) => {
+                    if (!acc[team.ageGroupId]) {
+                      acc[team.ageGroupId] = [];
+                    }
+                    acc[team.ageGroupId].push(team);
+                    return acc;
+                  }, {} as Record<string, typeof allTeams>);
+
+                  // Sort age groups alphabetically and teams within each group
+                  const sortedAgeGroupIds = Object.keys(teamsByAgeGroup).sort((a, b) => {
+                    const ageGroupA = getAgeGroupById(a);
+                    const ageGroupB = getAgeGroupById(b);
+                    return (ageGroupA?.name || '').localeCompare(ageGroupB?.name || '');
+                  });
+
+                  return sortedAgeGroupIds.map(ageGroupId => {
+                    const ageGroup = getAgeGroupById(ageGroupId);
+                    const teams = teamsByAgeGroup[ageGroupId].sort((a, b) => 
+                      a.name.localeCompare(b.name)
+                    );
+
+                    return (
+                      <div key={ageGroupId}>
+                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                          {ageGroup?.name || 'Unknown Age Group'}
+                        </h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                          {teams.map(team => (
+                            <label
+                              key={team.id}
+                              className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer border border-gray-200 dark:border-gray-700"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedTeams.includes(team.id)}
+                                onChange={() => handleTeamToggle(team.id)}
+                                className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="font-medium text-gray-900 dark:text-white truncate">
+                                  {team.name}
+                                </div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                  {team.season}
+                                </div>
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
             )}
           </div>
 

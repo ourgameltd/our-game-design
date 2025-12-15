@@ -277,7 +277,7 @@ export default function ClubPlayerSettingsPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Select which teams this player is assigned to
             </p>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
+            <div className="space-y-4">
               {/* Group teams by age group */}
               {Array.from(new Set(allTeams.map(t => t.ageGroupId)))
                 .sort((a, b) => {
