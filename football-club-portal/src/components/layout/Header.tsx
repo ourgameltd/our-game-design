@@ -125,12 +125,8 @@ export default function Header() {
       }
       
       let playerBasePath = '';
-      if (resolvedAgeGroupId && teamId) {
-        playerBasePath = `/clubs/${clubId}/age-groups/${resolvedAgeGroupId}/teams/${teamId}/players/${playerId}`;
-      } else if (teamId) {
-        playerBasePath = `/clubs/${clubId}/teams/${teamId}/players/${playerId}`;
-      } else {
-        playerBasePath = `/clubs/${clubId}/players/${playerId}`;
+      if (!resolvedAgeGroupId || !teamId) {
+        playerBasePath = `/clubs/${clubId}/players/${playerId}/settings`;
       }
       
       breadcrumbs.push({
