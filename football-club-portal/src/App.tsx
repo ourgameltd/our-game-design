@@ -21,7 +21,7 @@ import AgeGroupSettingsPage from '@pages/ageGroups/AgeGroupSettingsPage';
 import AddEditAgeGroupPage from '@pages/ageGroups/AddEditAgeGroupPage';
 import TeamsListPage from '@pages/teams/TeamsListPage';
 import TeamOverviewPage from '@pages/teams/TeamOverviewPage';
-import SquadManagementPage from '@pages/teams/SquadManagementPage';
+import TeamPlayersPage from '@/pages/teams/TeamPlayersPage';
 import TeamCoachesPage from '@pages/teams/TeamCoachesPage';
 import TeamKitsPage from '@pages/teams/TeamKitsPage';
 import TeamSettingsPage from '@pages/teams/TeamSettingsPage';
@@ -98,7 +98,7 @@ function AppContent() {
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/new" element={<AddEditTeamPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId" element={<TeamOverviewPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/edit" element={<AddEditTeamPage />} />
-        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/squad" element={<SquadManagementPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/squad" element={<TeamPlayersPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/coaches" element={<TeamCoachesPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/kits" element={<TeamKitsPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/settings" element={<TeamSettingsPage />} />

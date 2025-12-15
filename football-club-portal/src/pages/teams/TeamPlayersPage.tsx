@@ -8,7 +8,7 @@ import PageTitle from '@components/common/PageTitle';
 import { getTeamNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
-export default function SquadManagementPage() {
+export default function TeamPlayersPage() {
   const { clubId, ageGroupId, teamId } = useParams();
   const team = getTeamById(teamId!);
   const teamPlayers = getPlayersByTeamId(teamId!);
@@ -190,7 +190,7 @@ export default function SquadManagementPage() {
         {/* Forwards */}
         {forwards.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
               <span>⚡</span> Forwards ({forwards.length})
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
