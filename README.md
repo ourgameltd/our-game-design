@@ -20,16 +20,15 @@ This project provides a comprehensive management system for football clubs of al
 ## Project Structure
 
 ```
-football-club-portal/     # Main application
-├── src/
-│   ├── components/       # Reusable UI components
-│   ├── pages/           # Page components for routing
-│   ├── data/            # Sample data for demonstration
-│   ├── contexts/        # React contexts (Theme, etc.)
-│   ├── types/           # TypeScript type definitions
-│   └── utils/           # Helper functions
-├── public/              # Static assets
-└── docs/                # Documentation
+ src/
+ ├── components/       # Reusable UI components
+ ├── pages/           # Page components for routing
+ ├── data/            # Sample data for demonstration
+ ├── contexts/        # React contexts (Theme, etc.)
+ ├── types/           # TypeScript type definitions
+ └── utils/           # Helper functions
+ public/              # Static assets
+ docs/                # Documentation
 ```
 
 ## Technology Stack

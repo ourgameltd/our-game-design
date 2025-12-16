@@ -296,7 +296,7 @@ export default function ClubPlayerSettingsPage() {
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
                       {ageGroup?.name || 'Unknown Age Group'}
                     </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
                       {ageGroupTeams.map((team) => (
                         <label
                           key={team.id}

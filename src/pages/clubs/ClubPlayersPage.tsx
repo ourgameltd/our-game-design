@@ -269,7 +269,7 @@ export default function ClubPlayersPage() {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               {ageGroup} ({playersByAgeGroup[ageGroup].length} players)
             </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
               {playersByAgeGroup[ageGroup].map((player) => {
                 return (
                   <div key={player.id} className="relative">

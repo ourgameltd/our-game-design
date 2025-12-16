@@ -6,6 +6,7 @@ import { sampleClubs } from '../../data/clubs';
 import PageNavigation from '../../components/navigation/PageNavigation';
 import PageTitle from '../../components/common/PageTitle';
 import { getClubNavigationTabs } from '../../utils/navigationHelpers';
+import { getGradientColors, getContrastTextColorClass } from '../../utils/colorHelpers';
 import { Routes } from '@utils/routes';
 
 const AgeGroupsListPage: React.FC = () => {
@@ -41,9 +42,11 @@ const AgeGroupsListPage: React.FC = () => {
         />
 
         {/* Age Groups Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {ageGroups.map(ageGroup => {
             const stats = getAgeGroupStatistics(ageGroup.id);
+            const { primaryColor, secondaryColor } = getGradientColors(club);
+            const textColorClass = getContrastTextColorClass(primaryColor);
             
             return (
               <Link
@@ -53,14 +56,14 @@ const AgeGroupsListPage: React.FC = () => {
               >
               {/* Header with level indicator */}
               <div 
-                className={`p-6 text-white ${
-                  ageGroup.level === 'senior' ? 'bg-gradient-to-br from-primary-600 to-primary-800' :
-                  ageGroup.level === 'reserve' ? 'bg-gradient-to-br from-blue-600 to-blue-800' :
-                  ageGroup.level === 'amateur' ? 'bg-gradient-to-br from-green-600 to-green-800' :
-                  'bg-gradient-to-br from-purple-600 to-purple-800'
-                }`}
+                className={`p-6 ${textColorClass}`}
+                style={{
+                  backgroundImage: `linear-gradient(135deg, ${primaryColor}, ${secondaryColor})`,
+                }}
               >
-                <h2 className="text-2xl font-bold mb-1">{ageGroup.name}</h2>
+                <h2 className="text-2xl font-bold mb-1">
+                  {ageGroup.name}
+                </h2>
                 <p className="text-sm opacity-90">{ageGroup.description}</p>
               </div>
 
