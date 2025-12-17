@@ -918,7 +918,7 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddSubstitution}
                   disabled={isLocked}
-                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Substitution
                 </button>
@@ -1007,7 +1007,7 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddGoal}
                   disabled={isLocked}
-                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Goal
                 </button>
@@ -1101,7 +1101,7 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddCard}
                   disabled={isLocked}
-                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Card
                 </button>
@@ -1196,7 +1196,7 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddInjury}
                   disabled={isLocked}
-                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   + Add Injury
                 </button>
