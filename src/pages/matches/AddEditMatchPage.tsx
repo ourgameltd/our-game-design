@@ -18,7 +18,13 @@ export default function AddEditMatchPage() {
 
   const team = sampleTeams.find(t => t.id === teamId);
   const club = sampleClubs.find(c => c.id === clubId);
-  const ageGroup = getAgeGroupById(ageGroupId || '');
+  
+  // Try to get age group from URL param, fallback to team's ageGroupId if not found
+  let ageGroup = getAgeGroupById(ageGroupId || '');
+  if (!ageGroup && team?.ageGroupId) {
+    ageGroup = getAgeGroupById(team.ageGroupId);
+  }
+  
   const existingMatch = isEditing ? sampleMatches.find(m => m.id === matchId) : null;
 
   // Get available seasons from age group
