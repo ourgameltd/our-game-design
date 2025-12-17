@@ -4,8 +4,9 @@ import { sampleMatches } from '@/data/matches';
 import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
 import { samplePlayers } from '@/data/players';
-import { sampleFormations } from '@/data/formations';
-import { PlayerPosition } from '@/types';
+import { sampleFormations, getFormationsBySquadSize } from '@/data/formations';
+import { getAgeGroupById } from '@/data/ageGroups';
+import { PlayerPosition, SquadSize } from '@/types';
 import { Routes } from '@utils/routes';
 import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 import PageNavigation from '@/components/navigation/PageNavigation';
@@ -17,7 +18,12 @@ export default function AddEditMatchPage() {
 
   const team = sampleTeams.find(t => t.id === teamId);
   const club = sampleClubs.find(c => c.id === clubId);
+  const ageGroup = getAgeGroupById(ageGroupId || '');
   const existingMatch = isEditing ? sampleMatches.find(m => m.id === matchId) : null;
+
+  // Get available seasons from age group
+  const availableSeasons = ageGroup?.seasons || [];
+  const defaultSeason = ageGroup?.defaultSeason || ageGroup?.season || '';
 
   // Get available kits (team kits take priority, then club kits)
   const teamKits = team?.kits || [];
@@ -52,6 +58,8 @@ export default function AddEditMatchPage() {
   }
 
   // Form state
+  const [seasonId, setSeasonId] = useState(existingMatch?.seasonId || defaultSeason);
+  const [squadSize, setSquadSize] = useState<SquadSize>(existingMatch?.squadSize || ageGroup?.defaultSquadSize || 11);
   const [opposition, setOpposition] = useState(existingMatch?.opposition || '');
   const [kickOffTime, setKickOffTime] = useState(
     existingMatch?.kickOffTime ? existingMatch.kickOffTime.toISOString().slice(0, 16) : 
@@ -68,6 +76,9 @@ export default function AddEditMatchPage() {
   const [formationId, setFormationId] = useState(existingMatch?.lineup?.formationId || '');
   const [weather, setWeather] = useState(existingMatch?.weather?.condition || '');
   const [temperature, setTemperature] = useState(existingMatch?.weather?.temperature?.toString() || '');
+  
+  // Get formations filtered by squad size
+  const availableFormations = getFormationsBySquadSize(squadSize);
   
   // Match result state
   const [homeScore, setHomeScore] = useState(existingMatch?.score?.home?.toString() || '');
@@ -185,6 +196,28 @@ export default function AddEditMatchPage() {
     return ratings.find(r => r.playerId === playerId)?.rating || 0;
   };
 
+  const handleSquadSizeChange = (newSquadSize: SquadSize) => {
+    setSquadSize(newSquadSize);
+    // Reset formation if current one doesn't match new squad size
+    const currentFormation = sampleFormations.find(f => f.id === formationId);
+    if (currentFormation && currentFormation.squadSize !== newSquadSize) {
+      setFormationId('');
+      // Also warn if there are starting players selected
+      if (startingPlayers.length > 0) {
+        const confirmReset = window.confirm(
+          'Changing squad size will clear your current lineup. Do you want to continue?'
+        );
+        if (confirmReset) {
+          setStartingPlayers([]);
+        } else {
+          // Revert squad size change
+          setSquadSize(squadSize);
+          return;
+        }
+      }
+    }
+  };
+
   const handleCompleteMatch = () => {
     // Validate that essential match data is filled
     if (!homeScore || !awayScore) {
@@ -243,6 +276,8 @@ export default function AddEditMatchPage() {
 
     // In a real app, this would save to backend
     console.log('Saving match...', {
+      seasonId,
+      squadSize,
       opposition,
       kickOffTime,
       meetTime,
@@ -370,6 +405,48 @@ export default function AddEditMatchPage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter opposition team name"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Season *
+                  </label>
+                  <select
+                    value={seasonId}
+                    onChange={(e) => setSeasonId(e.target.value)}
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {availableSeasons.length === 0 ? (
+                      <option value={defaultSeason}>{defaultSeason}</option>
+                    ) : (
+                      availableSeasons.map(season => (
+                        <option key={season} value={season}>
+                          {season} {season === defaultSeason ? '(Default)' : ''}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Squad Size *
+                  </label>
+                  <select
+                    value={squadSize}
+                    onChange={(e) => handleSquadSizeChange(parseInt(e.target.value) as SquadSize)}
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <option value={5}>5-a-side{ageGroup?.defaultSquadSize === 5 ? ' (Age Group Default)' : ''}</option>
+                    <option value={7}>7-a-side{ageGroup?.defaultSquadSize === 7 ? ' (Age Group Default)' : ''}</option>
+                    <option value={9}>9-a-side{ageGroup?.defaultSquadSize === 9 ? ' (Age Group Default)' : ''}</option>
+                    <option value={11}>11-a-side{ageGroup?.defaultSquadSize === 11 ? ' (Age Group Default)' : ''}</option>
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Number of starting players per team{ageGroup?.defaultSquadSize ? ` (Age group default: ${ageGroup.defaultSquadSize}-a-side)` : ''}
+                  </p>
                 </div>
 
                 <div>
@@ -619,16 +696,19 @@ export default function AddEditMatchPage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">Select formation</option>
-                  {sampleFormations.map(f => (
+                  {availableFormations.map(f => (
                     <option key={f.id} value={f.id}>{f.name} ({f.system})</option>
                   ))}
                 </select>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Showing formations for {squadSize}-a-side ({availableFormations.length} available)
+                </p>
               </div>
 
               {/* Starting XI */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  Starting XI ({startingPlayers.length}/11)
+                  Starting {squadSize} ({startingPlayers.length}/{squadSize})
                 </h3>
                 <div className="space-y-2 mb-4">
                   {startingPlayers.map((player) => {
@@ -662,7 +742,7 @@ export default function AddEditMatchPage() {
                   })}
                 </div>
 
-                {startingPlayers.length < 11 && !isLocked && (
+                {startingPlayers.length < squadSize && !isLocked && (
                   <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Add Starting Player</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -5,6 +5,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6',
     teamId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    squadSize: 11,
     opposition: 'Riverside United',
     date: new Date('2025-12-13T15:00:00'),
     kickOffTime: new Date('2025-12-13T15:00:00'),
@@ -30,6 +31,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7',
     teamId: 'b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e',
+    squadSize: 9,
     opposition: 'Hillside Youth',
     date: new Date('2025-12-14T18:30:00'),
     kickOffTime: new Date('2025-12-14T18:30:00'),
@@ -51,6 +53,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm15u1p2c3-o4m5-i6n7-g8m9-a0t1c2h3e4s5',
     teamId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    squadSize: 11,
     opposition: 'Oakwood Athletic',
     date: new Date('2025-12-20T14:00:00'),
     kickOffTime: new Date('2025-12-20T14:00:00'),
@@ -67,6 +70,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm16u2p3c4-o5m6-i7n8-g9m0-a1t2c3h4e5s6',
     teamId: 'b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e',
+    squadSize: 7,
     opposition: 'Greenfield Rangers',
     date: new Date('2025-12-21T11:00:00'),
     kickOffTime: new Date('2025-12-21T11:00:00'),
@@ -83,6 +87,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm17u3p4c5-o6m7-i8n9-g0m1-a2t3c4h5e6s7',
     teamId: 'c3d4e5f6-a7b8-9c0d-1e2f-3a4b5c6d7e8f',
+    squadSize: 5,
     opposition: 'Brookside United',
     date: new Date('2025-12-27T15:30:00'),
     kickOffTime: new Date('2025-12-27T15:30:00'),
@@ -94,6 +99,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm18u4p5c6-o7m8-i9n0-g1m2-a3t4c5h6e7s8',
     teamId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    squadSize: 11,
     opposition: 'Meadowbank FC',
     date: new Date('2026-01-03T15:00:00'),
     kickOffTime: new Date('2026-01-03T15:00:00'),
@@ -105,6 +111,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm19u5p6c7-o8m9-i0n1-g2m3-a4t5c6h7e8s9',
     teamId: 'b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e',
+    squadSize: 9,
     opposition: 'Fairview Athletic',
     date: new Date('2026-01-10T13:30:00'),
     kickOffTime: new Date('2026-01-10T13:30:00'),
@@ -116,6 +123,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm20u6p7c8-o9m0-i1n2-g3m4-a5t6c7h8e9s0',
     teamId: 'c3d4e5f6-a7b8-9c0d-1e2f-3a4b5c6d7e8f',
+    squadSize: 7,
     opposition: 'Westside Warriors',
     date: new Date('2026-01-17T14:00:00'),
     kickOffTime: new Date('2026-01-17T14:00:00'),
@@ -129,6 +137,7 @@ export const sampleMatches: Match[] = [
   {
     id: 'm3c4d5e6-f7a8-b9c0-d1e2-f3a4b5c6d7e8',
     teamId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    squadSize: 11,
     opposition: 'Parkside Rangers',
     date: new Date('2024-12-01T15:00:00'),
     kickOffTime: new Date('2024-12-01T15:00:00'),

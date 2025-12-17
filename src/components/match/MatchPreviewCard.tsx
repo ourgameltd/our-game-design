@@ -318,6 +318,18 @@ export default function MatchPreviewCard({
           </div>
         )}
 
+        {match.squadSize && showFullDetails && (
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Match Format</h3>
+            <p className="text-gray-900 dark:text-white">
+              {match.squadSize}-a-side
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {match.squadSize} starting players per team
+            </p>
+          </div>
+        )}
+
         {match.weather && showFullDetails && (
           <div>
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Weather</h3>

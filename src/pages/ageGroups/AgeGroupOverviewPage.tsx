@@ -53,7 +53,7 @@ const AgeGroupOverviewPage: React.FC = () => {
           <div className="flex-grow">
             <PageTitle
               title={ageGroup.name}
-              subtitle={`${ageGroup.description} • Season: ${ageGroup.season}`}
+              subtitle={`${ageGroup.description} • Season: ${ageGroup.season}${ageGroup.defaultSquadSize ? ` • Default: ${ageGroup.defaultSquadSize}-a-side` : ''}`}
               action={{
                 label: '⚙️ Settings',
                 onClick: () => navigate(Routes.ageGroupSettings(clubId!, ageGroupId!)),

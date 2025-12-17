@@ -83,8 +83,15 @@ export default function MatchCard({ match, onClick }: MatchCardProps) {
         <div className="text-sm text-gray-600">
           📍 {match.location}
         </div>
-        <div className="text-xs text-gray-500">
-          {match.competition}
+        <div className="flex items-center gap-3">
+          {match.squadSize && (
+            <span className="text-xs font-medium text-gray-700 bg-gray-100 px-2 py-1 rounded">
+              {match.squadSize}-a-side
+            </span>
+          )}
+          <div className="text-xs text-gray-500">
+            {match.competition}
+          </div>
         </div>
       </div>
     </div>

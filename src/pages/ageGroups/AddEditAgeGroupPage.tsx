@@ -20,6 +20,7 @@ const AddEditAgeGroupPage: React.FC = () => {
     code: existingAgeGroup?.code || '',
     level: (existingAgeGroup?.level || 'youth') as AgeGroupLevel,
     season: existingAgeGroup?.season || '2024/25',
+    defaultSquadSize: existingAgeGroup?.defaultSquadSize || 11,
     description: existingAgeGroup?.description || '',
   });
   
@@ -57,7 +58,9 @@ const AddEditAgeGroupPage: React.FC = () => {
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    // Parse defaultSquadSize as a number
+    const finalValue = name === 'defaultSquadSize' ? parseInt(value, 10) : value;
+    setFormData(prev => ({ ...prev, [name]: finalValue }));
     // Clear error when field is modified
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -202,6 +205,28 @@ const AddEditAgeGroupPage: React.FC = () => {
               {errors.season && (
                 <p className="mt-1 text-sm text-red-500">{errors.season}</p>
               )}
+            </div>
+            
+            {/* Default Squad Size */}
+            <div>
+              <label htmlFor="defaultSquadSize" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Default Squad Size
+              </label>
+              <select
+                id="defaultSquadSize"
+                name="defaultSquadSize"
+                value={formData.defaultSquadSize}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              >
+                <option value={5}>5-a-side</option>
+                <option value={7}>7-a-side</option>
+                <option value={9}>9-a-side</option>
+                <option value={11}>11-a-side</option>
+              </select>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Default match format for this age group. Can be changed per match.
+              </p>
             </div>
             
             {/* Description */}

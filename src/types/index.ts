@@ -1,3 +1,6 @@
+// Squad Size Types
+export type SquadSize = 5 | 7 | 9 | 11;
+
 // Kit Types
 export interface Kit {
   id: string;
@@ -41,7 +44,10 @@ export interface AgeGroup {
   name: string; // e.g., '2014s', '2013s', 'Reserves', 'Senior'
   code: string; // e.g., '2014', '2013', 'reserve', 'senior'
   level: 'youth' | 'amateur' | 'reserve' | 'senior';
-  season: string;
+  season: string; // Kept for backward compatibility
+  seasons?: string[]; // List of available seasons (e.g., ['2024/25', '2023/24'])
+  defaultSeason?: string; // The default season for new matches
+  defaultSquadSize?: SquadSize; // The default squad size for new matches (5, 7, 9, or 11)
   description?: string;
   coordinatorIds?: string[]; // Age group coordinators
   isArchived?: boolean; // Whether the age group is archived
@@ -241,6 +247,8 @@ export interface Coach {
 export interface Match {
   id: string;
   teamId: string;
+  seasonId?: string; // Season identifier (e.g., '2024/25')
+  squadSize?: SquadSize; // Number of players per side (5, 7, 9, or 11)
   opposition: string;
   date: Date; // Kick off date and time
   meetTime?: Date; // Team meet time before the match
@@ -332,7 +340,8 @@ export interface Drill {
 export interface Formation {
   id: string;
   name: string;
-  system: string; // e.g., "4-4-2", "4-3-3"
+  system: string; // e.g., "4-4-2", "4-3-3", "2-1-1" (5-a-side), "2-3-1" (7-a-side)
+  squadSize: SquadSize; // Number of players per side (5, 7, 9, or 11)
   positions: {
     position: PlayerPosition;
     x: number; // 0-100 (percentage of field width)

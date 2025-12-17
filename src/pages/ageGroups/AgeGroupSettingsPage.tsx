@@ -16,8 +16,13 @@ export default function AgeGroupSettingsPage() {
     code: ageGroup?.code || '',
     level: ageGroup?.level || 'youth',
     season: ageGroup?.season || '2024/25',
+    defaultSquadSize: ageGroup?.defaultSquadSize || 11,
     description: ageGroup?.description || ''
   });
+
+  const [seasons, setSeasons] = useState<string[]>(ageGroup?.seasons || ['2024/25']);
+  const [defaultSeason, setDefaultSeason] = useState<string>(ageGroup?.defaultSeason || ageGroup?.seasons?.[0] || '2024/25');
+  const [newSeasonInput, setNewSeasonInput] = useState('');
 
   if (!ageGroup) {
     return (
@@ -35,7 +40,35 @@ export default function AgeGroupSettingsPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    // Parse defaultSquadSize as a number
+    const finalValue = name === 'defaultSquadSize' ? parseInt(value, 10) : value;
+    setFormData(prev => ({ ...prev, [name]: finalValue }));
+  };
+
+  const handleAddSeason = () => {
+    if (!newSeasonInput.trim()) return;
+    if (seasons.includes(newSeasonInput.trim())) {
+      alert('This season already exists');
+      return;
+    }
+    const newSeasons = [...seasons, newSeasonInput.trim()];
+    setSeasons(newSeasons);
+    if (newSeasons.length === 1) {
+      setDefaultSeason(newSeasonInput.trim());
+    }
+    setNewSeasonInput('');
+  };
+
+  const handleRemoveSeason = (seasonToRemove: string) => {
+    if (seasons.length === 1) {
+      alert('Cannot remove the last season. At least one season is required.');
+      return;
+    }
+    const newSeasons = seasons.filter(s => s !== seasonToRemove);
+    setSeasons(newSeasons);
+    if (defaultSeason === seasonToRemove) {
+      setDefaultSeason(newSeasons[0]);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -148,18 +181,91 @@ export default function AgeGroupSettingsPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Season *
+                  Default Squad Size
                 </label>
+                <select
+                  name="defaultSquadSize"
+                  value={formData.defaultSquadSize}
+                  onChange={handleInputChange}
+                  disabled={ageGroup.isArchived}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value={5}>5-a-side</option>
+                  <option value={7}>7-a-side</option>
+                  <option value={9}>9-a-side</option>
+                  <option value={11}>11-a-side</option>
+                </select>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Default match format for this age group
+                </p>
+              </div>
+
+            </div>
+
+            {/* Seasons Management */}
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Seasons</h4>
+              
+              {/* Add Season */}
+              <div className="flex gap-2 mb-4">
                 <input
                   type="text"
-                  name="season"
-                  value={formData.season}
-                  onChange={handleInputChange}
-                  required
+                  value={newSeasonInput}
+                  onChange={(e) => setNewSeasonInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSeason())}
                   disabled={ageGroup.isArchived}
                   placeholder="e.g., 2024/25"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 />
+                <button
+                  type="button"
+                  onClick={handleAddSeason}
+                  disabled={ageGroup.isArchived}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  + Add
+                </button>
+              </div>
+
+              {/* Season List */}
+              <div className="space-y-2">
+                {seasons.map((season) => (
+                  <div
+                    key={season}
+                    className={`flex items-center justify-between p-3 rounded-lg border-2 ${
+                      season === defaultSeason
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                        : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium text-gray-900 dark:text-white">{season}</span>
+                      {season === defaultSeason && (
+                        <span className="px-2 py-1 bg-blue-600 text-white text-xs font-medium rounded">Default</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {season !== defaultSeason && (
+                        <button
+                          type="button"
+                          onClick={() => setDefaultSeason(season)}
+                          disabled={ageGroup.isArchived}
+                          className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Set Default
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSeason(season)}
+                        disabled={ageGroup.isArchived || seasons.length === 1}
+                        className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 

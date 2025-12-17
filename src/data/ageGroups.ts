@@ -8,6 +8,9 @@ export const sampleAgeGroups: AgeGroup[] = [
     code: '2014',
     level: 'youth',
     season: '2024/25',
+    seasons: ['2024/25', '2023/24'],
+    defaultSeason: '2024/25',
+    defaultSquadSize: 7,
     description: 'Under-11 age group for players born in 2014',
     coordinatorIds: ['staff-1'],
     isArchived: false
@@ -19,6 +22,9 @@ export const sampleAgeGroups: AgeGroup[] = [
     code: '2013',
     level: 'youth',
     season: '2024/25',
+    seasons: ['2024/25'],
+    defaultSeason: '2024/25',
+    defaultSquadSize: 9,
     description: 'Under-12 age group for players born in 2013',
     coordinatorIds: ['staff-1'],
     isArchived: false
@@ -30,6 +36,9 @@ export const sampleAgeGroups: AgeGroup[] = [
     code: '2012',
     level: 'youth',
     season: '2024/25',
+    seasons: ['2024/25'],
+    defaultSeason: '2024/25',
+    defaultSquadSize: 11,
     description: 'Under-13 age group for players born in 2012',
     coordinatorIds: ['staff-3'],
     isArchived: false
@@ -41,6 +50,9 @@ export const sampleAgeGroups: AgeGroup[] = [
     code: 'amateur',
     level: 'amateur',
     season: '2024/25',
+    seasons: ['2024/25'],
+    defaultSeason: '2024/25',
+    defaultSquadSize: 11,
     description: 'Adult amateur teams for recreational players',
     coordinatorIds: ['staff-4'],
     isArchived: false
@@ -52,6 +64,9 @@ export const sampleAgeGroups: AgeGroup[] = [
     code: 'reserves',
     level: 'reserve',
     season: '2024/25',
+    seasons: ['2024/25', '2023/24'],
+    defaultSeason: '2024/25',
+    defaultSquadSize: 11,
     description: 'Reserve team competing in local leagues',
     coordinatorIds: ['staff-1'],
     isArchived: false
@@ -63,6 +78,9 @@ export const sampleAgeGroups: AgeGroup[] = [
     code: 'senior',
     level: 'senior',
     season: '2024/25',
+    seasons: ['2024/25', '2023/24'],
+    defaultSeason: '2024/25',
+    defaultSquadSize: 11,
     description: 'First team representing the club at the highest level',
     coordinatorIds: ['staff-1'],
     isArchived: false
@@ -74,6 +92,8 @@ export const sampleAgeGroups: AgeGroup[] = [
     code: '2015',
     level: 'youth',
     season: '2023/24',
+    seasons: ['2023/24'],
+    defaultSeason: '2023/24',
     description: 'Archived: Under-10 age group from previous season',
     coordinatorIds: ['staff-2'],
     isArchived: true
