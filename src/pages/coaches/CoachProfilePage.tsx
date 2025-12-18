@@ -23,7 +23,7 @@ export default function CoachProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
           <CoachDetailsHeader coach={coach} />

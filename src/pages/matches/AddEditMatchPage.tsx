@@ -45,7 +45,7 @@ export default function AddEditMatchPage() {
   if (team?.isArchived && matchId === 'new') {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-orange-800 dark:text-orange-300 mb-2">
               Cannot Schedule Match
@@ -135,7 +135,7 @@ export default function AddEditMatchPage() {
   if (!team || !club) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Team not found</h2>
           </div>
@@ -356,7 +356,7 @@ export default function AddEditMatchPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">{/* Header */}
+      <main className="container mx-auto px-4 py-4">{/* Header */}
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <div>

@@ -17,7 +17,7 @@ export default function PlayerProfilePage() {
   if (!player) {
       return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
           </div>
@@ -28,7 +28,7 @@ export default function PlayerProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Player Header */}
         <div className="card mb-6">
           <PlayerDetailsHeader player={player} />

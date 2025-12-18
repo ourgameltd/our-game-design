@@ -16,7 +16,7 @@ export default function PlayerDevelopmentPlansPage() {
   if (!player) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
           </div>
@@ -28,7 +28,7 @@ export default function PlayerDevelopmentPlansPage() {
   if (plans.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">No Development Plans Available</h2>
             <p className="text-gray-600 dark:text-gray-400">
@@ -57,7 +57,7 @@ export default function PlayerDevelopmentPlansPage() {
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Player Header with Plan Selector */}
         <div className="card mb-6">
           <PlayerDetailsHeader player={player} customColorClass="from-indigo-500 to-indigo-600" />

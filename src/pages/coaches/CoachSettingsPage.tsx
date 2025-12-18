@@ -112,7 +112,7 @@ export default function CoachSettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         <PageTitle
           title={isNewCoach ? 'Add New Coach' : 'Coach Settings'}
           subtitle={isNewCoach ? `Add a new coach to ${club?.name}` : `Manage details for ${coach!.firstName} ${coach!.lastName}`}

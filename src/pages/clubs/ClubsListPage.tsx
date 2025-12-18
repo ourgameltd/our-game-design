@@ -6,7 +6,7 @@ import { Routes } from '@utils/routes';
 export default function ClubsListPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         <PageTitle
           title="Clubs You Have Access To"
           subtitle="Select a club to view details and manage teams"

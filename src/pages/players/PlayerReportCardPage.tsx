@@ -16,7 +16,7 @@ export default function PlayerReportCardPage() {
   if (!player) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
           </div>
@@ -28,7 +28,7 @@ export default function PlayerReportCardPage() {
   if (reports.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">No Reports Available</h2>
             <p className="text-gray-600 dark:text-gray-400">
@@ -42,7 +42,7 @@ export default function PlayerReportCardPage() {
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Player Header with Report Selector */}
         <div className="card mb-6">
           <PlayerDetailsHeader player={player} customColorClass="from-blue-500 to-blue-600" />

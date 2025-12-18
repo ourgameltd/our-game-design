@@ -19,7 +19,7 @@ export default function MatchReportPage() {
   if (!match || !team || !club) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Match not found</h2>
           </div>
@@ -123,7 +123,7 @@ export default function MatchReportPage() {
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">     
+      <main className="container mx-auto px-4 py-4">     
         {/* Action Button */}
         <div className="flex justify-end gap-3 mb-4">
           <button

@@ -25,7 +25,7 @@ export default function AgeGroupSettingsPage() {
   if (!ageGroup) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Age group not found</h2>
           </div>
@@ -101,7 +101,7 @@ export default function AgeGroupSettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Header */}
         <PageTitle
           title="Age Group Settings"

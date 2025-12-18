@@ -16,7 +16,7 @@ export default function TrainingSessionPage() {
   if (!session || !team || !club) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Training session not found</h2>
           </div>
@@ -41,7 +41,7 @@ export default function TrainingSessionPage() {
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         {/* Session Header */}
         <div className="card mb-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
