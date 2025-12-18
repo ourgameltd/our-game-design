@@ -87,7 +87,7 @@ export const calculateGroupStatistics = (
   teamIds.forEach(teamId => {
     const team = sampleTeams.find(t => t.id === teamId);
     if (team) {
-      const teamPlayers = samplePlayers.filter(p => p.ageGroupIds.includes(team.ageGroupId));
+      const teamPlayers = samplePlayers.filter(p => p.ageGroupIds.includes(team.ageGroupId) && !p.isArchived);
       teamPlayers.forEach(p => playerIds.add(p.id));
     }
   });

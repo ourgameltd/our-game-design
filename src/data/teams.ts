@@ -100,11 +100,11 @@ export const sampleTeams: Team[] = [
 ];
 
 export const getTeamsByClubId = (clubId: string): Team[] => {
-  return sampleTeams.filter(team => team.clubId === clubId);
+  return sampleTeams.filter(team => team.clubId === clubId && !team.isArchived);
 };
 
 export const getTeamsByAgeGroupId = (ageGroupId: string): Team[] => {
-  return sampleTeams.filter(team => team.ageGroupId === ageGroupId);
+  return sampleTeams.filter(team => team.ageGroupId === ageGroupId && !team.isArchived);
 };
 
 export const getTeamById = (id: string): Team | undefined => {

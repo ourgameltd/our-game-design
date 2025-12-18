@@ -13,9 +13,9 @@ const AgeGroupsListPage: React.FC = () => {
   const { clubId } = useParams<{ clubId: string }>();
   
   const club = sampleClubs.find(c => c.id === clubId);
-  const ageGroups = getAgeGroupsByClubId(clubId || '').sort((a, b) => 
-    a.name.localeCompare(b.name)
-  );
+  const ageGroups = getAgeGroupsByClubId(clubId || '')
+    .filter(ag => !ag.isArchived)
+    .sort((a, b) => a.name.localeCompare(b.name));
   
   if (!club) {
     return (
