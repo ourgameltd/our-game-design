@@ -4,43 +4,55 @@ interface FormationDisplayProps {
   formation: Formation;
   selectedPlayers?: { playerId: string; position: PlayerPosition }[];
   onPositionClick?: (position: PlayerPosition, x: number, y: number) => void;
+  onPlayerClick?: (playerIndex: number) => void;
   getPlayerName?: (playerId: string) => string;
   interactive?: boolean;
   showPlayerNames?: boolean;
   className?: string;
+  highlightedPlayerIndex?: number | null;
 }
 
 export default function FormationDisplay({
   formation,
   selectedPlayers = [],
   onPositionClick,
+  onPlayerClick,
   getPlayerName,
   interactive = false,
   showPlayerNames = true,
   className = '',
+  highlightedPlayerIndex,
 }: FormationDisplayProps) {
   // Track which players have been assigned to avoid duplicates
   const assignedPlayerIds = new Set<string>();
+  
+  // Track mapping from formation position index to startingPlayers array index
+  const playerIndexMap = new Map<number, number>();
 
   // Get player assigned to a specific position
-  const getPlayerAtPosition = (position: PlayerPosition, positionIndex: number) => {
+  const getPlayerAtPosition = (position: PlayerPosition, formationIndex: number) => {
     // Find players with matching position that haven't been assigned yet
-    const playersInPosition = selectedPlayers.filter(
-      p => p.position === position && !assignedPlayerIds.has(p.playerId)
-    );
+    const playersInPosition = selectedPlayers
+      .map((p, idx) => ({ ...p, arrayIndex: idx }))
+      .filter(p => p.position === position && !assignedPlayerIds.has(p.playerId));
     
     if (playersInPosition.length > 0) {
       const player = playersInPosition[0];
       assignedPlayerIds.add(player.playerId);
+      playerIndexMap.set(formationIndex, player.arrayIndex);
       return player;
     }
     
     return undefined;
   };
 
-  const handlePositionClick = (position: PlayerPosition, x: number, y: number) => {
-    if (interactive && onPositionClick) {
-      onPositionClick(position, x, y);
+  const handlePositionClick = (_formationIndex: number, position: PlayerPosition, x: number, y: number, playerArrayIndex?: number) => {
+    if (interactive) {
+      if (playerArrayIndex !== undefined && onPlayerClick) {
+        onPlayerClick(playerArrayIndex);
+      } else if (onPositionClick) {
+        onPositionClick(position, x, y);
+      }
     }
   };
 
@@ -86,15 +98,17 @@ export default function FormationDisplay({
         </svg>
 
         {/* Player positions */}
-        {formation.positions.map((pos, index) => {
-          const player = getPlayerAtPosition(pos.position, index);
+        {formation.positions.map((pos, formationIndex) => {
+          const player = getPlayerAtPosition(pos.position, formationIndex);
           const hasPlayer = !!player;
           const playerName = hasPlayer && getPlayerName ? getPlayerName(player.playerId) : '';
           const initials = playerName ? playerName.split(' ').map(n => n[0]).join('') : '';
+          const playerArrayIndex = hasPlayer ? playerIndexMap.get(formationIndex) : undefined;
+          const isHighlighted = playerArrayIndex !== undefined && playerArrayIndex === highlightedPlayerIndex;
 
           return (
             <div
-              key={index}
+              key={formationIndex}
               className={`absolute transform -translate-x-1/2 -translate-y-1/2 ${
                 interactive ? 'cursor-pointer hover:scale-110' : ''
               } transition-transform duration-200`}
@@ -102,14 +116,16 @@ export default function FormationDisplay({
                 left: `${pos.x}%`,
                 top: `${pos.y}%`,
               }}
-              onClick={() => handlePositionClick(pos.position, pos.x, pos.y)}
+              onClick={() => handlePositionClick(formationIndex, pos.position, pos.x, pos.y, playerArrayIndex)}
             >
               {/* Position marker */}
               <div className="relative">
                 {/* Circle with position or player */}
                 <div
                   className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border-2 shadow-lg transition-colors ${
-                    hasPlayer
+                    isHighlighted
+                      ? 'bg-yellow-500 dark:bg-yellow-600 border-yellow-300 dark:border-yellow-400 ring-4 ring-yellow-400 dark:ring-yellow-500 animate-pulse'
+                      : hasPlayer
                       ? 'bg-blue-600 dark:bg-blue-700 border-blue-400 dark:border-blue-500'
                       : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
                   }`}

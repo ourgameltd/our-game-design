@@ -118,6 +118,9 @@ export default function AddEditMatchPage() {
   const [isLocked, setIsLocked] = useState(existingMatch?.isLocked || false);
 
   const [activeTab, setActiveTab] = useState<'details' | 'lineup' | 'events' | 'report'>('details');
+  
+  // Position swap state - tracks the array index in startingPlayers for precise swapping
+  const [selectedPlayerIndexForSwap, setSelectedPlayerIndexForSwap] = useState<number | null>(null);
 
   if (!team || !club) {
     return (
@@ -196,6 +199,29 @@ export default function AddEditMatchPage() {
       setRatings(ratings.map(r => r.playerId === playerId ? { playerId, rating } : r));
     } else {
       setRatings([...ratings, { playerId, rating }]);
+    }
+  };
+
+  const handlePlayerClickForSwap = (playerIndex: number) => {
+    if (isLocked) return;
+    
+    if (selectedPlayerIndexForSwap === null) {
+      // First click - select this player by index
+      setSelectedPlayerIndexForSwap(playerIndex);
+    } else {
+      // Second click - swap positions
+      if (selectedPlayerIndexForSwap === playerIndex) {
+        // Clicked same player - deselect
+        setSelectedPlayerIndexForSwap(null);
+      } else {
+        // Swap the two players at these indices
+        const newStartingPlayers = [...startingPlayers];
+        const temp = newStartingPlayers[selectedPlayerIndexForSwap];
+        newStartingPlayers[selectedPlayerIndexForSwap] = newStartingPlayers[playerIndex];
+        newStartingPlayers[playerIndex] = temp;
+        setStartingPlayers(newStartingPlayers);
+        setSelectedPlayerIndexForSwap(null);
+      }
     }
   };
 
@@ -870,13 +896,17 @@ export default function AddEditMatchPage() {
                 {/* Right Column: Formation Display */}
                 <div className="lg:sticky lg:top-6 lg:self-start">
                   {formationId ? (
-                    <FormationDisplay
-                      formation={sampleFormations.find(f => f.id === formationId)!}
-                      selectedPlayers={startingPlayers}
-                      getPlayerName={getPlayerName}
-                      showPlayerNames={true}
-                      interactive={false}
-                    />
+                    <>
+                      <FormationDisplay
+                        formation={sampleFormations.find(f => f.id === formationId)!}
+                        selectedPlayers={startingPlayers}
+                        getPlayerName={getPlayerName}
+                        showPlayerNames={true}
+                        interactive={!isLocked}
+                        onPlayerClick={handlePlayerClickForSwap}
+                        highlightedPlayerIndex={selectedPlayerIndexForSwap}
+                      />
+                    </>
                   ) : (
                     <div className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
                       <div className="text-gray-400 dark:text-gray-500 mb-2">

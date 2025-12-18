@@ -4,9 +4,10 @@ import { groupAttributes } from '@/utils/attributeHelpers';
 interface PlayerCardProps {
   player: Player;
   onClick?: () => void;
+  isSelected?: boolean;
 }
 
-export default function PlayerCard({ player, onClick }: PlayerCardProps) {
+export default function PlayerCard({ player, onClick, isSelected = false }: PlayerCardProps) {
   const age = new Date().getFullYear() - player.dateOfBirth.getFullYear();
   
   // Convert player attributes to grouped format and get top 4 attributes
@@ -24,7 +25,9 @@ export default function PlayerCard({ player, onClick }: PlayerCardProps) {
 
   return (
     <div 
-      className={`card-hover h-full flex flex-col ${onClick ? 'cursor-pointer' : ''}`}
+      className={`card-hover h-full flex flex-col ${onClick ? 'cursor-pointer' : ''} ${
+        isSelected ? 'ring-4 ring-primary-500 dark:ring-primary-400 bg-primary-50 dark:bg-primary-900/30' : ''
+      }`}
       onClick={onClick}
     >
       <div className="flex items-start gap-4">
