@@ -264,6 +264,18 @@ export default function MobileNavigation() {
               </Link>
             </li>
 
+            {team && ageGroup && clubId && ageGroupId && (
+              <li className="mobile-nav-item">
+                <Link 
+                  to={`/clubs/${clubId}/age-groups/${ageGroupId}`}
+                  className="mobile-nav-link"
+                >
+                  <Users className="mobile-nav-icon" />
+                  <span className="mobile-nav-text">{ageGroup.name}</span>
+                </Link>
+              </li>
+            )}
+
           </ul>
 
           <div className="mobile-nav-divider"></div>
