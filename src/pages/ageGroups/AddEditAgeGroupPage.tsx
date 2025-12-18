@@ -117,7 +117,7 @@ const AddEditAgeGroupPage: React.FC = () => {
         />
         
         {/* Form */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 max-w-2xl">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name */}
             <div>

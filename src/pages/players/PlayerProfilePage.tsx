@@ -35,7 +35,7 @@ export default function PlayerProfilePage() {
         </div>
 
         {/* Player Stats */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-3 gap-3 mb-8">
           <div className="card">
             <div className="text-sm text-gray-600 mb-1">Appearances</div>
             <div className="text-4xl font-bold text-gray-900 dark:text-white">12</div>
