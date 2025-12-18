@@ -723,35 +723,55 @@ export default function AddEditMatchPage() {
                       Starting {squadSize} ({startingPlayers.length}/{squadSize})
                     </h3>
                 <div className="space-y-2 mb-4">
-                  {startingPlayers.map((player) => {
-                    const playerData = teamPlayers.find(p => p.id === player.playerId);
-                    return (
-                      <div key={player.playerId} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs font-semibold">
-                            {player.position}
-                          </span>
-                          {playerData?.photo && (
-                            <img 
-                              src={playerData.photo} 
-                              alt={getPlayerName(player.playerId)}
-                              className="w-8 h-8 rounded-full object-cover"
-                            />
-                          )}
-                          <span className="text-gray-900 dark:text-white font-medium">
-                            {getPlayerName(player.playerId)}
-                          </span>
+                  {(() => {
+                    // Get the selected formation to access position order
+                    const selectedFormation = sampleFormations.find(f => f.id === formationId);
+                    
+                    // Create a map of position orders from the formation
+                    const positionOrder: Record<string, number> = {};
+                    if (selectedFormation?.positions) {
+                      selectedFormation.positions.forEach((pos, index) => {
+                        positionOrder[pos.position] = index;
+                      });
+                    }
+                    
+                    // Sort starting lineup by formation position order (GK -> Defenders -> Midfielders -> Forwards)
+                    const sortedPlayers = [...startingPlayers].sort((a, b) => {
+                      const orderA = positionOrder[a.position] ?? 999;
+                      const orderB = positionOrder[b.position] ?? 999;
+                      return orderA - orderB;
+                    });
+                    
+                    return sortedPlayers.map((player) => {
+                      const playerData = teamPlayers.find(p => p.id === player.playerId);
+                      return (
+                        <div key={player.playerId} className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs font-semibold">
+                              {player.position}
+                            </span>
+                            {playerData?.photo && (
+                              <img 
+                                src={playerData.photo} 
+                                alt={getPlayerName(player.playerId)}
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            )}
+                            <span className="text-gray-900 dark:text-white font-medium">
+                              {getPlayerName(player.playerId)}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => handleRemoveStartingPlayer(player.playerId)}
+                            disabled={isLocked}
+                            className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Remove
+                          </button>
                         </div>
-                        <button
-                          onClick={() => handleRemoveStartingPlayer(player.playerId)}
-                          disabled={isLocked}
-                          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    );
-                  })}
+                      );
+                    });
+                  })()}
                 </div>
 
                 {startingPlayers.length < squadSize && !isLocked && (

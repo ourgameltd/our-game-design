@@ -19,17 +19,23 @@ export default function FormationDisplay({
   showPlayerNames = true,
   className = '',
 }: FormationDisplayProps) {
+  // Track which players have been assigned to avoid duplicates
+  const assignedPlayerIds = new Set<string>();
+
   // Get player assigned to a specific position
-  const getPlayerAtPosition = (position: PlayerPosition) => {
-    // Find player with matching position (could be multiple players with same position)
-    // We'll try to match based on position first
-    const playersInPosition = selectedPlayers.filter(p => p.position === position);
-    if (playersInPosition.length === 1) {
-      return playersInPosition[0];
+  const getPlayerAtPosition = (position: PlayerPosition, positionIndex: number) => {
+    // Find players with matching position that haven't been assigned yet
+    const playersInPosition = selectedPlayers.filter(
+      p => p.position === position && !assignedPlayerIds.has(p.playerId)
+    );
+    
+    if (playersInPosition.length > 0) {
+      const player = playersInPosition[0];
+      assignedPlayerIds.add(player.playerId);
+      return player;
     }
-    // If multiple players in same position, we'd need more sophisticated matching
-    // For now, return the first one
-    return playersInPosition[0];
+    
+    return undefined;
   };
 
   const handlePositionClick = (position: PlayerPosition, x: number, y: number) => {
@@ -81,7 +87,7 @@ export default function FormationDisplay({
 
         {/* Player positions */}
         {formation.positions.map((pos, index) => {
-          const player = getPlayerAtPosition(pos.position);
+          const player = getPlayerAtPosition(pos.position, index);
           const hasPlayer = !!player;
           const playerName = hasPlayer && getPlayerName ? getPlayerName(player.playerId) : '';
           const initials = playerName ? playerName.split(' ').map(n => n[0]).join('') : '';
