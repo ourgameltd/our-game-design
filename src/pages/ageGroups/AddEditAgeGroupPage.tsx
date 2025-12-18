@@ -219,6 +219,7 @@ const AddEditAgeGroupPage: React.FC = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
+                <option value={4}>4-a-side</option>
                 <option value={5}>5-a-side</option>
                 <option value={7}>7-a-side</option>
                 <option value={9}>9-a-side</option>

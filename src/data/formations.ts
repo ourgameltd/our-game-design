@@ -239,6 +239,98 @@ export const sampleFormations: Formation[] = [
     ]
   },
   
+  // 4-a-side formations (for young players)
+  {
+    id: 'f4a1b2c3-d4e5-f6a7-b8c9-d0e1f2a3b4c5',
+    name: '1-2-1',
+    system: '1-2-1',
+    squadSize: 4,
+    positions: [
+      { position: 'CB', x: 50, y: 25 },
+      { position: 'CM', x: 35, y: 55 },
+      { position: 'CM', x: 65, y: 55 },
+      { position: 'ST', x: 50, y: 85 }
+    ],
+    description: 'Basic 4-a-side formation with one defender and two midfielders',
+    tactics: [
+      'Single defender covers back',
+      'Two players share attacking duties',
+      'Encourage passing and movement'
+    ]
+  },
+  {
+    id: 'f4b2c3d4-e5f6-a7b8-c9d0-e1f2a3b4c5d6',
+    name: '2-1-1',
+    system: '2-1-1',
+    squadSize: 4,
+    positions: [
+      { position: 'CB', x: 35, y: 30 },
+      { position: 'CB', x: 65, y: 30 },
+      { position: 'CM', x: 50, y: 60 },
+      { position: 'ST', x: 50, y: 85 }
+    ],
+    description: 'Defensive 4-a-side with two defenders',
+    tactics: [
+      'Two defenders provide security',
+      'Central midfielder links play',
+      'Focus on defensive shape'
+    ]
+  },
+  {
+    id: 'f4c3d4e5-f6a7-b8c9-d0e1-f2a3b4c5d6e7',
+    name: '1-1-1-1',
+    system: '1-1-1-1',
+    squadSize: 4,
+    positions: [
+      { position: 'CB', x: 50, y: 25 },
+      { position: 'CM', x: 50, y: 50 },
+      { position: 'CAM', x: 50, y: 70 },
+      { position: 'ST', x: 50, y: 88 }
+    ],
+    description: 'Simple line formation ideal for teaching positioning',
+    tactics: [
+      'Clear positional roles',
+      'Easy to understand spacing',
+      'Develops fundamental awareness'
+    ]
+  },
+  {
+    id: 'f4d4e5f6-a7b8-c9d0-e1f2-a3b4c5d6e7f8',
+    name: '1-2-1 (All Attack)',
+    system: '1-2-1',
+    squadSize: 4,
+    positions: [
+      { position: 'CM', x: 50, y: 35 },
+      { position: 'LM', x: 30, y: 60 },
+      { position: 'RM', x: 70, y: 60 },
+      { position: 'ST', x: 50, y: 85 }
+    ],
+    description: 'Attacking 4-a-side encouraging forward play and creativity',
+    tactics: [
+      'All players push forward',
+      'Develops attacking mindset',
+      'Promotes teamwork and passing'
+    ]
+  },
+  {
+    id: 'f4e5f6a7-b8c9-d0e1-f2a3-b4c5d6e7f8a9',
+    name: '1-2-1 Diamond',
+    system: '1-2-1',
+    squadSize: 4,
+    positions: [
+      { position: 'CB', x: 50, y: 25 },
+      { position: 'LM', x: 30, y: 55 },
+      { position: 'RM', x: 70, y: 55 },
+      { position: 'ST', x: 50, y: 85 }
+    ],
+    description: 'Diamond shape teaching width and support play',
+    tactics: [
+      'Wide players provide options',
+      'Creates triangles for passing',
+      'Teaches width and support'
+    ]
+  },
+  
   // 5-a-side formations
   {
     id: 'fbe2f3a4-b5c6-d7e8-f9a0-b1c2d3e4f5a6',
@@ -295,6 +387,513 @@ export const sampleFormations: Formation[] = [
       'Single defender',
       'Midfielder supports attack',
       'Two strikers partnership'
+    ]
+  },
+  
+  // Additional 11-a-side formations
+  {
+    id: 'f10d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f',
+    name: '4-1-4-1',
+    system: '4-1-4-1',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'CDM', x: 50, y: 38 },
+      { position: 'LM', x: 20, y: 58 },
+      { position: 'CM', x: 40, y: 55 },
+      { position: 'CM', x: 60, y: 55 },
+      { position: 'RM', x: 80, y: 58 },
+      { position: 'ST', x: 50, y: 85 }
+    ],
+    description: 'Defensive 4-1-4-1 with holding midfielder protecting the back four',
+    tactics: [
+      'Deep-lying midfielder shields defense',
+      'Wide midfielders provide width',
+      'Lone striker holds up play'
+    ]
+  },
+  {
+    id: 'f11e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a',
+    name: '3-4-3',
+    system: '3-4-3',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 30, y: 20 },
+      { position: 'CB', x: 50, y: 15 },
+      { position: 'CB', x: 70, y: 20 },
+      { position: 'LM', x: 20, y: 50 },
+      { position: 'CM', x: 40, y: 48 },
+      { position: 'CM', x: 60, y: 48 },
+      { position: 'RM', x: 80, y: 50 },
+      { position: 'LW', x: 25, y: 78 },
+      { position: 'ST', x: 50, y: 85 },
+      { position: 'RW', x: 75, y: 78 }
+    ],
+    description: 'Attacking 3-4-3 with three center backs and wide forwards',
+    tactics: [
+      'Three center backs cover width',
+      'Flat midfield four',
+      'Attacking trio up front'
+    ]
+  },
+  {
+    id: 'f12f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b',
+    name: '5-3-2',
+    system: '5-3-2',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LWB', x: 15, y: 28 },
+      { position: 'CB', x: 33, y: 18 },
+      { position: 'CB', x: 50, y: 15 },
+      { position: 'CB', x: 67, y: 18 },
+      { position: 'RWB', x: 85, y: 28 },
+      { position: 'CM', x: 35, y: 52 },
+      { position: 'CM', x: 50, y: 50 },
+      { position: 'CM', x: 65, y: 52 },
+      { position: 'ST', x: 40, y: 82 },
+      { position: 'ST', x: 60, y: 82 }
+    ],
+    description: 'Very defensive formation with five defenders and wing-backs',
+    tactics: [
+      'Five-man defensive line',
+      'Wing-backs provide width',
+      'Counter-attacking through strikers'
+    ]
+  },
+  {
+    id: 'f13a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c',
+    name: '4-5-1',
+    system: '4-5-1',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'LM', x: 18, y: 55 },
+      { position: 'CM', x: 35, y: 50 },
+      { position: 'CM', x: 50, y: 48 },
+      { position: 'CM', x: 65, y: 50 },
+      { position: 'RM', x: 82, y: 55 },
+      { position: 'ST', x: 50, y: 85 }
+    ],
+    description: 'Compact 4-5-1 with packed midfield',
+    tactics: [
+      'Five-man midfield controls center',
+      'Difficult to break down',
+      'Quick transitions to attack'
+    ]
+  },
+  {
+    id: 'f14b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d',
+    name: '4-3-2-1',
+    system: '4-3-2-1',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'CDM', x: 50, y: 40 },
+      { position: 'CM', x: 38, y: 52 },
+      { position: 'CM', x: 62, y: 52 },
+      { position: 'CAM', x: 38, y: 70 },
+      { position: 'CAM', x: 62, y: 70 },
+      { position: 'ST', x: 50, y: 88 }
+    ],
+    description: 'Christmas tree formation with two attacking midfielders',
+    tactics: [
+      'Holding midfielder anchors',
+      'Two playmakers behind striker',
+      'Fluid attacking movement'
+    ]
+  },
+  {
+    id: 'f15c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e',
+    name: '4-4-1-1',
+    system: '4-4-1-1',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'LM', x: 20, y: 52 },
+      { position: 'CM', x: 40, y: 48 },
+      { position: 'CM', x: 60, y: 48 },
+      { position: 'RM', x: 80, y: 52 },
+      { position: 'CAM', x: 50, y: 70 },
+      { position: 'ST', x: 50, y: 88 }
+    ],
+    description: 'Variation of 4-4-2 with attacking midfielder',
+    tactics: [
+      'Solid midfield four',
+      'Number 10 supports striker',
+      'Can switch to 4-4-2 easily'
+    ]
+  },
+  
+  // Additional 9-a-side formations
+  {
+    id: 'f16d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f',
+    name: '3-4-1',
+    system: '3-4-1',
+    squadSize: 9,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 30, y: 22 },
+      { position: 'CB', x: 50, y: 18 },
+      { position: 'CB', x: 70, y: 22 },
+      { position: 'LM', x: 22, y: 50 },
+      { position: 'CM', x: 40, y: 48 },
+      { position: 'CM', x: 60, y: 48 },
+      { position: 'RM', x: 78, y: 50 },
+      { position: 'ST', x: 50, y: 82 }
+    ],
+    description: 'Defensive 9-a-side with strong midfield',
+    tactics: [
+      'Three solid center backs',
+      'Four-man midfield',
+      'Lone striker holds up play'
+    ]
+  },
+  {
+    id: 'f17e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a',
+    name: '2-4-2',
+    system: '2-4-2',
+    squadSize: 9,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 35, y: 22 },
+      { position: 'CB', x: 65, y: 22 },
+      { position: 'LM', x: 22, y: 50 },
+      { position: 'CM', x: 40, y: 48 },
+      { position: 'CM', x: 60, y: 48 },
+      { position: 'RM', x: 78, y: 50 },
+      { position: 'ST', x: 40, y: 80 },
+      { position: 'ST', x: 60, y: 80 }
+    ],
+    description: 'Balanced 9-a-side with strong midfield presence',
+    tactics: [
+      'Two center backs',
+      'Four-man midfield dominance',
+      'Two strikers for attacking threat'
+    ]
+  },
+  
+  // Additional 7-a-side formations
+  {
+    id: 'f18f3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b',
+    name: '1-3-2',
+    system: '1-3-2',
+    squadSize: 7,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 50, y: 25 },
+      { position: 'LM', x: 28, y: 52 },
+      { position: 'CM', x: 50, y: 50 },
+      { position: 'RM', x: 72, y: 52 },
+      { position: 'ST', x: 40, y: 82 },
+      { position: 'ST', x: 60, y: 82 }
+    ],
+    description: 'Attacking 7-a-side with one defender',
+    tactics: [
+      'Single sweeper at back',
+      'Midfield three controls game',
+      'Two strikers partnership'
+    ]
+  },
+  {
+    id: 'f19a4b5c-6d7e-8f9a-0b1c-2d3e4f5a6b7c',
+    name: '2-1-3',
+    system: '2-1-3',
+    squadSize: 7,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 35, y: 25 },
+      { position: 'CB', x: 65, y: 25 },
+      { position: 'CM', x: 50, y: 50 },
+      { position: 'LW', x: 28, y: 78 },
+      { position: 'ST', x: 50, y: 85 },
+      { position: 'RW', x: 72, y: 78 }
+    ],
+    description: 'Very attacking 7-a-side with front three',
+    tactics: [
+      'Two center backs provide base',
+      'Central midfielder links play',
+      'Three forwards attacking threat'
+    ]
+  },
+  
+  // Experimental & Unusual Formations from Recent Football History
+  {
+    id: 'f20b5c6d-7e8f-9a0b-1c2d-3e4f5a6b7c8d',
+    name: '3-3-1-3 (Gasperini)',
+    system: '3-3-1-3',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 30, y: 20 },
+      { position: 'CB', x: 50, y: 15 },
+      { position: 'CB', x: 70, y: 20 },
+      { position: 'LWB', x: 15, y: 48 },
+      { position: 'CM', x: 50, y: 42 },
+      { position: 'RWB', x: 85, y: 48 },
+      { position: 'CAM', x: 50, y: 62 },
+      { position: 'LW', x: 20, y: 78 },
+      { position: 'ST', x: 50, y: 85 },
+      { position: 'RW', x: 80, y: 78 }
+    ],
+    description: "Atalanta's ultra-attacking system under Gasperini with aggressive wing-backs",
+    tactics: [
+      'Wing-backs push extremely high',
+      'Single pivot midfielder',
+      'Front four overloads opposition',
+      'High pressing intensity'
+    ]
+  },
+  {
+    id: 'f21c6d7e-8f9a-0b1c-2d3e-4f5a6b7c8d9e',
+    name: '2-7-2 (Bielsa)',
+    system: '2-7-2',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 38, y: 20 },
+      { position: 'CB', x: 62, y: 20 },
+      { position: 'LWB', x: 12, y: 42 },
+      { position: 'CDM', x: 35, y: 38 },
+      { position: 'CDM', x: 65, y: 38 },
+      { position: 'CM', x: 28, y: 55 },
+      { position: 'CM', x: 50, y: 58 },
+      { position: 'CM', x: 72, y: 55 },
+      { position: 'RWB', x: 88, y: 42 },
+      { position: 'ST', x: 40, y: 82 },
+      { position: 'ST', x: 60, y: 82 }
+    ],
+    description: "Marcelo Bielsa's man-marking system with extreme midfield overload",
+    tactics: [
+      'Man-marking across the pitch',
+      'Seven-man midfield dominance',
+      'Ultra-high intensity pressing',
+      'Rapid transitions'
+    ]
+  },
+  {
+    id: 'f22d7e8f-9a0b-1c2d-3e4f-5a6b7c8d9e0f',
+    name: '4-2-2-2 (Rangnick)',
+    system: '4-2-2-2',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'CDM', x: 40, y: 42 },
+      { position: 'CDM', x: 60, y: 42 },
+      { position: 'CAM', x: 38, y: 65 },
+      { position: 'CAM', x: 62, y: 65 },
+      { position: 'ST', x: 40, y: 85 },
+      { position: 'ST', x: 60, y: 85 }
+    ],
+    description: "Ralf Rangnick's gegenpressing system with compact diamond midfield",
+    tactics: [
+      'Immediate counter-pressing',
+      'Compact diamond shape',
+      'Two strikers press together',
+      'Quick vertical passes'
+    ]
+  },
+  {
+    id: 'f23e8f9a-0b1c-2d3e-4f5a-6b7c8d9e0f1a',
+    name: '2-3-5 (Inverted Fullbacks)',
+    system: '2-3-5',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 35, y: 20 },
+      { position: 'CB', x: 65, y: 20 },
+      { position: 'LB', x: 28, y: 42 },
+      { position: 'CDM', x: 50, y: 40 },
+      { position: 'RB', x: 72, y: 42 },
+      { position: 'LW', x: 12, y: 70 },
+      { position: 'CAM', x: 38, y: 72 },
+      { position: 'CAM', x: 62, y: 72 },
+      { position: 'RW', x: 88, y: 70 },
+      { position: 'ST', x: 50, y: 88 }
+    ],
+    description: "Manchester City's inverted fullbacks creating 2-3-5 in possession",
+    tactics: [
+      'Fullbacks invert into midfield',
+      'Five attackers in final third',
+      'Numerical superiority high up',
+      'Possession-based control'
+    ]
+  },
+  {
+    id: 'f24f9a0b-1c2d-3e4f-5a6b-7c8d9e0f1a2b',
+    name: '4-6-0 (False Nine)',
+    system: '4-6-0',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'CDM', x: 50, y: 42 },
+      { position: 'LM', x: 25, y: 58 },
+      { position: 'CM', x: 40, y: 55 },
+      { position: 'CM', x: 60, y: 55 },
+      { position: 'RM', x: 75, y: 58 },
+      { position: 'CF', x: 50, y: 75 }
+    ],
+    description: "Spain Euro 2012 'false nine' system with no traditional striker",
+    tactics: [
+      'False nine drops deep',
+      'Overload midfield areas',
+      'Continuous movement',
+      'Possession dominance'
+    ]
+  },
+  {
+    id: 'f25a0b1c-2d3e-4f5a-6b7c-8d9e0f1a2b3c',
+    name: '3-1-6 (De Zerbi)',
+    system: '3-1-6',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 30, y: 18 },
+      { position: 'CB', x: 50, y: 15 },
+      { position: 'CB', x: 70, y: 18 },
+      { position: 'CDM', x: 50, y: 35 },
+      { position: 'LWB', x: 18, y: 55 },
+      { position: 'CM', x: 38, y: 52 },
+      { position: 'CM', x: 62, y: 52 },
+      { position: 'RWB', x: 82, y: 55 },
+      { position: 'LW', x: 25, y: 78 },
+      { position: 'RW', x: 75, y: 78 }
+    ],
+    description: "Roberto De Zerbi's ultra-attacking positional play system",
+    tactics: [
+      'Build-up with six attackers',
+      'Single pivot orchestrates',
+      'Extreme width and overloads',
+      'Technical superiority'
+    ]
+  },
+  {
+    id: 'f26b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d',
+    name: '4-4-2 Diamond',
+    system: '4-4-2',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'CDM', x: 50, y: 40 },
+      { position: 'CM', x: 35, y: 55 },
+      { position: 'CM', x: 65, y: 55 },
+      { position: 'CAM', x: 50, y: 68 },
+      { position: 'ST', x: 40, y: 85 },
+      { position: 'ST', x: 60, y: 85 }
+    ],
+    description: "Carlo Ancelotti's diamond midfield overwhelming central areas",
+    tactics: [
+      'Dominate central corridor',
+      'Number 10 creates space',
+      'Narrow attacking shape',
+      'Full-backs provide width'
+    ]
+  },
+  {
+    id: 'f27c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e',
+    name: '3-2-4-1 (Pyramid)',
+    system: '3-2-4-1',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'CB', x: 30, y: 20 },
+      { position: 'CB', x: 50, y: 15 },
+      { position: 'CB', x: 70, y: 20 },
+      { position: 'CM', x: 40, y: 42 },
+      { position: 'CM', x: 60, y: 42 },
+      { position: 'LW', x: 20, y: 65 },
+      { position: 'CAM', x: 40, y: 68 },
+      { position: 'CAM', x: 60, y: 68 },
+      { position: 'RW', x: 80, y: 65 },
+      { position: 'ST', x: 50, y: 88 }
+    ],
+    description: 'Modern interpretation of WM formation with four attacking midfielders',
+    tactics: [
+      'Retro pyramid structure',
+      'Four creative playmakers',
+      'Wide forwards cut inside',
+      'Lone striker target man'
+    ]
+  },
+  {
+    id: 'f28d3e4f-5a6b-7c8d-9e0f-1a2b3c4d5e6f',
+    name: '4-1-3-2 (Conte)',
+    system: '4-1-3-2',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LB', x: 20, y: 25 },
+      { position: 'CB', x: 40, y: 20 },
+      { position: 'CB', x: 60, y: 20 },
+      { position: 'RB', x: 80, y: 25 },
+      { position: 'CDM', x: 50, y: 40 },
+      { position: 'LM', x: 30, y: 58 },
+      { position: 'CAM', x: 50, y: 62 },
+      { position: 'RM', x: 70, y: 58 },
+      { position: 'ST', x: 40, y: 82 },
+      { position: 'ST', x: 60, y: 82 }
+    ],
+    description: "Antonio Conte's transition from back three to aggressive 4-1-3-2",
+    tactics: [
+      'Quick transitions forward',
+      'Wing-backs become wingers',
+      'Striker partnership',
+      'Direct vertical play'
+    ]
+  },
+  {
+    id: 'f29e4f5a-6b7c-8d9e-0f1a-2b3c4d5e6f7a',
+    name: '5-2-3 (Mourinho Low Block)',
+    system: '5-2-3',
+    squadSize: 11,
+    positions: [
+      { position: 'GK', x: 50, y: 5 },
+      { position: 'LWB', x: 15, y: 30 },
+      { position: 'CB', x: 33, y: 22 },
+      { position: 'CB', x: 50, y: 18 },
+      { position: 'CB', x: 67, y: 22 },
+      { position: 'RWB', x: 85, y: 30 },
+      { position: 'CDM', x: 40, y: 45 },
+      { position: 'CDM', x: 60, y: 45 },
+      { position: 'LW', x: 30, y: 70 },
+      { position: 'ST', x: 50, y: 75 },
+      { position: 'RW', x: 70, y: 70 }
+    ],
+    description: "José Mourinho's defensive masterclass turning to counter-attack",
+    tactics: [
+      'Deep defensive block',
+      'Five defenders + two shields',
+      'Rapid counter-attacks',
+      'Clinical transitions'
     ]
   }
 ];

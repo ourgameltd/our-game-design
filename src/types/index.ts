@@ -1,5 +1,5 @@
 // Squad Size Types
-export type SquadSize = 5 | 7 | 9 | 11;
+export type SquadSize = 4 | 5 | 7 | 9 | 11;
 
 // Kit Types
 export interface Kit {
