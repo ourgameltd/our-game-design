@@ -8,8 +8,6 @@ import { sampleFormations, getFormationsBySquadSize } from '@/data/formations';
 import { getAgeGroupById, sampleAgeGroups } from '@/data/ageGroups';
 import { PlayerPosition, SquadSize } from '@/types';
 import { Routes } from '@utils/routes';
-import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
-import PageNavigation from '@/components/navigation/PageNavigation';
 import FormationDisplay from '@/components/formation/FormationDisplay';
 
 export default function AddEditMatchPage() {
@@ -358,10 +356,7 @@ export default function AddEditMatchPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
-      <main className="container mx-auto px-4 py-8">
-        {/* Header */}
+      <main className="container mx-auto px-4 py-8">{/* Header */}
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <div>

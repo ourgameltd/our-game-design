@@ -3,9 +3,7 @@ import { getAgeGroupById } from '@data/ageGroups';
 import { getCoachesByAgeGroup } from '@data/coaches';
 import { getTeamsByAgeGroupId } from '@data/teams';
 import CoachCard from '@components/coach/CoachCard';
-import PageNavigation from '@components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
-import { getAgeGroupNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
 export default function AgeGroupCoachesPage() {
@@ -27,9 +25,6 @@ export default function AgeGroupCoachesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <PageTitle
           title={`${ageGroup.name} - Coaches`}

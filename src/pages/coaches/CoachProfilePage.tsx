@@ -4,8 +4,6 @@ import { getTeamsByIds } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
 import { getClubById } from '@data/clubs';
 import CoachDetailsHeader from '@components/coach/CoachDetailsHeader';
-import PageNavigation from '@components/navigation/PageNavigation';
-import { getCoachNavigationTabs } from '@utils/navigationHelpers';
 
 export default function CoachProfilePage() {
   const { clubId, coachId } = useParams();
@@ -25,8 +23,6 @@ export default function CoachProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={getCoachNavigationTabs(clubId!, coachId!)} />
-      
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">

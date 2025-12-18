@@ -1,8 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { getPlayerById } from '@data/players';
-import PageNavigation from '@components/navigation/PageNavigation';
-import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
 import { groupAttributes, getQualityColor, calculateOverallRating } from '@utils/attributeHelpers';
 import { PlayerAttributes, AttributeEvaluation } from '@/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -24,7 +22,6 @@ export default function PlayerAbilitiesPage() {
   if (!player) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
         <main className="container mx-auto px-4 py-8">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
@@ -197,8 +194,6 @@ export default function PlayerAbilitiesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
-
       <main className="container mx-auto px-4 py-8">
         {/* Header with Action Button */}
         <div className="flex justify-between items-center mb-6">

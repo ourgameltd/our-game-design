@@ -6,9 +6,7 @@ import { getTeamById } from '@data/teams';
 import StatsGrid from '@components/stats/StatsGrid';
 import UpcomingMatchesCard from '@components/matches/UpcomingMatchesCard';
 import PreviousResultsCard from '@components/matches/PreviousResultsCard';
-import PageNavigation from '@components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
-import { getClubNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
 export default function ClubOverviewPage() {
@@ -24,9 +22,6 @@ export default function ClubOverviewPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getClubNavigationTabs(clubId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <PageTitle
           title={club.name}

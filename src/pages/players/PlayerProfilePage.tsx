@@ -3,8 +3,6 @@ import { getPlayerById } from '@data/players';
 import { getPlayerRecentPerformances, getUpcomingMatchesByTeamIds } from '@data/matches';
 import { getTeamById } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
-import PageNavigation from '@components/navigation/PageNavigation';
-import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
 import RecentPerformanceCard from '@components/player/RecentPerformanceCard';
@@ -19,9 +17,6 @@ export default function PlayerProfilePage() {
   if (!player) {
       return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Navigation Tabs */}
-        <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
-
         <main className="container mx-auto px-4 py-8">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
@@ -33,9 +28,6 @@ export default function PlayerProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
-
       <main className="container mx-auto px-4 py-8">
         {/* Player Header */}
         <div className="card mb-6">

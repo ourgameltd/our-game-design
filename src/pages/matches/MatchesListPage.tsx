@@ -3,8 +3,6 @@ import { sampleMatches } from '@/data/matches';
 import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
 import { Routes } from '@utils/routes';
-import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
-import PageNavigation from '@/components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
 import MatchesListContent from '@/components/matches/MatchesListContent';
 
@@ -31,8 +29,6 @@ export default function MatchesListPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">

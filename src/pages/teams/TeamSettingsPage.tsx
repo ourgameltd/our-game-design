@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTeamById } from '@/data/teams';
-import PageNavigation from '@/components/navigation/PageNavigation';
 import PageTitle from '@/components/common/PageTitle';
-import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 import { Routes } from '@/utils/routes';
 
 export default function TeamSettingsPage() {
@@ -71,8 +69,6 @@ export default function TeamSettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
-
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <PageTitle

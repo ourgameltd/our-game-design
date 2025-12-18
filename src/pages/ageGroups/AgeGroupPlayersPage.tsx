@@ -3,9 +3,7 @@ import { useState } from 'react';
 import { getAgeGroupById } from '@data/ageGroups';
 import { getPlayersByAgeGroupId } from '@data/players';
 import PlayerCard from '@components/player/PlayerCard';
-import PageNavigation from '@components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
-import { getAgeGroupNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
 export default function AgeGroupPlayersPage() {
@@ -32,9 +30,6 @@ export default function AgeGroupPlayersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getAgeGroupNavigationTabs(clubId!, ageGroupId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <PageTitle
           title={`${ageGroup.name} - Players`}

@@ -4,9 +4,7 @@ import { sampleClubs } from '@/data/clubs';
 import { Kit } from '@/types';
 import KitBuilder from '@/components/kit/KitBuilder';
 import KitCard from '@/components/kit/KitCard';
-import PageNavigation from '@/components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
-import { getClubNavigationTabs } from '@/utils/navigationHelpers';
 
 export default function ClubKitsPage() {
   const { clubId } = useParams();
@@ -65,8 +63,6 @@ export default function ClubKitsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={getClubNavigationTabs(clubId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <PageTitle
           title={`${club.name} - Kit Management`}

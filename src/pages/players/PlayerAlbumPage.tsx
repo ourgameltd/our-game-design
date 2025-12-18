@@ -1,7 +1,5 @@
 import { useParams } from 'react-router-dom';
 import { getPlayerById } from '@data/players';
-import PageNavigation from '@components/navigation/PageNavigation';
-import { getPlayerNavigationTabs, getClubPlayerNavigationTabs } from '@utils/navigationHelpers';
 import PageTitle from '@components/common/PageTitle';
 import ImageAlbum from '@components/player/ImageAlbum';
 import { PlayerImage } from '@/types';
@@ -12,15 +10,9 @@ export default function PlayerAlbumPage() {
   const player = getPlayerById(playerId!);
   const [albumImages, setAlbumImages] = useState<PlayerImage[]>(player?.album || []);
 
-  // Determine which navigation tabs to use based on whether we have an ageGroupId
-  const navigationTabs = ageGroupId 
-    ? getPlayerNavigationTabs(clubId!, ageGroupId, playerId!)
-    : getClubPlayerNavigationTabs(clubId!, playerId!);
-
   if (!player) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <PageNavigation tabs={navigationTabs} />
         <main className="container mx-auto px-4 py-8">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
@@ -46,8 +38,6 @@ export default function PlayerAlbumPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={navigationTabs} />
-
       <main className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="mb-6">

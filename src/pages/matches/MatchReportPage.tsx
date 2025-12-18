@@ -4,9 +4,7 @@ import { samplePlayers } from '@/data/players';
 import { sampleCoaches } from '@/data/coaches';
 import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
-import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 import { Routes } from '@/utils/routes';
-import PageNavigation from '@/components/navigation/PageNavigation';
 import MatchPreviewCard from '@/components/match/MatchPreviewCard';
 import { Kit } from '@/types';
 
@@ -125,9 +123,6 @@ export default function MatchReportPage() {
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
-
       <main className="container mx-auto px-4 py-8">     
         {/* Action Button */}
         <div className="flex justify-end gap-3 mb-4">

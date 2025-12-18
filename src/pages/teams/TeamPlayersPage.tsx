@@ -3,9 +3,7 @@ import { useState } from 'react';
 import { getTeamById } from '@data/teams';
 import { getPlayersByTeamId, getPlayersByAgeGroupId } from '@data/players';
 import PlayerCard from '@components/player/PlayerCard';
-import PageNavigation from '@components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
-import { getTeamNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
 export default function TeamPlayersPage() {
@@ -39,9 +37,6 @@ export default function TeamPlayersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex-grow">

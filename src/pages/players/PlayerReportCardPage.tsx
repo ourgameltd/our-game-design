@@ -2,8 +2,6 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { samplePlayers } from '@/data/players';
 import { getReportsByPlayerId } from '@/data/reports';
-import PageNavigation from '@components/navigation/PageNavigation';
-import { getPlayerNavigationTabs } from '@utils/navigationHelpers';
 import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
 
 export default function PlayerReportCardPage() {
@@ -18,9 +16,6 @@ export default function PlayerReportCardPage() {
   if (!player) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Navigation Tabs */}
-        <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
-
         <main className="container mx-auto px-4 py-8">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
@@ -33,9 +28,6 @@ export default function PlayerReportCardPage() {
   if (reports.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
-
         <main className="container mx-auto px-4 py-8">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">No Reports Available</h2>
@@ -50,9 +42,6 @@ export default function PlayerReportCardPage() {
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
-      
       <main className="container mx-auto px-4 py-8">
         {/* Player Header with Report Selector */}
         <div className="card mb-6">

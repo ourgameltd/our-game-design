@@ -5,9 +5,7 @@ import { sampleClubs } from '@/data/clubs';
 import { Kit } from '@/types';
 import KitBuilder from '@/components/kit/KitBuilder';
 import KitCard from '@/components/kit/KitCard';
-import PageNavigation from '@/components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
-import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
 
 export default function TeamKitsPage() {
   const { clubId, ageGroupId, teamId } = useParams();
@@ -77,8 +75,6 @@ export default function TeamKitsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex-grow">

@@ -8,9 +8,7 @@ import UpcomingMatchesCard from '@components/matches/UpcomingMatchesCard';
 import PreviousResultsCard from '@components/matches/PreviousResultsCard';
 import TopPerformersCard from '@components/players/TopPerformersCard';
 import NeedsSupportCard from '@components/players/NeedsSupportCard';
-import PageNavigation from '@components/navigation/PageNavigation';
 import PageTitle from '@components/common/PageTitle';
-import { getTeamNavigationTabs } from '@utils/navigationHelpers';
 import { Routes } from '@utils/routes';
 
 export default function TeamOverviewPage() {
@@ -46,9 +44,6 @@ export default function TeamOverviewPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getTeamNavigationTabs(clubId!, ageGroupId!, teamId!)} />
-      
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex-grow">

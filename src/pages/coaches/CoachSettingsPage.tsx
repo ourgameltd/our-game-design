@@ -6,8 +6,6 @@ import { getTeamsByClubId } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
 import { Routes } from '@utils/routes';
 import PageTitle from '@components/common/PageTitle';
-import PageNavigation from '@components/navigation/PageNavigation';
-import { getCoachNavigationTabs } from '@utils/navigationHelpers';
 
 export default function CoachSettingsPage() {
   const { clubId, coachId } = useParams();
@@ -114,8 +112,6 @@ export default function CoachSettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={getCoachNavigationTabs(clubId!, coachId!)} />
-      
       <main className="container mx-auto px-4 py-8">
         <PageTitle
           title={isNewCoach ? 'Add New Coach' : 'Coach Settings'}

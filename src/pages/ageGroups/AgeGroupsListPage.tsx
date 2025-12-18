@@ -3,9 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getAgeGroupsByClubId } from '../../data/ageGroups';
 import { getAgeGroupStatistics } from '../../data/statistics';
 import { sampleClubs } from '../../data/clubs';
-import PageNavigation from '../../components/navigation/PageNavigation';
 import PageTitle from '../../components/common/PageTitle';
-import { getClubNavigationTabs } from '../../utils/navigationHelpers';
 import { getGradientColors, getContrastTextColorClass } from '../../utils/colorHelpers';
 import { Routes } from '@utils/routes';
 
@@ -27,9 +25,6 @@ const AgeGroupsListPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getClubNavigationTabs(clubId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <PageTitle
           title="Age Groups"

@@ -1,7 +1,5 @@
 import { useParams } from 'react-router-dom';
 import { getClubById } from '@data/clubs';
-import PageNavigation from '@components/navigation/PageNavigation';
-import { getClubNavigationTabs } from '@utils/navigationHelpers';
 
 export default function ClubEthosPage() {
   const { clubId } = useParams();
@@ -13,9 +11,6 @@ export default function ClubEthosPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Tabs */}
-      <PageNavigation tabs={getClubNavigationTabs(clubId!)} />
-
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Club History */}

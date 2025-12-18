@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPlayerById } from '@/data/players';
-import PageNavigation from '@/components/navigation/PageNavigation';
 import PageTitle from '@/components/common/PageTitle';
-import { getPlayerNavigationTabs } from '@/utils/navigationHelpers';
 import { Routes } from '@/utils/routes';
 import { PlayerPosition } from '@/types';
 
@@ -48,7 +46,6 @@ export default function PlayerSettingsPage() {
   if (!isNewPlayer && !player) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
         <main className="container mx-auto px-4 py-8">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Player not found</h2>
@@ -176,8 +173,6 @@ export default function PlayerSettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageNavigation tabs={getPlayerNavigationTabs(clubId!, ageGroupId!, playerId!)} />
-
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <PageTitle
