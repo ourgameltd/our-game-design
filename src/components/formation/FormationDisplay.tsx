@@ -23,39 +23,9 @@ export default function FormationDisplay({
   className = '',
   highlightedPlayerIndex,
 }: FormationDisplayProps) {
-  // Track which players have been assigned to avoid duplicates
-  const assignedPlayerIds = new Set<string>();
+  // Create a mapping: for each formation position, assign a player from selectedPlayers
+  // This allows players to be in any position regardless of their stored position label
   
-  // Track mapping from formation position index to startingPlayers array index
-  const playerIndexMap = new Map<number, number>();
-
-  // Get player assigned to a specific position
-  const getPlayerAtPosition = (position: PlayerPosition, formationIndex: number) => {
-    // Find players with matching position that haven't been assigned yet
-    const playersInPosition = selectedPlayers
-      .map((p, idx) => ({ ...p, arrayIndex: idx }))
-      .filter(p => p.position === position && !assignedPlayerIds.has(p.playerId));
-    
-    if (playersInPosition.length > 0) {
-      const player = playersInPosition[0];
-      assignedPlayerIds.add(player.playerId);
-      playerIndexMap.set(formationIndex, player.arrayIndex);
-      return player;
-    }
-    
-    return undefined;
-  };
-
-  const handlePositionClick = (_formationIndex: number, position: PlayerPosition, x: number, y: number, playerArrayIndex?: number) => {
-    if (interactive) {
-      if (playerArrayIndex !== undefined && onPlayerClick) {
-        onPlayerClick(playerArrayIndex);
-      } else if (onPositionClick) {
-        onPositionClick(position, x, y);
-      }
-    }
-  };
-
   return (
     <div className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden ${className}`}>
       {/* Formation Header */}
@@ -99,12 +69,23 @@ export default function FormationDisplay({
 
         {/* Player positions */}
         {formation.positions.map((pos, formationIndex) => {
-          const player = getPlayerAtPosition(pos.position, formationIndex);
+          // Simply map formation positions to players by index order
+          // This allows any player to be in any formation slot after swapping
+          const player = selectedPlayers[formationIndex];
           const hasPlayer = !!player;
           const playerName = hasPlayer && getPlayerName ? getPlayerName(player.playerId) : '';
           const initials = playerName ? playerName.split(' ').map(n => n[0]).join('') : '';
-          const playerArrayIndex = hasPlayer ? playerIndexMap.get(formationIndex) : undefined;
-          const isHighlighted = playerArrayIndex !== undefined && playerArrayIndex === highlightedPlayerIndex;
+          const isHighlighted = hasPlayer && formationIndex === highlightedPlayerIndex;
+
+          const handleClick = () => {
+            if (interactive) {
+              if (hasPlayer && onPlayerClick) {
+                onPlayerClick(formationIndex);
+              } else if (onPositionClick) {
+                onPositionClick(pos.position, pos.x, pos.y);
+              }
+            }
+          };
 
           return (
             <div
@@ -116,7 +97,7 @@ export default function FormationDisplay({
                 left: `${pos.x}%`,
                 top: `${pos.y}%`,
               }}
-              onClick={() => handlePositionClick(formationIndex, pos.position, pos.x, pos.y, playerArrayIndex)}
+              onClick={handleClick}
             >
               {/* Position marker */}
               <div className="relative">
