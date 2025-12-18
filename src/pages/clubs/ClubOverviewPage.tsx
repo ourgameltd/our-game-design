@@ -27,7 +27,9 @@ export default function ClubOverviewPage() {
           title={club.name}
           subtitle="Club Overview"
           action={{
-            label: '⚙️ Settings',
+            label: 'Settings',
+            icon: 'settings',
+            title: 'Settings',
             onClick: () => navigate(Routes.clubSettings(clubId!)),
             variant: 'primary'
           }}

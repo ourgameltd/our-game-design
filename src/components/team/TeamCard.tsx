@@ -36,7 +36,7 @@ export default function TeamCard({ team, onClick }: TeamCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h3 className={`text-lg font-semibold ${textColorClass}`}>
-              {team.name}
+              {team.name} <span className="text-sm font-normal opacity-70">{ageGroup ? ageGroup.name : ''}</span>
             </h3>
             {team.isArchived && (
               <span className="badge bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 text-xs">
@@ -52,24 +52,20 @@ export default function TeamCard({ team, onClick }: TeamCardProps) {
 
       {/* Card Content */}
       <div className="bg-white dark:bg-gray-800 p-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{ageGroup?.name || 'N/A'}</p>
-
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{ageGroup?.name || 'N/A'}</p>
-
-      <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-        <div>
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">{team.playerIds.length}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-500">Players</div>
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">{team.playerIds.length}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-500">Players</div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">{team.coachIds.length}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-500">Coaches</div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{team.season}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-500">Season</div>
+          </div>
         </div>
-        <div>
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">{team.coachIds.length}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-500">Coaches</div>
-        </div>
-        <div>
-          <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{team.season}</div>
-          <div className="text-xs text-gray-500 dark:text-gray-500">Season</div>
-        </div>
-      </div>
       </div>
     </div>
   );

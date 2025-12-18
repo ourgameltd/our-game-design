@@ -38,7 +38,9 @@ export default function MatchesListPage() {
                 title="Matches"
                 subtitle={`${team.name} - ${club.name}`}
                 action={!team.isArchived ? {
-                  label: '+ Add Match',
+                  label: 'Add Match',
+                  icon: 'plus',
+                  title: 'Add Match',
                   onClick: () => window.location.href = Routes.matchNew(clubId!, ageGroupId!, teamId!),
                   variant: 'success'
                 } : undefined}

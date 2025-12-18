@@ -4,7 +4,7 @@ import { getAgeGroupsByClubId } from '../../data/ageGroups';
 import { getAgeGroupStatistics } from '../../data/statistics';
 import { sampleClubs } from '../../data/clubs';
 import PageTitle from '../../components/common/PageTitle';
-import { getGradientColors, getContrastTextColorClass } from '../../utils/colorHelpers';
+import { getGradientColors, getContrastTextColorClass, getPerformanceColorClass } from '../../utils/colorHelpers';
 import { Routes } from '@utils/routes';
 
 const AgeGroupsListPage: React.FC = () => {
@@ -30,7 +30,9 @@ const AgeGroupsListPage: React.FC = () => {
           title="Age Groups"
           subtitle="Select an age group to view teams and players"
           action={{
-            label: '+ Add Age Group',
+            label: 'Add Age Group',
+            icon: 'plus',
+            title: 'Add Age Group',
             onClick: () => window.location.href = Routes.ageGroupNew(clubId!),
             variant: 'success'
           }}
@@ -64,16 +66,16 @@ const AgeGroupsListPage: React.FC = () => {
 
               {/* Statistics */}
               <div className="p-6">
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-4 gap-3 mb-4">
                   <div>
                     <p className="text-xs text-gray-500 dark:text-gray-500 mb-1">Goal Diff</p>
-                    <p className={`text-xl font-bold ${stats.goalDifference >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                    <p className={`text-xl font-bold ${getPerformanceColorClass(stats.goalDifference, 'goalDifference')}`}>
                       {stats.goalDifference >= 0 ? '+' : ''}{stats.goalDifference}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 dark:text-gray-500 mb-1">Win Rate</p>
-                    <p className="text-xl font-bold text-primary-600 dark:text-primary-400">{stats.winRate}%</p>
+                    <p className={`text-xl font-bold ${getPerformanceColorClass(stats.winRate, 'winRate')}`}>{stats.winRate}%</p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 dark:text-gray-500 mb-1">Players</p>

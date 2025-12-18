@@ -97,3 +97,25 @@ export const getGradientColors = (club: Club, team?: Team): GradientColors => {
   
   return { primaryColor, secondaryColor };
 };
+
+/**
+ * Gets the appropriate color class for performance metrics (goal difference, win rate, etc.)
+ * @param value - The numeric value to evaluate
+ * @param type - The type of metric ('goalDifference' | 'winRate')
+ * @returns Tailwind CSS color classes for both light and dark mode
+ */
+export const getPerformanceColorClass = (value: number, type: 'goalDifference' | 'winRate' = 'goalDifference'): string => {
+  if (type === 'goalDifference') {
+    return value >= 0 
+      ? 'text-green-600 dark:text-green-400' 
+      : 'text-red-600 dark:text-red-400';
+  }
+  
+  if (type === 'winRate') {
+    if (value >= 60) return 'text-green-600 dark:text-green-400';
+    if (value >= 40) return 'text-primary-600 dark:text-primary-400';
+    return 'text-red-600 dark:text-red-400';
+  }
+  
+  return 'text-gray-900 dark:text-white';
+};

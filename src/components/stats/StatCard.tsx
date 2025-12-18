@@ -1,4 +1,5 @@
 import React from 'react';
+import { getPerformanceColorClass } from '@utils/colorHelpers';
 
 interface StatCardProps {
   label: string;

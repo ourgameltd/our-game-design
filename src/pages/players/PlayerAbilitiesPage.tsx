@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { Plus } from 'lucide-react';
 import { getPlayerById } from '@data/players';
 import { groupAttributes, getQualityColor, calculateOverallRating } from '@utils/attributeHelpers';
 import { PlayerAttributes, AttributeEvaluation } from '@/types';
@@ -212,9 +213,10 @@ export default function PlayerAbilitiesPage() {
           </div>
           <button
             onClick={initializeForm}
-            className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+            className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
+            title="Add New Evaluation"
           >
-            + Add New Evaluation
+            <Plus className="w-5 h-5" />
           </button>
         </div>
 

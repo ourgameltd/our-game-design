@@ -51,7 +51,9 @@ export default function TeamOverviewPage() {
               title={team.name}
               subtitle="Team Overview"
               action={{
-                label: '⚙️ Settings',
+                label: 'Settings',
+                icon: 'settings',
+                title: 'Settings',
                 onClick: () => navigate(Routes.teamSettings(clubId!, ageGroupId!, teamId!)),
                 variant: 'primary'
               }}

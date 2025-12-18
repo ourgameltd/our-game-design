@@ -1,3 +1,5 @@
+import { Plus, Settings } from 'lucide-react';
+
 interface PageTitleProps {
   title: string;
   subtitle?: string;
@@ -6,6 +8,8 @@ interface PageTitleProps {
     label: string;
     onClick: () => void;
     variant?: 'primary' | 'success' | 'danger' | 'warning';
+    icon?: string;
+    title?: string;
   };
 }
 
@@ -42,9 +46,16 @@ export default function PageTitle({ title, subtitle, badge, action }: PageTitleP
       {action && (
         <button
           onClick={action.onClick}
-          className={`${getActionButtonClass(action.variant)} whitespace-nowrap`}
+          className={`${getActionButtonClass(action.variant)} whitespace-nowrap flex items-center gap-2`}
+          title={action.title || action.label}
         >
-          {action.label}
+          {action.icon === 'plus' ? (
+            <Plus className="w-5 h-5" />
+          ) : action.icon === 'settings' ? (
+            <Settings className="w-5 h-5" />
+          ) : (
+            action.label
+          )}
         </button>
       )}
     </div>

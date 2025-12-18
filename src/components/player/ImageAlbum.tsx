@@ -302,9 +302,10 @@ export default function ImageAlbum({ images, onAddImage, onDeleteImage, editable
                   type="button"
                   onClick={handleAddNewTag}
                   disabled={!newTagInput.trim()}
-                  className="btn-secondary btn-md disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  className="btn-secondary btn-md disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex items-center gap-2"
+                  title="Add Tag"
                 >
-                  + Add Tag
+                  <Plus className="w-5 h-5" />
                 </button>
               </div>
             </div>

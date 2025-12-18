@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import { Match } from '@/types';
 
 interface TeamInfo {
@@ -31,8 +32,9 @@ const UpcomingMatchesCard: React.FC<UpcomingMatchesCardProps> = ({
           <Link
             to={addMatchLink}
             className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+            title="Add Match"
           >
-            + Add Match
+            <Plus className="w-5 h-5" />
           </Link>
         )}
       </div>

@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { getTeamById } from '@data/teams';
 import { getPlayersByTeamId, getPlayersByAgeGroupId } from '@data/players';
@@ -45,7 +46,9 @@ export default function TeamPlayersPage() {
               badge={teamPlayers.length}
               subtitle="Select players from the club to add to this team"
               action={!team.isArchived ? {
-                label: '+ Add Player from Club',
+                label: 'Add Player from Club',
+                icon: 'plus',
+                title: 'Add Player from Club',
                 onClick: () => setShowAddModal(true),
                 variant: 'success'
               } : undefined}
@@ -238,9 +241,10 @@ export default function TeamPlayersPage() {
             <p className="text-gray-600 dark:text-gray-400 mb-4">Add players from your club to build your squad</p>
             <button 
               onClick={() => setShowAddModal(true)}
-              className="btn-success btn-md"
+              className="btn-success btn-md flex items-center gap-2"
+              title="Add Players from Club"
             >
-              + Add Players from Club
+              <Plus className="w-5 h-5" />
             </button>
           </div>
         )}
@@ -268,9 +272,10 @@ export default function TeamPlayersPage() {
                       <div key={player.id} className="relative">
                         <PlayerCard player={player} />
                         <button
-                          className="absolute top-2 right-2 bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 shadow-lg"
+                          className="absolute top-2 right-2 bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 shadow-lg flex items-center gap-1"
+                          title="Add Player"
                         >
-                          + Add
+                          <Plus className="w-4 h-4" />
                         </button>
                       </div>
                     ))}

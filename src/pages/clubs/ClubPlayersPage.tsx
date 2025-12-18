@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { getClubById } from '@data/clubs';
 import { getPlayersByClubId } from '@data/players';
@@ -129,7 +130,9 @@ export default function ClubPlayersPage() {
               : `View and manage players registered to the club${allPlayers.filter(p => p.isArchived).length > 0 ? ` (${allPlayers.filter(p => p.isArchived).length} archived)` : ''}`
           }
           action={{
-            label: '+ Add New Player',
+            label: 'Add New Player',
+            icon: 'plus',
+            title: 'Add New Player',
             onClick: () => navigate(Routes.clubPlayerSettings(clubId!, 'new')),
             variant: 'success'
           }}
@@ -349,8 +352,8 @@ export default function ClubPlayersPage() {
             <div className="text-gray-400 dark:text-gray-500 text-5xl mb-4">⚽</div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No players yet</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">Get started by adding your first player to the club</p>
-            <button className="btn-success btn-md">
-              + Add First Player
+            <button className="btn-success btn-md flex items-center gap-2" title="Add First Player">
+              <Plus className="w-5 h-5" />
             </button>
           </div>
         )}

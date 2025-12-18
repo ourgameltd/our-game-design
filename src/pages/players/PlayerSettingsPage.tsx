@@ -498,9 +498,10 @@ export default function PlayerSettingsPage() {
                     type="button"
                     onClick={handleAddEmergencyContact}
                     disabled={isFormDisabled}
-                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                    title="Add Contact"
                   >
-                    + Add Contact
+                    <Plus className="w-4 h-4" />
                   </button>
                 </div>
                 

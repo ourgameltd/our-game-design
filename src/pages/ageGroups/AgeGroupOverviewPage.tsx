@@ -50,7 +50,9 @@ const AgeGroupOverviewPage: React.FC = () => {
               title={ageGroup.name}
               subtitle={`${ageGroup.description} • Season: ${ageGroup.season}${ageGroup.defaultSquadSize ? ` • Default: ${ageGroup.defaultSquadSize}-a-side` : ''}`}
               action={{
-                label: '⚙️ Settings',
+                label: 'Settings',
+                icon: 'settings',
+                title: 'Settings',
                 onClick: () => navigate(Routes.ageGroupSettings(clubId!, ageGroupId!)),
                 variant: 'primary'
               }}

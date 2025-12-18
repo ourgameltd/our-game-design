@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ClipboardList, Users, Activity, FileText, Lock, Unlock } from 'lucide-react';
+import { ClipboardList, Users, Activity, FileText, Lock, Unlock, Plus } from 'lucide-react';
 import { sampleMatches } from '@/data/matches';
 import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
@@ -1058,9 +1058,10 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddGoal}
                   disabled={isLocked}
-                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                  title="Add Goal"
                 >
-                  + Add Goal
+                  <Plus className="w-4 h-4" />
                 </button>
               </div>
 
@@ -1152,9 +1153,10 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddCard}
                   disabled={isLocked}
-                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                  title="Add Card"
                 >
-                  + Add Card
+                  <Plus className="w-4 h-4" />
                 </button>
               </div>
 
@@ -1247,9 +1249,10 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddInjury}
                   disabled={isLocked}
-                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                  title="Add Injury"
                 >
-                  + Add Injury
+                  <Plus className="w-4 h-4" />
                 </button>
               </div>
 
@@ -1334,9 +1337,10 @@ export default function AddEditMatchPage() {
                 <button
                   onClick={handleAddSubstitution}
                   disabled={isLocked}
-                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                  title="Add Substitution"
                 >
-                  + Add Substitution
+                  <Plus className="w-4 h-4" />
                 </button>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { Settings } from 'lucide-react';
 import { sampleMatches } from '@/data/matches';
 import { samplePlayers } from '@/data/players';
 import { sampleCoaches } from '@/data/coaches';
@@ -128,10 +129,11 @@ export default function MatchReportPage() {
         <div className="flex justify-end gap-3 mb-4">
           <button
             onClick={() => navigate(Routes.matchEdit(clubId!, ageGroupId!, teamId!, matchId!))}
-            className="btn-md btn-primary whitespace-nowrap"
+            className="btn-md btn-primary whitespace-nowrap flex items-center gap-2"
+            title="Settings"
           >
-            <span>⚙️ Settings</span>
-            {isLocked && <span> 🔒</span>}
+            <Settings className="w-5 h-5" />
+            {isLocked && <span>🔒</span>}
           </button>
         </div>
 

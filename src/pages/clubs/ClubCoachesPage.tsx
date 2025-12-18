@@ -1,4 +1,5 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { getClubById } from '@data/clubs';
 import { getCoachesByClub } from '@data/coaches';
@@ -144,7 +145,9 @@ export default function ClubCoachesPage() {
               : `View and manage coaches at the club${allCoaches.filter(c => c.isArchived).length > 0 ? ` (${allCoaches.filter(c => c.isArchived).length} archived)` : ''}`
           }
           action={{
-            label: '+ Add New Coach',
+            label: 'Add New Coach',
+            icon: 'plus',
+            title: 'Add New Coach',
             onClick: () => navigate(Routes.coachSettings(clubId!, 'new')),
             variant: 'success'
           }}
@@ -303,8 +306,8 @@ export default function ClubCoachesPage() {
             <div className="text-gray-400 dark:text-gray-500 text-5xl mb-4">👨‍🏫</div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No coaches yet</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">Get started by adding your first coach to the club</p>
-            <button className="btn-success btn-md">
-              + Add First Coach
+            <button className="btn-success btn-md flex items-center gap-2" title="Add First Coach">
+              <Plus className="w-5 h-5" />
             </button>
           </div>
         )}
