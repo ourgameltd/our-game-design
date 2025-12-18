@@ -42,7 +42,7 @@ export default function PageTitle({ title, subtitle, badge, action }: PageTitleP
       {action && (
         <button
           onClick={action.onClick}
-          className={getActionButtonClass(action.variant)}
+          className={`${getActionButtonClass(action.variant)} whitespace-nowrap`}
         >
           {action.label}
         </button>

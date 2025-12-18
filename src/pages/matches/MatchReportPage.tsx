@@ -128,7 +128,7 @@ export default function MatchReportPage() {
         <div className="flex justify-end gap-3 mb-4">
           <button
             onClick={() => navigate(Routes.matchEdit(clubId!, ageGroupId!, teamId!, matchId!))}
-            className="btn-md btn-primary"
+            className="btn-md btn-primary whitespace-nowrap"
           >
             <span>⚙️ Settings</span>
             {isLocked && <span> 🔒</span>}
