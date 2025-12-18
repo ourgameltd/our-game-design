@@ -74,7 +74,7 @@ export default function TeamCoachesPage() {
               <h4 className="font-medium text-gray-900 dark:text-white mb-1">Club-Level Coach Management</h4>
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 Coaches are registered at the club level and can be assigned to multiple teams. 
-                Assign coaches from the club roster below, or{' '}
+                Assign coaches from the club below, or{' '}
                 <Link to={Routes.clubCoaches(clubId!)} className="font-medium underline text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                   view all club coaches
                 </Link>.
@@ -242,7 +242,7 @@ export default function TeamCoachesPage() {
           <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
             <div className="text-gray-400 dark:text-gray-500 text-5xl mb-4">👨‍🏫</div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No coaches assigned yet</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">Assign coaches from your club roster to manage this team</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">Assign coaches from your club to manage this team</p>
             <button 
               onClick={() => setShowAddModal(true)}
               className="btn-success btn-md"
@@ -259,7 +259,7 @@ export default function TeamCoachesPage() {
               <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white">Assign Coaches to Team</h2>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">Select coaches from the club roster ({availableCoaches.length} available)</p>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">Select coaches from the club ({availableCoaches.length} available)</p>
                 </div>
                 <button
                   onClick={() => setShowAddModal(false)}

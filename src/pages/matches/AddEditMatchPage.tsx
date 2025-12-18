@@ -5,7 +5,7 @@ import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
 import { samplePlayers } from '@/data/players';
 import { sampleFormations, getFormationsBySquadSize } from '@/data/formations';
-import { getAgeGroupById } from '@/data/ageGroups';
+import { getAgeGroupById, sampleAgeGroups } from '@/data/ageGroups';
 import { PlayerPosition, SquadSize } from '@/types';
 import { Routes } from '@utils/routes';
 import { getTeamNavigationTabs } from '@/utils/navigationHelpers';
@@ -39,6 +39,9 @@ export default function AddEditMatchPage() {
 
   // Get players for this team
   const teamPlayers = samplePlayers.filter(p => team?.playerIds.includes(p.id));
+  
+  // Get all club players (for cross-team selection)
+  const allClubPlayers = samplePlayers.filter(p => p.clubId === clubId);
 
   // Check if team is archived
   if (team?.isArchived && matchId === 'new') {
@@ -121,6 +124,15 @@ export default function AddEditMatchPage() {
   
   // Position swap state - tracks the array index in startingPlayers for precise swapping
   const [selectedPlayerIndexForSwap, setSelectedPlayerIndexForSwap] = useState<number | null>(null);
+  
+  // Cross-team player selection modal
+  const [showCrossTeamModal, setShowCrossTeamModal] = useState(false);
+  const [crossTeamModalType, setCrossTeamModalType] = useState<'starting' | 'substitute'>('starting');
+  
+  // Modal filters
+  const [modalSearchTerm, setModalSearchTerm] = useState('');
+  const [modalAgeGroupFilter, setModalAgeGroupFilter] = useState<string>('all');
+  const [modalTeamFilter, setModalTeamFilter] = useState<string>('all');
 
   if (!team || !club) {
     return (
@@ -802,8 +814,23 @@ export default function AddEditMatchPage() {
 
                 {startingPlayers.length < squadSize && !isLocked && (
                   <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Add Starting Player</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-gray-900 dark:text-white">Add Starting Player</h4>
+                      <button
+                        onClick={() => {
+                          setCrossTeamModalType('starting');
+                          setModalSearchTerm('');
+                          setModalAgeGroupFilter('all');
+                          setModalTeamFilter('all');
+                          setShowCrossTeamModal(true);
+                        }}
+                        className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
+                      >
+                        + From Other Teams
+                      </button>
+                    </div>
+                    {availablePlayers.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {availablePlayers.map(player => (
                         <button
                           key={player.id}
@@ -829,6 +856,11 @@ export default function AddEditMatchPage() {
                         </button>
                       ))}
                     </div>
+                    ) : (
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        No team players available. Select from other teams above.
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
@@ -867,9 +899,24 @@ export default function AddEditMatchPage() {
                   })}
                 </div>
 
-                {availablePlayers.length > 0 && !isLocked && (
+                {!isLocked && (
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Add Substitute</h4>
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-gray-900 dark:text-white">Add Substitute</h4>
+                      <button
+                        onClick={() => {
+                          setCrossTeamModalType('substitute');
+                          setModalSearchTerm('');
+                          setModalAgeGroupFilter('all');
+                          setModalTeamFilter('all');
+                          setShowCrossTeamModal(true);
+                        }}
+                        className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
+                      >
+                        + From Other Teams
+                      </button>
+                    </div>
+                    {availablePlayers.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {availablePlayers.map(player => (
                         <button
@@ -888,6 +935,11 @@ export default function AddEditMatchPage() {
                         </button>
                       ))}
                     </div>
+                    ) : (
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        No team players available. Select from other teams above.
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
@@ -1431,6 +1483,193 @@ export default function AddEditMatchPage() {
           </div>
         </div>
       </main>
+
+      {/* Cross-Team Player Selection Modal */}
+      {showCrossTeamModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                  Select Player from Club
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowCrossTeamModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl"
+              >
+                ✕
+              </button>
+            </div>
+            
+            {/* Filters */}
+            <div className="px-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-1">
+                {/* Search */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Search by name
+                  </label>
+                  <input
+                    type="text"
+                    value={modalSearchTerm}
+                    onChange={(e) => setModalSearchTerm(e.target.value)}
+                    placeholder="Search players..."
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                  />
+                </div>
+                
+                {/* Age Group Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Age Group
+                  </label>
+                  <select
+                    value={modalAgeGroupFilter}
+                    onChange={(e) => {
+                      setModalAgeGroupFilter(e.target.value);
+                      setModalTeamFilter('all'); // Reset team filter when age group changes
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                  >
+                    <option value="all">All Age Groups</option>
+                    {sampleAgeGroups
+                      .filter(ag => ag.clubId === clubId)
+                      .map(ag => (
+                        <option key={ag.id} value={ag.id}>{ag.name}</option>
+                      ))}
+                  </select>
+                </div>
+                
+                {/* Team Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Team
+                  </label>
+                  <select
+                    value={modalTeamFilter}
+                    onChange={(e) => setModalTeamFilter(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                  >
+                    <option value="all">All Teams</option>
+                    {sampleTeams
+                      .filter(t => t.clubId === clubId && (modalAgeGroupFilter === 'all' || t.ageGroupId === modalAgeGroupFilter))
+                      .map(t => (
+                        <option key={t.id} value={t.id}>{t.name}</option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              <div className="grid md:grid-cols-2 gap-4">
+                {allClubPlayers
+                  .filter(p => !allPlayersInMatch.includes(p.id))
+                  .filter(p => {
+                    // Search filter
+                    if (modalSearchTerm) {
+                      const searchLower = modalSearchTerm.toLowerCase();
+                      const fullName = `${p.firstName} ${p.lastName}`.toLowerCase();
+                      if (!fullName.includes(searchLower)) return false;
+                    }
+                    
+                    // Age group filter
+                    if (modalAgeGroupFilter !== 'all') {
+                      if (!p.ageGroupIds.includes(modalAgeGroupFilter)) return false;
+                    }
+                    
+                    // Team filter
+                    if (modalTeamFilter !== 'all') {
+                      if (!p.teamIds.includes(modalTeamFilter)) return false;
+                    }
+                    
+                    return true;
+                  })
+                  .map((player) => {
+                    // Find which teams this player belongs to
+                    const playerTeams = sampleTeams.filter(t => t.playerIds.includes(player.id));
+                    const teamNames = playerTeams.map(t => t.name).join(', ');
+                    
+                    return (
+                      <div key={player.id} className="relative">
+                        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 flex items-center gap-3">
+                          {player.photo ? (
+                            <img 
+                              src={player.photo} 
+                              alt={`${player.firstName} ${player.lastName}`}
+                              className="w-12 h-12 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-lg font-bold">
+                              {player.firstName[0]}{player.lastName[0]}
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-gray-900 dark:text-white">
+                              {player.firstName} {player.lastName}
+                            </div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                              {teamNames || 'No team'}
+                            </div>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {player.preferredPositions.slice(0, 3).map(pos => (
+                                <span key={pos} className="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
+                                  {pos}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const position = player.preferredPositions[0] || 'CM';
+                              if (crossTeamModalType === 'starting') {
+                                handleAddStartingPlayer(player.id, position);
+                              } else {
+                                handleAddSubstitute(player.id);
+                              }
+                              setShowCrossTeamModal(false);
+                            }}
+                            className="px-3 py-1.5 bg-primary-600 text-white rounded hover:bg-primary-700 text-sm font-medium"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+              {(() => {
+                const filteredPlayers = allClubPlayers
+                  .filter(p => !allPlayersInMatch.includes(p.id))
+                  .filter(p => {
+                    if (modalSearchTerm) {
+                      const searchLower = modalSearchTerm.toLowerCase();
+                      const fullName = `${p.firstName} ${p.lastName}`.toLowerCase();
+                      if (!fullName.includes(searchLower)) return false;
+                    }
+                    if (modalAgeGroupFilter !== 'all' && !p.ageGroupIds.includes(modalAgeGroupFilter)) return false;
+                    if (modalTeamFilter !== 'all' && !p.teamIds.includes(modalTeamFilter)) return false;
+                    return true;
+                  });
+                
+                if (filteredPlayers.length === 0) {
+                  return (
+                    <div className="text-center py-8">
+                      <p className="text-gray-600 dark:text-gray-400">
+                        {allClubPlayers.filter(p => !allPlayersInMatch.includes(p.id)).length === 0
+                          ? 'All club players are already in this match'
+                          : 'No players match the current filters'}
+                      </p>
+                    </div>
+                  );
+                }
+                return null;
+              })()}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -48,7 +48,7 @@ export default function TeamPlayersPage() {
             <PageTitle
               title="Squad List"
               badge={teamPlayers.length}
-              subtitle="Select players from the club roster to add to this team"
+              subtitle="Select players from the club to add to this team"
               action={!team.isArchived ? {
                 label: '+ Add Player from Club',
                 onClick: () => setShowAddModal(true),
@@ -95,7 +95,7 @@ export default function TeamPlayersPage() {
               <h4 className="font-medium text-gray-900 dark:text-white mb-1">Club-Level Player Management</h4>
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 Players are registered at the club level and can be assigned to multiple teams. 
-                Add players from the club roster below, or{' '}
+                Add players from the club below, or{' '}
                 <Link to={Routes.clubPlayers(clubId!)} className="font-medium underline text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                   view all club players
                 </Link>.
@@ -240,7 +240,7 @@ export default function TeamPlayersPage() {
           <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
             <div className="text-gray-400 dark:text-gray-500 text-5xl mb-4">👥</div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No players in this team yet</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">Add players from your club roster to build your squad</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">Add players from your club to build your squad</p>
             <button 
               onClick={() => setShowAddModal(true)}
               className="btn-success btn-md"
@@ -257,7 +257,7 @@ export default function TeamPlayersPage() {
               <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white">Add Players to Team</h2>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">Select players from the club roster ({availablePlayers.length} available)</p>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">Select players from the club ({availablePlayers.length} available)</p>
                 </div>
                 <button
                   onClick={() => setShowAddModal(false)}
