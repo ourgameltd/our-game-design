@@ -6,7 +6,7 @@ import { PlayerImage } from '@/types';
 import { useState } from 'react';
 
 export default function PlayerAlbumPage() {
-  const { clubId, ageGroupId, playerId } = useParams();
+  const { playerId } = useParams();
   const player = getPlayerById(playerId!);
   const [albumImages, setAlbumImages] = useState<PlayerImage[]>(player?.album || []);
 

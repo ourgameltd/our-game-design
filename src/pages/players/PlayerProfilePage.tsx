@@ -9,7 +9,7 @@ import RecentPerformanceCard from '@components/player/RecentPerformanceCard';
 import UpcomingMatchesCard from '@components/matches/UpcomingMatchesCard';
 
 export default function PlayerProfilePage() {
-  const { clubId, ageGroupId, playerId } = useParams();
+  const { clubId, playerId } = useParams();
   const player = getPlayerById(playerId!);
   const recentPerformances = getPlayerRecentPerformances(playerId!, 5);
   const upcomingMatches = getUpcomingMatchesByTeamIds(player?.ageGroupIds || [], 3);

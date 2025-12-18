@@ -8,7 +8,7 @@ import KitCard from '@/components/kit/KitCard';
 import PageTitle from '@components/common/PageTitle';
 
 export default function TeamKitsPage() {
-  const { clubId, ageGroupId, teamId } = useParams();
+  const { clubId, teamId } = useParams();
   const team = sampleTeams.find(t => t.id === teamId);
   const club = sampleClubs.find(c => c.id === clubId);
   

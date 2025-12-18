@@ -5,7 +5,7 @@ import { getReportsByPlayerId } from '@/data/reports';
 import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
 
 export default function PlayerReportCardPage() {
-  const { clubId, ageGroupId, playerId } = useParams();
+  const { playerId } = useParams();
   
   const player = samplePlayers.find(p => p.id === playerId);
   const reports = playerId ? getReportsByPlayerId(playerId) : [];

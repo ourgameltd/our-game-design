@@ -5,7 +5,7 @@ import { getDevelopmentPlansByPlayerId } from '@/data/developmentPlans';
 import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
 
 export default function PlayerDevelopmentPlansPage() {
-  const { clubId, ageGroupId, playerId } = useParams();
+  const { playerId } = useParams();
   
   const player = samplePlayers.find(p => p.id === playerId);
   const plans = playerId ? getDevelopmentPlansByPlayerId(playerId) : [];

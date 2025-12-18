@@ -7,7 +7,7 @@ import PageTitle from '@components/common/PageTitle';
 import { Routes } from '@utils/routes';
 
 export default function TeamCoachesPage() {
-  const { clubId, ageGroupId, teamId } = useParams();
+  const { clubId, teamId } = useParams();
   const team = getTeamById(teamId!);
   const teamCoaches = getCoachesByTeamId(teamId!);
   const clubCoaches = team ? getCoachesByClubId(team.clubId) : [];

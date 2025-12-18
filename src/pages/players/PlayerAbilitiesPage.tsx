@@ -6,7 +6,7 @@ import { PlayerAttributes, AttributeEvaluation } from '@/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function PlayerAbilitiesPage() {
-  const { clubId, ageGroupId, playerId } = useParams();
+  const { playerId } = useParams();
   const player = getPlayerById(playerId!);
   
   // Mock current coach ID - in a real app this would come from auth context

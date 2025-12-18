@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, matchPath } from 'react-router-dom';
 import { 
-  Home, 
   Users, 
   ClipboardList, 
   Dumbbell, 
