@@ -73,11 +73,10 @@ export default function MobileNavigation() {
     if (teamId && team && ageGroup) {
       // Team-level navigation
       items.push(
-        { label: 'Squad', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/squad`, icon: Users },
+        { label: 'Players', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/squad`, icon: Users },
         { label: 'Matches', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/matches`, icon: Trophy },
         { label: 'Coaches', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/coaches`, icon: Shield },
-        { label: 'Kits', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/kits`, icon: Shirt },
-        { label: 'Settings', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/settings`, icon: Settings }
+        { label: 'Kits', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/kits`, icon: Shirt }
       );
     } else if (ageGroupId && ageGroup) {
       // Age group-level navigation
@@ -85,8 +84,7 @@ export default function MobileNavigation() {
         { label: 'Teams', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams`, icon: Users },
         { label: 'Players', path: `/clubs/${clubId}/age-groups/${ageGroupId}/players`, icon: UserCircle },
         { label: 'Coaches', path: `/clubs/${clubId}/age-groups/${ageGroupId}/coaches`, icon: Shield },
-        { label: 'Matches', path: `/clubs/${clubId}/age-groups/${ageGroupId}/matches`, icon: Trophy },
-        { label: 'Settings', path: `/clubs/${clubId}/age-groups/${ageGroupId}/settings`, icon: Settings }
+        { label: 'Matches', path: `/clubs/${clubId}/age-groups/${ageGroupId}/matches`, icon: Trophy }
       );
     } else if (clubId) {
       // Club-level navigation
@@ -96,8 +94,7 @@ export default function MobileNavigation() {
         { label: 'Coaches', path: `/clubs/${clubId}/coaches`, icon: Shield },
         { label: 'Matches', path: `/clubs/${clubId}/matches`, icon: Trophy },
         { label: 'Ethos', path: `/clubs/${clubId}/ethos`, icon: FileText },
-        { label: 'Kits', path: `/clubs/${clubId}/kits`, icon: Shirt },
-        { label: 'Settings', path: `/clubs/${clubId}/settings`, icon: Settings }
+        { label: 'Kits', path: `/clubs/${clubId}/kits`, icon: Shirt }
       );
     }
 
@@ -267,25 +264,6 @@ export default function MobileNavigation() {
               </Link>
             </li>
 
-            <li className="mobile-nav-item">
-              <Link 
-                to="/formations" 
-                className={`mobile-nav-link ${isActive('/formations') ? 'active' : ''}`}
-              >
-                <ClipboardList className="mobile-nav-icon" />
-                <span className="mobile-nav-text">Formations & Tactics</span>
-              </Link>
-            </li>
-
-            <li className="mobile-nav-item">
-              <Link 
-                to="/training-sessions" 
-                className={`mobile-nav-link ${isActive('/training-sessions') ? 'active' : ''}`}
-              >
-                <Dumbbell className="mobile-nav-icon" />
-                <span className="mobile-nav-text">Training Library</span>
-              </Link>
-            </li>
           </ul>
 
           <div className="mobile-nav-divider"></div>
@@ -384,20 +362,6 @@ export default function MobileNavigation() {
         )}
 
         <div className="mobile-nav-desktop-actions">
-          <Link 
-            to="/formations" 
-            className="mobile-nav-desktop-quick-link"
-            title="Formations Library"
-          >
-            <ClipboardList className="w-5 h-5" />
-          </Link>
-          <Link 
-            to="/training-sessions" 
-            className="mobile-nav-desktop-quick-link"
-            title="Training Library"
-          >
-            <Dumbbell className="w-5 h-5" />
-          </Link>
           <button 
             onClick={toggleTheme}
             className="mobile-nav-desktop-quick-link"
