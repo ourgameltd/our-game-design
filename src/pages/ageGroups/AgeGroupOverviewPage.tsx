@@ -142,6 +142,7 @@ const AgeGroupOverviewPage: React.FC = () => {
         />
         <PreviousResultsCard 
           matches={stats.previousResults}
+          viewAllLink={Routes.ageGroupMatches(clubId!, ageGroupId!)}
           showTeamInfo={true}
           getTeamInfo={(match) => {
             const team = getTeamById(match.teamId);

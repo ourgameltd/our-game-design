@@ -241,7 +241,6 @@ export default function ProfilePage() {
         </div>
 
         {/* Upcoming Matches */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 transition-colors">
           <UpcomingMatchesCard 
             matches={upcomingMatches}
             showTeamInfo={true}
@@ -268,7 +267,6 @@ export default function ProfilePage() {
               return '#';
             }}
           />
-        </div>
       </div>
     </div>
   );

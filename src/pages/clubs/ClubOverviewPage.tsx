@@ -71,7 +71,7 @@ export default function ClubOverviewPage() {
           />
           <PreviousResultsCard 
             matches={stats.previousResults.slice(0, 3)}
-            viewAllLink={Routes.club(clubId!)}
+            viewAllLink={Routes.clubMatches(clubId!)}
             showTeamInfo={true}
             getTeamInfo={(match) => {
               const team = getTeamById(match.teamId);
