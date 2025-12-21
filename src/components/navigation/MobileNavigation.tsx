@@ -14,7 +14,11 @@ import {
   Shield,
   FileText,
   Shirt,
-  UserCircle
+  UserCircle,
+  BarChart3,
+  ClipboardList,
+  TrendingUp,
+  Camera
 } from 'lucide-react';
 import { getClubById } from '@data/clubs';
 import { getTeamById } from '@data/teams';
@@ -30,10 +34,12 @@ export default function MobileNavigation() {
   const clubMatch = matchPath('/clubs/:clubId/*', location.pathname);
   const ageGroupMatch = matchPath('/clubs/:clubId/age-groups/:ageGroupId/*', location.pathname);
   const teamMatch = matchPath('/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/*', location.pathname);
+  const playerMatch = matchPath('/clubs/:clubId/age-groups/:ageGroupId/players/:playerId/*', location.pathname);
 
   const clubId = clubMatch?.params.clubId;
-  const ageGroupId = ageGroupMatch?.params.ageGroupId || teamMatch?.params.ageGroupId;
+  const ageGroupId = ageGroupMatch?.params.ageGroupId || teamMatch?.params.ageGroupId || playerMatch?.params.ageGroupId;
   const teamId = teamMatch?.params.teamId;
+  const playerId = playerMatch?.params.playerId;
 
   const club = clubId ? getClubById(clubId) : null;
   const team = teamId ? getTeamById(teamId) : null;
@@ -68,7 +74,16 @@ export default function MobileNavigation() {
 
     const items = [];
 
-    if (teamId && team && ageGroup) {
+    if (playerId && ageGroupId) {
+      // Player-level navigation
+      items.push(
+        { label: 'Profile', path: `/clubs/${clubId}/age-groups/${ageGroupId}/players/${playerId}`, icon: UserCircle },
+        { label: 'Abilities', path: `/clubs/${clubId}/age-groups/${ageGroupId}/players/${playerId}/abilities`, icon: BarChart3 },
+        { label: 'Report Card', path: `/clubs/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-card`, icon: ClipboardList },
+        { label: 'Development', path: `/clubs/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development-plans`, icon: TrendingUp },
+        { label: 'Album', path: `/clubs/${clubId}/age-groups/${ageGroupId}/players/${playerId}/album`, icon: Camera }
+      );
+    } else if (teamId && team && ageGroup) {
       // Team-level navigation
       items.push(
         { label: 'Players', path: `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/squad`, icon: Users },
