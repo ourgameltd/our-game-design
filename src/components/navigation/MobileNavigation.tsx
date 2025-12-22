@@ -87,6 +87,68 @@ export default function MobileNavigation() {
 
   const isActive = (path: string) => location.pathname === path;
 
+  // Get current page title and associated image
+  const getPageInfo = () => {
+    const path = location.pathname;
+    
+    // Player pages
+    if (player) {
+      if (path.includes('/development')) return { title: 'Player Development', image: player.photo };
+      if (path.includes('/album')) return { title: 'Photo Album', image: player.photo };
+      if (path.includes('/settings')) return { title: 'Player Settings', image: player.photo };
+      return { title: player.name, image: player.photo };
+    }
+    
+    // Coach pages
+    if (coach) {
+      if (path.includes('/settings')) return { title: 'Coach Settings', image: coach.photo };
+      return { title: coach.name, image: coach.photo };
+    }
+    
+    // Team pages
+    if (team) {
+      if (path.includes('/squad')) return { title: 'Squad Management', image: null };
+      if (path.includes('/matches')) return { title: 'Matches', image: null };
+      if (path.includes('/training')) return { title: 'Training', image: null };
+      if (path.includes('/kit')) return { title: 'Kit Orders', image: null };
+      if (path.includes('/formations')) return { title: 'Formations', image: null };
+      if (path.includes('/settings')) return { title: 'Team Settings', image: null };
+      if (path.includes('/coaches')) return { title: 'Coaches', image: null };
+      return { title: team.name, image: null };
+    }
+    
+    // Age Group pages
+    if (ageGroup) {
+      if (path.includes('/teams')) return { title: 'Teams', image: null };
+      if (path.includes('/players')) return { title: 'Players', image: null };
+      if (path.includes('/coaches')) return { title: 'Coaches', image: null };
+      if (path.includes('/matches')) return { title: 'Matches', image: null };
+      if (path.includes('/settings')) return { title: 'Age Group Settings', image: null };
+      return { title: ageGroup.name, image: null };
+    }
+    
+    // Club pages
+    if (club) {
+      if (path.includes('/age-groups')) return { title: 'Age Groups', image: club.logo };
+      if (path.includes('/players')) return { title: 'Players', image: club.logo };
+      if (path.includes('/coaches')) return { title: 'Coaches', image: club.logo };
+      if (path.includes('/ethos')) return { title: 'Club Ethos', image: club.logo };
+      if (path.includes('/kit')) return { title: 'Kit Management', image: club.logo };
+      if (path.includes('/settings')) return { title: 'Club Settings', image: club.logo };
+      return { title: club.name, image: club.logo };
+    }
+    
+    // Top-level pages
+    if (path.includes('/profile')) return { title: 'My Profile', image: null };
+    if (path.includes('/notifications')) return { title: 'Notifications', image: null };
+    if (path.includes('/help')) return { title: 'Help & Support', image: null };
+    if (path === '/clubs') return { title: 'My Clubs', image: null };
+    
+    return { title: 'Dashboard', image: null };
+  };
+
+  const pageInfo = getPageInfo();
+
   return (
     <>
       {/* Mobile Header */}
@@ -103,119 +165,20 @@ export default function MobileNavigation() {
           <span className={`hamburger-line ${isOpen ? 'open' : ''}`}></span>
         </button>
 
-        {/* Center Logo Display - Club or Team */}
+        {/* Center Page Title Display */}
         <div className="mobile-nav-center-logo">
-          {team ? (
-            <div className="flex items-center gap-2 max-w-full overflow-hidden">
-              {/* Club Logo */}
-              <Link to={`/clubs/${clubId}`} className="flex items-center flex-shrink-0">
-                {club?.logo ? (
-                  <img 
-                    src={club.logo} 
-                    alt={`${club.name} logo`}
-                    className="w-8 h-8 rounded-lg object-cover border border-gray-300 dark:border-gray-600"
-                  />
-                ) : club ? (
-                  <div 
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-bold text-white border border-gray-300 dark:border-gray-600"
-                    style={{ backgroundColor: club.colors.primary }}
-                  >
-                    {club.shortName}
-                  </div>
-                ) : null}
-              </Link>
-              
-              {/* Separator */}
-              <span className="text-gray-400 dark:text-gray-500 flex-shrink-0">&gt;</span>
-              
-              {/* Age Group Link */}
-              {ageGroup && (
-                <>
-                  <Link 
-                    to={`/clubs/${clubId}/age-groups/${ageGroupId}`}
-                    className="text-xs font-semibold text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 truncate"
-                  >
-                    {ageGroup.name}
-                  </Link>
-                  
-                  {/* Separator */}
-                  <span className="text-gray-400 dark:text-gray-500 flex-shrink-0">&gt;</span>
-                  
-                  {/* Team Badge */}
-                  <Link 
-                    to={`/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}`}
-                    className="flex items-center flex-shrink-0"
-                  >
-                    <div 
-                      className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-bold border border-gray-300 dark:border-gray-600"
-                      style={{ 
-                        backgroundColor: team.colors?.primary || club?.colors.primary || '#6366F1',
-                        color: team.colors?.primary === '#F3F4F6' ? '#1F2937' : '#FFFFFF'
-                      }}
-                    >
-                      {team.shortName || team.name.substring(0, 3).toUpperCase()}
-                    </div>
-                  </Link>
-                </>
-              )}
-              
-            </div>
-          ) : ageGroup ? (
-            <div className="flex items-center gap-2 max-w-full overflow-hidden">
-              {/* Club Logo */}
-              <Link to={`/clubs/${clubId}`} className="flex items-center flex-shrink-0">
-                {club?.logo ? (
-                  <img 
-                    src={club.logo} 
-                    alt={`${club.name} logo`}
-                    className="w-8 h-8 rounded-lg object-cover border border-gray-300 dark:border-gray-600"
-                  />
-                ) : club ? (
-                  <div 
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-bold text-white border border-gray-300 dark:border-gray-600"
-                    style={{ backgroundColor: club.colors.primary }}
-                  >
-                    {club.shortName}
-                  </div>
-                ) : null}
-              </Link>
-              
-              {/* Separator */}
-              <span className="text-gray-400 dark:text-gray-500 flex-shrink-0">&gt;</span>
-              
-              {/* Age Group Link */}
-              <Link 
-                to={`/clubs/${clubId}/age-groups/${ageGroupId}`}
-                className="text-xs font-semibold text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 truncate"
-              >
-                {ageGroup.name}
-              </Link>
-            </div>
-          ) : club ? (
-            <Link to={`/clubs/${clubId}`} className="flex items-center gap-2 max-w-full overflow-hidden">
-              {club.logo ? (
-                <img 
-                  src={club.logo} 
-                  alt={`${club.name} logo`}
-                  className="w-10 h-10 rounded-lg object-cover border-2 border-gray-300 dark:border-gray-600 flex-shrink-0"
-                />
-              ) : (
-                <div 
-                  className="w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold text-white border-2 border-gray-300 dark:border-gray-600 flex-shrink-0"
-                  style={{ backgroundColor: club.colors.primary }}
-                >
-                  {club.shortName}
-                </div>
-              )}
-              <span className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                {club.shortName}
-              </span>
-            </Link>
-          ) : (
-            <Link to="/clubs" className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-              My Clubs
-            </Link>
-          )}
+          <div className="flex items-center gap-3 max-w-full overflow-hidden">
+            {pageInfo.image && (
+              <img 
+                src={pageInfo.image} 
+                alt={pageInfo.title}
+                className="w-10 h-10 rounded-lg object-cover border-2 border-gray-300 dark:border-gray-600 flex-shrink-0"
+              />
+            )}
+            <span className="text-base font-semibold text-gray-900 dark:text-white truncate">
+              {pageInfo.title}
+            </span>
+          </div>
         </div>
 
         <div className="mobile-nav-actions">
