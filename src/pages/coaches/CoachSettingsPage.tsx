@@ -8,7 +8,7 @@ import { Routes } from '@utils/routes';
 import PageTitle from '@components/common/PageTitle';
 
 export default function CoachSettingsPage() {
-  const { clubId, coachId } = useParams();
+  const { clubId, coachId, ageGroupId, teamId } = useParams();
   const navigate = useNavigate();
   const isNewCoach = coachId === 'new';
   const coach = isNewCoach ? null : getCoachById(coachId!);

@@ -160,6 +160,61 @@ export class Routes {
     return `/clubs/${clubId}/age-groups/${ageGroupId}/players/${playerId}/settings`;
   }
 
+  // Players - Team Context
+  static teamPlayer(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}`;
+  }
+
+  static teamPlayerAbilities(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/abilities`;
+  }
+
+  static teamPlayerReportCard(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-card`;
+  }
+
+  static teamPlayerDevelopmentPlans(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plans`;
+  }
+
+  static teamPlayerAlbum(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/album`;
+  }
+
+  static teamPlayerSettings(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/settings`;
+  }
+
   // Coaches
   static coach(clubId: string, coachId: string): string {
     return `/clubs/${clubId}/coaches/${coachId}`;
@@ -167,6 +222,24 @@ export class Routes {
 
   static coachSettings(clubId: string, coachId: string): string {
     return `/clubs/${clubId}/coaches/${coachId}/settings`;
+  }
+
+  // Coaches - Age Group Context
+  static ageGroupCoach(clubId: string, ageGroupId: string, coachId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/coaches/${coachId}`;
+  }
+
+  static ageGroupCoachSettings(clubId: string, ageGroupId: string, coachId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/coaches/${coachId}/settings`;
+  }
+
+  // Coaches - Team Context
+  static teamCoach(clubId: string, ageGroupId: string, teamId: string, coachId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/coaches/${coachId}`;
+  }
+
+  static teamCoachSettings(clubId: string, ageGroupId: string, teamId: string, coachId: string): string {
+    return `/clubs/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/coaches/${coachId}/settings`;
   }
 
   // Matches

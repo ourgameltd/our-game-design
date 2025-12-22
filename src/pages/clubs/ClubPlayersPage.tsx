@@ -264,7 +264,7 @@ export default function ClubPlayersPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {goalkeepers.map((player) => (
                 <div key={player.id} className="relative">
-                  <Link to={Routes.clubPlayerSettings(clubId!, player.id)}>
+                  <Link to={Routes.player(clubId!, player.ageGroupIds[0], player.id)}>
                     <PlayerCard player={player} />
                   </Link>
                   {player.isArchived && (
@@ -287,7 +287,7 @@ export default function ClubPlayersPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {defenders.map((player) => (
                 <div key={player.id} className="relative">
-                  <Link to={Routes.clubPlayerSettings(clubId!, player.id)}>
+                  <Link to={Routes.player(clubId!, player.ageGroupIds[0], player.id)}>
                     <PlayerCard player={player} />
                   </Link>
                   {player.isArchived && (
@@ -310,7 +310,7 @@ export default function ClubPlayersPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {midfielders.map((player) => (
                 <div key={player.id} className="relative">
-                  <Link to={Routes.clubPlayerSettings(clubId!, player.id)}>
+                  <Link to={Routes.player(clubId!, player.ageGroupIds[0], player.id)}>
                     <PlayerCard player={player} />
                   </Link>
                   {player.isArchived && (
@@ -333,7 +333,7 @@ export default function ClubPlayersPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {forwards.map((player) => (
                 <div key={player.id} className="relative">
-                  <Link to={Routes.clubPlayerSettings(clubId!, player.id)}>
+                  <Link to={Routes.player(clubId!, player.ageGroupIds[0], player.id)}>
                     <PlayerCard player={player} />
                   </Link>
                   {player.isArchived && (

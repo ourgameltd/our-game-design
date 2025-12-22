@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserPreferencesProvider } from '@/contexts/UserPreferencesContext';
+import { NavigationProvider, useNavigation } from '@/contexts/NavigationContext';
 import HomePage from '@pages/HomePage';
 import LoginPage from '@pages/auth/LoginPage';
 import RegisterPage from '@pages/auth/RegisterPage';
@@ -47,6 +48,7 @@ import ScrollToTop from '@components/common/ScrollToTop';
 
 function AppContent() {
   const location = useLocation();
+  const { isDesktopOpen } = useNavigation();
   
   // Don't show header on auth pages or home page
   const hideHeader = location.pathname === '/' || 
@@ -58,8 +60,14 @@ function AppContent() {
     <>
       <ScrollToTop />
       {!hideHeader && <Header />}
-      <div className={hideHeader ? '' : 'pt-16'}>
-        <Routes>
+      <div className={`${hideHeader ? '' : 'pt-16'}`}>
+        <div 
+          className="transition-all duration-300"
+          style={{ 
+            marginLeft: !hideHeader && isDesktopOpen ? 'clamp(0px, calc((100vw - 1024px) * 999), 280px)' : '0'
+          }}
+        >
+          <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -100,6 +108,10 @@ function AppContent() {
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/settings" element={<AgeGroupSettingsPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/settings" element={<AgeGroupSettingsPage />} />
 
+        {/* Coaches - Age Group Context */}
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/coaches/:coachId" element={<CoachProfilePage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/coaches/:coachId/settings" element={<CoachSettingsPage />} />
+
         {/* Players - Age Group Level */}
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/players/:playerId" element={<PlayerProfilePage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/players/:playerId/abilities" element={<PlayerAbilitiesPage />} />
@@ -118,6 +130,18 @@ function AppContent() {
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/kits" element={<TeamKitsPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/settings" element={<TeamSettingsPage />} />
 
+        {/* Coaches - Team Context */}
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/coaches/:coachId" element={<CoachProfilePage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/coaches/:coachId/settings" element={<CoachSettingsPage />} />
+
+        {/* Players - Team Context */}
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId" element={<PlayerProfilePage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/abilities" element={<PlayerAbilitiesPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/report-card" element={<PlayerReportCardPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/development-plans" element={<PlayerDevelopmentPlansPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/album" element={<PlayerAlbumPage />} />
+        <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/players/:playerId/settings" element={<PlayerSettingsPage />} />
+
         {/* Matches */}
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/matches" element={<MatchesListPage />} />
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/matches/new" element={<AddEditMatchPage />} />
@@ -125,6 +149,7 @@ function AppContent() {
         <Route path="/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/matches/:matchId/edit" element={<AddEditMatchPage />} />
 
         </Routes>
+        </div>
       </div>
     </>
   );
@@ -134,9 +159,11 @@ function App() {
   return (
     <ThemeProvider>
       <UserPreferencesProvider>
-        <Router basename={import.meta.env.BASE_URL}>
-          <AppContent />
-        </Router>
+        <NavigationProvider>
+          <Router basename={import.meta.env.BASE_URL}>
+            <AppContent />
+          </Router>
+        </NavigationProvider>
       </UserPreferencesProvider>
     </ThemeProvider>
   );

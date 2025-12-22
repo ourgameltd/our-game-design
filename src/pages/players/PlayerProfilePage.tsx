@@ -9,7 +9,7 @@ import RecentPerformanceCard from '@components/player/RecentPerformanceCard';
 import UpcomingMatchesCard from '@components/matches/UpcomingMatchesCard';
 
 export default function PlayerProfilePage() {
-  const { clubId, playerId } = useParams();
+  const { clubId, playerId, ageGroupId } = useParams();
   const player = getPlayerById(playerId!);
   const recentPerformances = getPlayerRecentPerformances(playerId!, 5);
   const upcomingMatches = getUpcomingMatchesByTeamIds(player?.ageGroupIds || [], 3);
@@ -31,7 +31,10 @@ export default function PlayerProfilePage() {
       <main className="container mx-auto px-4 py-4">
         {/* Player Header */}
         <div className="card mb-6">
-          <PlayerDetailsHeader player={player} />
+          <PlayerDetailsHeader 
+            player={player} 
+            settingsLink={Routes.playerSettings(clubId!, ageGroupId!, playerId!)}
+          />
         </div>
 
         {/* Player Stats */}

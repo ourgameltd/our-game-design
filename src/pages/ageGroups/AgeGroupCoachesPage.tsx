@@ -58,7 +58,7 @@ export default function AgeGroupCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {headCoaches.map((coach) => (
                 <div key={coach.id} className="relative">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.ageGroupCoach(clubId!, ageGroupId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                 </div>
@@ -76,7 +76,7 @@ export default function AgeGroupCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {assistantCoaches.map((coach) => (
                 <div key={coach.id} className="relative">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.ageGroupCoach(clubId!, ageGroupId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                 </div>
@@ -94,7 +94,7 @@ export default function AgeGroupCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {specialistCoaches.map((coach) => (
                 <div key={coach.id} className="relative">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.ageGroupCoach(clubId!, ageGroupId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                 </div>

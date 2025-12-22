@@ -3,10 +3,11 @@ import { getCoachById } from '@data/coaches';
 import { getTeamsByIds } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
 import { getClubById } from '@data/clubs';
+import { Routes } from '@utils/routes';
 import CoachDetailsHeader from '@components/coach/CoachDetailsHeader';
 
 export default function CoachProfilePage() {
-  const { clubId, coachId } = useParams();
+  const { clubId, coachId, ageGroupId, teamId } = useParams();
   const coach = getCoachById(coachId!);
   const club = getClubById(clubId!);
 
@@ -21,12 +22,25 @@ export default function CoachProfilePage() {
     alert(`Invite sent to ${coach.email}! (Demo - not actually sent)`);
   };
 
+  // Determine settings link based on context
+  let settingsLink: string;
+  if (teamId && ageGroupId) {
+    settingsLink = Routes.teamCoachSettings(clubId!, ageGroupId, teamId, coachId!);
+  } else if (ageGroupId) {
+    settingsLink = Routes.ageGroupCoachSettings(clubId!, ageGroupId, coachId!);
+  } else {
+    settingsLink = Routes.coachSettings(clubId!, coachId!);
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="container mx-auto px-4 py-4">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <CoachDetailsHeader coach={coach} />
+          <CoachDetailsHeader 
+            coach={coach} 
+            settingsLink={settingsLink}
+          />
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

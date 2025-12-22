@@ -282,7 +282,7 @@ export default function ClubCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
               {coachesByRole[role].map((coach) => (
                 <div key={coach.id} className="relative">
-                  <Link to={Routes.coachSettings(clubId!, coach.id)}>
+                  <Link to={Routes.coach(clubId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                   {coach.isArchived && (

@@ -7,7 +7,7 @@ import PageTitle from '@components/common/PageTitle';
 import { Routes } from '@utils/routes';
 
 export default function TeamCoachesPage() {
-  const { clubId, teamId } = useParams();
+  const { clubId, ageGroupId, teamId } = useParams();
   const team = getTeamById(teamId!);
   const teamCoaches = getCoachesByTeamId(teamId!);
   const clubCoaches = team ? getCoachesByClubId(team.clubId) : [];
@@ -87,7 +87,7 @@ export default function TeamCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {headCoaches.map((coach) => (
                 <div key={coach.id} className="relative group">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.teamCoach(clubId!, ageGroupId!, teamId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
@@ -118,7 +118,7 @@ export default function TeamCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {assistantCoaches.map((coach) => (
                 <div key={coach.id} className="relative group">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.teamCoach(clubId!, ageGroupId!, teamId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
@@ -149,7 +149,7 @@ export default function TeamCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {goalkeepingCoaches.map((coach) => (
                 <div key={coach.id} className="relative group">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.teamCoach(clubId!, ageGroupId!, teamId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
@@ -180,7 +180,7 @@ export default function TeamCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {fitnessCoaches.map((coach) => (
                 <div key={coach.id} className="relative group">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.teamCoach(clubId!, ageGroupId!, teamId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
@@ -211,7 +211,7 @@ export default function TeamCoachesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {otherCoaches.map((coach) => (
                 <div key={coach.id} className="relative group">
-                  <Link to={Routes.coach(clubId!, coach.id)}>
+                  <Link to={Routes.teamCoach(clubId!, ageGroupId!, teamId!, coach.id)}>
                     <CoachCard coach={coach} />
                   </Link>
                   {!team.isArchived && (
