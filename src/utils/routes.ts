@@ -255,6 +255,10 @@ export class Routes {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/matches`;
   }
 
+  static ageGroupTrainingSessions(clubId: string, ageGroupId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/training`;
+  }
+
   static matches(clubId: string, ageGroupId: string, teamId: string): string {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/matches`;
   }
@@ -297,6 +301,23 @@ export class Routes {
 
   static trainingSession(sessionId: string): string {
     return `/training/${sessionId}`;
+  }
+
+  // Team Training Sessions
+  static teamTrainingSessions(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training`;
+  }
+
+  static teamTrainingSessionNew(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training/new`;
+  }
+
+  static teamTrainingSession(clubId: string, ageGroupId: string, teamId: string, sessionId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training/${sessionId}`;
+  }
+
+  static teamTrainingSessionEdit(clubId: string, ageGroupId: string, teamId: string, sessionId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training/${sessionId}/edit`;
   }
 
   // Auth

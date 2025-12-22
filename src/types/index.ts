@@ -323,16 +323,20 @@ export interface TrainingSession {
   id: string;
   teamId: string;
   date: Date;
+  meetTime?: Date; // Team meet time before the session
   duration: number; // minutes
   location: string;
   focusAreas: string[];
   drillIds: string[];
+  coachIds?: string[]; // Coaches assigned to this session
   attendance?: {
     playerId: string;
     present: boolean;
     notes?: string;
   }[];
-  notes?: string;
+  notes?: string; // Free text area for session plan and additional details
+  status?: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  isLocked?: boolean; // Whether the session is locked from editing
 }
 
 export interface Drill {

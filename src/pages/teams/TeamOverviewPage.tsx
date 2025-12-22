@@ -92,13 +92,15 @@ export default function TeamOverviewPage() {
 
         {/* Upcoming Training Sessions */}
         <div className="card mb-6">
-          <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Upcoming Training Sessions</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Upcoming Training Sessions</h3>
+          </div>
           <div className="space-y-3">
             {upcomingTrainingSessions.length > 0 ? (
               upcomingTrainingSessions.map((session) => (
                 <Link
                   key={session.id}
-                  to={Routes.trainingSession(session.id)}
+                  to={Routes.teamTrainingSessionEdit(clubId!, ageGroupId!, teamId!, session.id)}
                   className="block p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between mb-2">

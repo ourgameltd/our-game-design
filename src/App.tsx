@@ -23,6 +23,7 @@ import AgeGroupPlayersPage from '@pages/ageGroups/AgeGroupPlayersPage';
 import AgeGroupCoachesPage from '@pages/ageGroups/AgeGroupCoachesPage';
 import AgeGroupSettingsPage from '@pages/ageGroups/AgeGroupSettingsPage';
 import AgeGroupMatchesPage from '@pages/ageGroups/AgeGroupMatchesPage';
+import AgeGroupTrainingSessionsPage from '@pages/ageGroups/AgeGroupTrainingSessionsPage';
 import AddEditAgeGroupPage from '@pages/ageGroups/AddEditAgeGroupPage';
 import TeamsListPage from '@pages/teams/TeamsListPage';
 import TeamOverviewPage from '@pages/teams/TeamOverviewPage';
@@ -36,6 +37,8 @@ import PlayerAbilitiesPage from '@pages/players/PlayerAbilitiesPage';
 import MatchReportPage from '@pages/matches/MatchReportPage';
 import MatchesListPage from '@pages/matches/MatchesListPage';
 import AddEditMatchPage from '@pages/matches/AddEditMatchPage';
+import AddEditTrainingSessionPage from '@pages/teams/AddEditTrainingSessionPage';
+import TrainingSessionsListPage from '@pages/teams/TrainingSessionsListPage';
 import PlayerReportCardPage from '@pages/players/PlayerReportCardPage';
 import PlayerDevelopmentPlansPage from '@pages/players/PlayerDevelopmentPlansPage';
 import PlayerAlbumPage from '@pages/players/PlayerAlbumPage';
@@ -121,6 +124,7 @@ function AppContent() {
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/players" element={<AgeGroupPlayersPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/coaches" element={<AgeGroupCoachesPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/matches" element={<AgeGroupMatchesPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/training" element={<AgeGroupTrainingSessionsPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/settings" element={<AgeGroupSettingsPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/settings" element={<AgeGroupSettingsPage />} />
 
@@ -163,6 +167,11 @@ function AppContent() {
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/matches/new" element={<AddEditMatchPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/matches/:matchId" element={<MatchReportPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/matches/:matchId/edit" element={<AddEditMatchPage />} />
+
+        {/* Training Sessions */}
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/training" element={<TrainingSessionsListPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/training/new" element={<AddEditTrainingSessionPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/training/:sessionId/edit" element={<AddEditTrainingSessionPage />} />
 
         </Routes>
         </div>

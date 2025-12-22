@@ -41,11 +41,13 @@ export default function MobileNavigation() {
   const ageGroupCoachMatch = matchPath('/dashboard/:clubId/age-groups/:ageGroupId/coaches/:coachId/*', location.pathname);
   const teamCoachMatch = matchPath('/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/coaches/:coachId/*', location.pathname);
   const teamMatchesMatch = matchPath('/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/matches/*', location.pathname);
+  const teamTrainingMatch = matchPath('/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/training/*', location.pathname);
   const ageGroupMatchesMatch = matchPath('/dashboard/:clubId/age-groups/:ageGroupId/matches/*', location.pathname);
+  const ageGroupTrainingMatch = matchPath('/dashboard/:clubId/age-groups/:ageGroupId/training/*', location.pathname);
 
   const clubId = clubMatch?.params.clubId;
-  const ageGroupId = ageGroupMatch?.params.ageGroupId || teamMatch?.params.ageGroupId || playerMatch?.params.ageGroupId || teamPlayerMatch?.params.ageGroupId || ageGroupCoachMatch?.params.ageGroupId || teamCoachMatch?.params.ageGroupId || teamMatchesMatch?.params.ageGroupId || ageGroupMatchesMatch?.params.ageGroupId;
-  const teamId = teamMatch?.params.teamId || teamPlayerMatch?.params.teamId || teamCoachMatch?.params.teamId || teamMatchesMatch?.params.teamId;
+  const ageGroupId = ageGroupMatch?.params.ageGroupId || teamMatch?.params.ageGroupId || playerMatch?.params.ageGroupId || teamPlayerMatch?.params.ageGroupId || ageGroupCoachMatch?.params.ageGroupId || teamCoachMatch?.params.ageGroupId || teamMatchesMatch?.params.ageGroupId || teamTrainingMatch?.params.ageGroupId || ageGroupMatchesMatch?.params.ageGroupId || ageGroupTrainingMatch?.params.ageGroupId;
+  const teamId = teamMatch?.params.teamId || teamPlayerMatch?.params.teamId || teamCoachMatch?.params.teamId || teamMatchesMatch?.params.teamId || teamTrainingMatch?.params.teamId;
   const playerId = playerMatch?.params.playerId || teamPlayerMatch?.params.playerId;
   const coachId = ageGroupCoachMatch?.params.coachId || teamCoachMatch?.params.coachId;
 
@@ -123,6 +125,7 @@ export default function MobileNavigation() {
       if (path.includes('/players')) return { title: 'Players', image: null };
       if (path.includes('/coaches')) return { title: 'Coaches', image: null };
       if (path.includes('/matches')) return { title: 'Matches', image: null };
+      if (path.includes('/training')) return { title: 'Training', image: null };
       if (path.includes('/settings')) return { title: 'Age Group Settings', image: null };
       return { title: ageGroup.name, image: null };
     }
@@ -313,6 +316,15 @@ export default function MobileNavigation() {
                       >
                         <Shield className="mobile-nav-icon" />
                         <span className="mobile-nav-text">Matches</span>
+                      </Link>
+                    </li>
+                    <li className="mobile-nav-item">
+                      <Link 
+                        to={`/dashboard/${clubId}/age-groups/${ageGroupId}/training`}
+                        className={`mobile-nav-link ${isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/training`) ? 'active' : ''}`}
+                      >
+                        <Shield className="mobile-nav-icon" />
+                        <span className="mobile-nav-text">Training</span>
                       </Link>
                     </li>
                   </ul>
@@ -588,6 +600,15 @@ export default function MobileNavigation() {
                       >
                         <Shield className="mobile-nav-icon" />
                         <span className="mobile-nav-text">Matches</span>
+                      </Link>
+                    </li>
+                    <li className="mobile-nav-item">
+                      <Link 
+                        to={`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training`}
+                        className={`mobile-nav-link ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training`) ? 'active' : ''}`}
+                      >
+                        <FileText className="mobile-nav-icon" />
+                        <span className="mobile-nav-text">Training</span>
                       </Link>
                     </li>
                     <li className="mobile-nav-item">
