@@ -13,7 +13,7 @@ interface AgeGroupCardProps {
   onClick?: () => void;
 }
 
-const AgeGroupCard: React.FC<AgeGroupCardProps> = ({ ageGroup, clubId, clubName, stats, onClick }) => {
+const AgeGroupCard: React.FC<AgeGroupCardProps> = ({ ageGroup, stats, onClick }) => {
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'senior':

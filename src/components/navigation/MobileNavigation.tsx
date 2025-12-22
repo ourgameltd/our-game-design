@@ -42,7 +42,6 @@ export default function MobileNavigation() {
   const teamCoachMatch = matchPath('/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/coaches/:coachId/*', location.pathname);
   const teamMatchesMatch = matchPath('/clubs/:clubId/age-groups/:ageGroupId/teams/:teamId/matches/*', location.pathname);
   const ageGroupMatchesMatch = matchPath('/clubs/:clubId/age-groups/:ageGroupId/matches/*', location.pathname);
-  const clubMatchesMatch = matchPath('/clubs/:clubId/matches/*', location.pathname);
 
   const clubId = clubMatch?.params.clubId;
   const ageGroupId = ageGroupMatch?.params.ageGroupId || teamMatch?.params.ageGroupId || playerMatch?.params.ageGroupId || teamPlayerMatch?.params.ageGroupId || ageGroupCoachMatch?.params.ageGroupId || teamCoachMatch?.params.ageGroupId || teamMatchesMatch?.params.ageGroupId || ageGroupMatchesMatch?.params.ageGroupId;
