@@ -92,6 +92,28 @@ export const sampleDrills: Drill[] = [
 export const sampleTrainingSessions: TrainingSession[] = [
   // Upcoming sessions for team a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d (Reds - 2017s)
   {
+    id: 's0a1b2c3-d4e5-f6a7-b8c9-c0d1e2f3a4b5',
+    teamId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+    date: new Date('2025-12-28T10:00:00'),
+    meetTime: new Date('2025-12-28T09:30:00'),
+    duration: 75,
+    location: 'Community Sports Ground - Pitch 2',
+    focusAreas: ['Passing & Movement', 'Build-up Play', 'Team Shape'],
+    drillIds: ['d1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'd3c4d5e6-f7a8-b9c0-d1e2-f3a4b5c6d7e8'],
+    coachIds: ['c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6'],
+    notes: `Post-Christmas training session! Let's shake off those mince pies 🎄
+
+Session Plan:
+- Warm up (10 mins): Light jog, dynamic stretches
+- Passing drills (20 mins): Triangle passing, wall passes
+- Possession game (25 mins): 5v5 with target players
+- Cool down (20 mins): Match simulation and stretches
+
+Remember to wrap up warm - forecast is cold but dry!
+Please bring water and a positive attitude after the festive break.`,
+    status: 'scheduled'
+  },
+  {
     id: 's1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6',
     teamId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     date: new Date('2025-01-08T18:00:00'),
