@@ -85,23 +85,6 @@ export default function TeamPlayersPage() {
           </label>
         </div>
 
-        {/* Info Banner */}
-        <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">ℹ️</span>
-            <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-1">Club-Level Player Management</h4>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                Players are registered at the club level and can be assigned to multiple teams. 
-                Add players from the club below, or{' '}
-                <Link to={Routes.clubPlayers(clubId!)} className="font-medium underline text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
-                  view all club players
-                </Link>.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Goalkeepers */}
         {goalkeepers.length > 0 && (
           <div className="mb-8">

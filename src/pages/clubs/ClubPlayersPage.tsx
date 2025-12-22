@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { getClubById } from '@data/clubs';
 import { getPlayersByClubId } from '@data/players';
@@ -21,6 +21,7 @@ export default function ClubPlayersPage() {
   const [filterPosition, setFilterPosition] = useState('');
   const [filterTeam, setFilterTeam] = useState('');
   const [showArchived, setShowArchived] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   if (!club) {
     return <div>Club not found</div>;
@@ -141,7 +142,7 @@ export default function ClubPlayersPage() {
         {/* Search and Filter */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
           {/* Show Archived Toggle */}
-          <div className="flex items-center gap-2 mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between gap-4 mb-4">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -153,105 +154,128 @@ export default function ClubPlayersPage() {
                 Show archived players ({allPlayers.filter(p => p.isArchived).length})
               </span>
             </label>
+            
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+            >
+              {showFilters ? (
+                <>
+                  <ChevronUp className="w-4 h-4" />
+                  Hide Filters
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-4 h-4" />
+                  Show Filters
+                </>
+              )}
+            </button>
           </div>
           
-          <div className="grid md:grid-cols-4 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search Name</label>
-              <input
-                type="text"
-                placeholder="Search by name..."
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
-              <select 
-                value={filterAgeGroup}
-                onChange={(e) => setFilterAgeGroup(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              >
-                <option value="">All Age Groups</option>
-                {allAgeGroups.map(ageGroup => (
-                  <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
-              <select 
-                value={filterTeam}
-                onChange={(e) => setFilterTeam(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              >
-                <option value="">All Teams</option>
-                {teams.map(team => {
-                  const ageGroup = getAgeGroupById(team.ageGroupId);
-                  return (
-                    <option key={team.id} value={team.id}>
-                      {ageGroup?.name || ''} - {team.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Position</label>
-              <select 
-                value={filterPosition}
-                onChange={(e) => setFilterPosition(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              >
-                <option value="">All Positions</option>
-                {allPositions.map(position => (
-                  <option key={position} value={position}>{position}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          {showFilters && (
+            <>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="grid md:grid-cols-4 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Search Name</label>
+                    <input
+                      type="text"
+                      placeholder="Search by name..."
+                      value={searchName}
+                      onChange={(e) => setSearchName(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
+                    <select 
+                      value={filterAgeGroup}
+                      onChange={(e) => setFilterAgeGroup(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      <option value="">All Age Groups</option>
+                      {allAgeGroups.map(ageGroup => (
+                        <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
+                    <select 
+                      value={filterTeam}
+                      onChange={(e) => setFilterTeam(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      <option value="">All Teams</option>
+                      {teams.map(team => {
+                        const ageGroup = getAgeGroupById(team.ageGroupId);
+                        return (
+                          <option key={team.id} value={team.id}>
+                            {ageGroup?.name || ''} - {team.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Position</label>
+                    <select 
+                      value={filterPosition}
+                      onChange={(e) => setFilterPosition(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      <option value="">All Positions</option>
+                      {allPositions.map(position => (
+                        <option key={position} value={position}>{position}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
           
-          {/* Active filters display and clear */}
-          {(searchName || filterAgeGroup || filterPosition || filterTeam) && (
-            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Active filters:</span>
-              {searchName && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
-                  Name: {searchName}
-                  <button onClick={() => setSearchName('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
-                </span>
+              {/* Active filters display and clear */}
+              {(searchName || filterAgeGroup || filterPosition || filterTeam) && (
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Active filters:</span>
+                  {searchName && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
+                      Name: {searchName}
+                      <button onClick={() => setSearchName('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
+                    </span>
+                  )}
+                  {filterAgeGroup && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
+                      Age: {allAgeGroups.find(ag => ag.id === filterAgeGroup)?.name || filterAgeGroup}
+                      <button onClick={() => setFilterAgeGroup('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
+                    </span>
+                  )}
+                  {filterPosition && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
+                      Position: {filterPosition}
+                      <button onClick={() => setFilterPosition('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
+                    </span>
+                  )}
+                  {filterTeam && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
+                      Team: {teams.find(t => t.id === filterTeam)?.name}
+                      <button onClick={() => setFilterTeam('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
+                    </span>
+                  )}
+                  <button 
+                    onClick={() => {
+                      setSearchName('');
+                      setFilterAgeGroup('');
+                      setFilterPosition('');
+                      setFilterTeam('');
+                    }}
+                    className="ml-auto text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                  >
+                    Clear all
+                  </button>
+                </div>
               )}
-              {filterAgeGroup && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
-                  Age: {allAgeGroups.find(ag => ag.id === filterAgeGroup)?.name || filterAgeGroup}
-                  <button onClick={() => setFilterAgeGroup('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
-                </span>
-              )}
-              {filterPosition && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
-                  Position: {filterPosition}
-                  <button onClick={() => setFilterPosition('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
-                </span>
-              )}
-              {filterTeam && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
-                  Team: {teams.find(t => t.id === filterTeam)?.name}
-                  <button onClick={() => setFilterTeam('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
-                </span>
-              )}
-              <button 
-                onClick={() => {
-                  setSearchName('');
-                  setFilterAgeGroup('');
-                  setFilterPosition('');
-                  setFilterTeam('');
-                }}
-                className="ml-auto text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-              >
-                Clear all
-              </button>
-            </div>
+            </>
           )}
         </div>
 

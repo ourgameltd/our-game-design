@@ -32,23 +32,6 @@ export default function AgeGroupCoachesPage() {
           subtitle={`Coaches assigned to teams in the ${ageGroup.name} age group`}
         />
 
-        {/* Info Banner */}
-        <div className="bg-secondary-50 dark:bg-secondary-900/20 border border-secondary-200 dark:border-secondary-800 rounded-lg p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">ℹ️</span>
-            <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-1">Age Group Coach Overview</h4>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                This page shows coaches working across all teams in the {ageGroup.name} age group. 
-                Coaches may work with multiple teams within this age group.{' '}
-                <Link to={Routes.teams(clubId!, ageGroupId!)} className="font-medium underline text-secondary-600 dark:text-secondary-400 hover:text-secondary-700 dark:hover:text-secondary-300">
-                  View teams
-                </Link> to see which coaches are assigned to each team.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Head Coaches */}
         {headCoaches.length > 0 && (
           <div className="mb-8">

@@ -116,7 +116,7 @@ export default function AgeGroupSettingsPage() {
             </p>
           </div>
         )}
-
+        
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="card">
@@ -284,21 +284,6 @@ export default function AgeGroupSettingsPage() {
             </div>
           </div>
 
-          {/* Info Box */}
-          <div className="card bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">ℹ️</span>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
-                  About Age Groups
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Age groups organize teams by player age or skill level. Each age group can contain 
-                  multiple teams (e.g., Reds, Blues, Whites). The code should be unique and URL-friendly.
-                </p>
-              </div>
-            </div>
-          </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row sm:justify-between gap-4">

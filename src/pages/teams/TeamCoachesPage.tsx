@@ -61,23 +61,6 @@ export default function TeamCoachesPage() {
           </div>
         )}
 
-        {/* Info Banner */}
-        <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">ℹ️</span>
-            <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-1">Club-Level Coach Management</h4>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                Coaches are registered at the club level and can be assigned to multiple teams. 
-                Assign coaches from the club below, or{' '}
-                <Link to={Routes.clubCoaches(clubId!)} className="font-medium underline text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
-                  view all club coaches
-                </Link>.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Head Coaches */}
         {headCoaches.length > 0 && (
           <div className="mb-8">

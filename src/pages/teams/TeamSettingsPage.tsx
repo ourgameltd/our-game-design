@@ -234,23 +234,6 @@ export default function TeamSettingsPage() {
             </div>
           </div>
 
-          {/* Info Box */}
-          <div className="card bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">ℹ️</span>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
-                  About Teams
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Teams are groups of players within an age group. Multiple teams can exist in the same 
-                  age group (e.g., Reds, Blues, Whites). Teams can have their own kits, coaches, and compete 
-                  in different leagues or competitions.
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
