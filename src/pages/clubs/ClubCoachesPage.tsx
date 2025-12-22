@@ -5,6 +5,7 @@ import { getClubById } from '@data/clubs';
 import { getCoachesByClub } from '@data/coaches';
 import { getTeamsByClubId } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
+import { coachRoleDisplay } from '@/data/referenceData';
 import { Routes } from '@utils/routes';
 import CoachCard from '@components/coach/CoachCard';
 import PageTitle from '@components/common/PageTitle';
@@ -56,14 +57,6 @@ export default function ClubCoachesPage() {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [allCoaches, teams]);
 
-  const roleDisplay: Record<string, string> = {
-    'head-coach': 'Head Coach',
-    'assistant-coach': 'Assistant Coach',
-    'goalkeeper-coach': 'Goalkeeper Coach',
-    'fitness-coach': 'Fitness Coach',
-    'technical-coach': 'Technical Coach',
-  };
-
   // Filter coaches based on search and filters
   const filteredCoaches = useMemo(() => {
     return allCoaches.filter(coach => {
@@ -109,7 +102,7 @@ export default function ClubCoachesPage() {
   // Group filtered coaches by role
   const coachesByRole = useMemo(() => {
     return filteredCoaches.reduce((acc, coach) => {
-      const role = roleDisplay[coach.role] || coach.role;
+      const role = coachRoleDisplay[coach.role] || coach.role;
       if (!acc[role]) {
         acc[role] = [];
       }
@@ -245,7 +238,7 @@ export default function ClubCoachesPage() {
               >
                 <option value="">All Roles</option>
                 {allRoles.map(role => (
-                  <option key={role} value={role}>{roleDisplay[role] || role}</option>
+                  <option key={role} value={role}>{coachRoleDisplay[role] || role}</option>
                 ))}
               </select>
             </div>
@@ -263,7 +256,7 @@ export default function ClubCoachesPage() {
               )}
               {filterRole && (
                 <span className="inline-flex items-center gap-1 px-2 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-700 dark:text-secondary-300 rounded text-sm">
-                  Role: {roleDisplay[filterRole] || filterRole}
+                  Role: {coachRoleDisplay[filterRole] || filterRole}
                   <button onClick={() => setFilterRole('')} className="hover:text-secondary-900 dark:hover:text-secondary-100">×</button>
                 </span>
               )}

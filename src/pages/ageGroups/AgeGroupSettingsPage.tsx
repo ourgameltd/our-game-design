@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAgeGroupById } from '@/data/ageGroups';
+import { teamLevels, squadSizes } from '@/data/referenceData';
 import PageTitle from '@/components/common/PageTitle';
 import FormActions from '@/components/common/FormActions';
 import { Routes } from '@/utils/routes';
@@ -163,10 +164,9 @@ export default function AgeGroupSettingsPage() {
                   disabled={ageGroup.isArchived}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <option value="youth">Youth</option>
-                  <option value="amateur">Amateur</option>
-                  <option value="reserve">Reserve</option>
-                  <option value="senior">Senior</option>
+                  {teamLevels.map(level => (
+                    <option key={level.value} value={level.value}>{level.label}</option>
+                  ))}
                 </select>
               </div>
 
@@ -181,11 +181,9 @@ export default function AgeGroupSettingsPage() {
                   disabled={ageGroup.isArchived}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <option value={4}>4-a-side</option>
-                  <option value={5}>5-a-side</option>
-                  <option value={7}>7-a-side</option>
-                  <option value={9}>9-a-side</option>
-                  <option value={11}>11-a-side</option>
+                  {squadSizes.map(size => (
+                    <option key={size.value} value={size.value}>{size.label}</option>
+                  ))}
                 </select>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Default match format for this age group

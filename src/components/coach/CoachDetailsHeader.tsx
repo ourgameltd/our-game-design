@@ -1,5 +1,6 @@
 import { Coach } from '@/types';
 import { Link } from 'react-router-dom';
+import { coachRoleDisplay } from '@/data/referenceData';
 
 interface CoachDetailsHeaderProps {
   coach: Coach;
@@ -24,14 +25,6 @@ export default function CoachDetailsHeader({
 
   const age = calculateAge(coach.dateOfBirth);
 
-  const roleDisplay: Record<string, string> = {
-    'head-coach': 'Head Coach',
-    'assistant-coach': 'Assistant Coach',
-    'goalkeeper-coach': 'Goalkeeper Coach',
-    'fitness-coach': 'Fitness Coach',
-    'technical-coach': 'Technical Coach',
-  };
-
   return (
     <div className="flex items-start gap-6">
       {coach.photo ? (
@@ -50,7 +43,7 @@ export default function CoachDetailsHeader({
           {coach.firstName} {coach.lastName}
         </h1>
         <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-          <span className="font-medium text-secondary-600 dark:text-secondary-400">{roleDisplay[coach.role]}</span>
+          <span className="font-medium text-secondary-600 dark:text-secondary-400">{coachRoleDisplay[coach.role]}</span>
           <span>•</span>
           <span>Age: {age} years old</span>
           {coach.associationId && (

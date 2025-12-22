@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { PlayerImage } from '@/types';
 import { Plus } from 'lucide-react';
+import { imageTags } from '@/data/referenceData';
 
 interface ImageAlbumProps {
   images: PlayerImage[];
@@ -25,8 +26,8 @@ export default function ImageAlbum({ images, onAddImage, onDeleteImage, editable
   // Get unique tags from all images
   const allTags = Array.from(new Set(images.flatMap(img => img.tags || [])));
   
-  // Common tag suggestions
-  const suggestedTags = ['training', 'match', 'award', 'team', 'highlight', 'achievement'];
+  // Common tag suggestions from reference data
+  const suggestedTags = imageTags.map(t => t.value);
   
   // Combine existing and suggested tags
   const availableTags = Array.from(new Set([...suggestedTags, ...allTags]));

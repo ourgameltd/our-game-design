@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Kit } from '@/types';
+import { kitTypes } from '@/data/referenceData';
 
 interface KitBuilderProps {
   kit?: Kit;
@@ -68,11 +69,9 @@ export default function KitBuilder({ kit, onSave, onCancel }: KitBuilderProps) {
                 onChange={(e) => setType(e.target.value as Kit['type'])}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               >
-                <option value="home">Home</option>
-                <option value="away">Away</option>
-                <option value="third">Third</option>
-                <option value="goalkeeper">Goalkeeper</option>
-                <option value="training">Training</option>
+                {kitTypes.map(kitType => (
+                  <option key={kitType.value} value={kitType.value}>{kitType.label}</option>
+                ))}
               </select>
             </div>
 

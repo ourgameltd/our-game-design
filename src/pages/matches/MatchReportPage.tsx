@@ -5,6 +5,7 @@ import { samplePlayers } from '@/data/players';
 import { sampleCoaches } from '@/data/coaches';
 import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
+import { coachRoleDisplay } from '@/data/referenceData';
 import { Routes } from '@/utils/routes';
 import MatchPreviewCard from '@/components/match/MatchPreviewCard';
 import { Kit } from '@/types';
@@ -113,14 +114,6 @@ export default function MatchReportPage() {
   const matchCoaches = match.coachIds 
     ? sampleCoaches.filter(c => match.coachIds?.includes(c.id))
     : [];
-
-  const roleDisplay: Record<string, string> = {
-    'head-coach': 'Head Coach',
-    'assistant-coach': 'Assistant Coach',
-    'goalkeeper-coach': 'Goalkeeper Coach',
-    'fitness-coach': 'Fitness Coach',
-    'technical-coach': 'Technical Coach',
-  };
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -172,7 +165,7 @@ export default function MatchReportPage() {
                       {coach.firstName} {coach.lastName}
                     </p>
                     <p className="text-sm text-secondary-600 dark:text-secondary-400">
-                      {roleDisplay[coach.role]}
+                      {coachRoleDisplay[coach.role]}
                     </p>
                   </div>
                 </div>

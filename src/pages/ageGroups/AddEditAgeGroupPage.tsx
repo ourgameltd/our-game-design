@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAgeGroupById } from '../../data/ageGroups';
 import { sampleClubs } from '../../data/clubs';
+import { teamLevels, squadSizes, TeamLevel } from '@/data/referenceData';
 import PageTitle from '@/components/common/PageTitle';
 import FormActions from '@/components/common/FormActions';
 import { Routes } from '@utils/routes';
-
-type AgeGroupLevel = 'youth' | 'amateur' | 'reserve' | 'senior';
 
 const AddEditAgeGroupPage: React.FC = () => {
   const { clubId, ageGroupId } = useParams<{ clubId: string; ageGroupId?: string }>();
@@ -177,10 +176,9 @@ const AddEditAgeGroupPage: React.FC = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
-                <option value="youth">Youth</option>
-                <option value="amateur">Amateur</option>
-                <option value="reserve">Reserve</option>
-                <option value="senior">Senior</option>
+                {teamLevels.map(level => (
+                  <option key={level.value} value={level.value}>{level.label}</option>
+                ))}
               </select>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Youth: Under-18 teams | Amateur: Recreational adult teams | Reserve: Second team | Senior: First team
@@ -220,11 +218,9 @@ const AddEditAgeGroupPage: React.FC = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
-                <option value={4}>4-a-side</option>
-                <option value={5}>5-a-side</option>
-                <option value={7}>7-a-side</option>
-                <option value={9}>9-a-side</option>
-                <option value={11}>11-a-side</option>
+                {squadSizes.map(size => (
+                  <option key={size.value} value={size.value}>{size.label}</option>
+                ))}
               </select>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Default match format for this age group. Can be changed per match.

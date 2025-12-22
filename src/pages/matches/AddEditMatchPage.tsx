@@ -8,6 +8,7 @@ import { samplePlayers } from '@/data/players';
 import { sampleFormations, getFormationsBySquadSize } from '@/data/formations';
 import { getAgeGroupById, sampleAgeGroups } from '@/data/ageGroups';
 import { sampleCoaches, getCoachesByTeam, getCoachesByAgeGroup } from '@/data/coaches';
+import { weatherConditions, squadSizes, cardTypes, injurySeverities, coachRoleDisplay } from '@/data/referenceData';
 import { PlayerPosition, SquadSize } from '@/types';
 import { Routes } from '@utils/routes';
 import FormationDisplay from '@/components/formation/FormationDisplay';
@@ -507,11 +508,11 @@ export default function AddEditMatchPage() {
                     disabled={isLocked}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option value={4}>4-a-side{ageGroup?.defaultSquadSize === 4 ? ' (Age Group Default)' : ''}</option>
-                    <option value={5}>5-a-side{ageGroup?.defaultSquadSize === 5 ? ' (Age Group Default)' : ''}</option>
-                    <option value={7}>7-a-side{ageGroup?.defaultSquadSize === 7 ? ' (Age Group Default)' : ''}</option>
-                    <option value={9}>9-a-side{ageGroup?.defaultSquadSize === 9 ? ' (Age Group Default)' : ''}</option>
-                    <option value={11}>11-a-side{ageGroup?.defaultSquadSize === 11 ? ' (Age Group Default)' : ''}</option>
+                    {squadSizes.map(size => (
+                      <option key={size.value} value={size.value}>
+                        {size.label}{ageGroup?.defaultSquadSize === size.value ? ' (Age Group Default)' : ''}
+                      </option>
+                    ))}
                   </select>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Number of starting players per team{ageGroup?.defaultSquadSize ? ` (Age group default: ${ageGroup.defaultSquadSize}-a-side)` : ''}
@@ -781,13 +782,9 @@ export default function AddEditMatchPage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <option value="">Select weather</option>
-                    <option>Clear</option>
-                    <option>Partly Cloudy</option>
-                    <option>Cloudy</option>
-                    <option>Rainy</option>
-                    <option>Heavy Rain</option>
-                    <option>Windy</option>
-                    <option>Snowy</option>
+                    {weatherConditions.map(w => (
+                      <option key={w.value} value={w.label}>{w.label}</option>
+                    ))}
                   </select>
                 </div>
 
@@ -865,13 +862,6 @@ export default function AddEditMatchPage() {
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {assignedCoaches.map((coach) => {
                       const isTeamCoach = teamCoaches.some(tc => tc.id === coach.id);
-                      const roleDisplay: Record<string, string> = {
-                        'head-coach': 'Head Coach',
-                        'assistant-coach': 'Assistant Coach',
-                        'goalkeeper-coach': 'Goalkeeper Coach',
-                        'fitness-coach': 'Fitness Coach',
-                        'technical-coach': 'Technical Coach',
-                      };
                       return (
                         <div key={coach.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                           {coach.photo ? (
@@ -890,7 +880,7 @@ export default function AddEditMatchPage() {
                               {coach.firstName} {coach.lastName}
                             </p>
                             <p className="text-sm text-secondary-600 dark:text-secondary-400">
-                              {roleDisplay[coach.role]}
+                              {coachRoleDisplay[coach.role]}
                             </p>
                             {isTeamCoach && (
                               <span className="inline-block mt-1 text-xs px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
@@ -1323,8 +1313,9 @@ export default function AddEditMatchPage() {
                             }}
                             className="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                           >
-                            <option value="yellow">Yellow</option>
-                            <option value="red">Red</option>
+                            {cardTypes.map(ct => (
+                              <option key={ct.value} value={ct.value}>{ct.label}</option>
+                            ))}
                           </select>
                         </div>
                         <div>
@@ -1418,9 +1409,9 @@ export default function AddEditMatchPage() {
                             }}
                             className="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                           >
-                            <option value="minor">Minor</option>
-                            <option value="moderate">Moderate</option>
-                            <option value="serious">Serious</option>
+                            {injurySeverities.map(sev => (
+                              <option key={sev.value} value={sev.value}>{sev.label}</option>
+                            ))}
                           </select>
                         </div>
                         <div>
@@ -1733,13 +1724,6 @@ export default function AddEditMatchPage() {
               {availableCoachesForMatch.length > 0 ? (
                 <div className="space-y-2">
                   {availableCoachesForMatch.map((coach) => {
-                    const roleDisplay: Record<string, string> = {
-                      'head-coach': 'Head Coach',
-                      'assistant-coach': 'Assistant Coach',
-                      'goalkeeper-coach': 'Goalkeeper Coach',
-                      'fitness-coach': 'Fitness Coach',
-                      'technical-coach': 'Technical Coach',
-                    };
                     // Get the teams this coach is assigned to
                     const coachTeams = sampleTeams.filter(t => coach.teamIds.includes(t.id) && t.ageGroupId === ageGroup?.id);
                     return (
@@ -1768,7 +1752,7 @@ export default function AddEditMatchPage() {
                             {coach.firstName} {coach.lastName}
                           </p>
                           <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {roleDisplay[coach.role]}
+                            {coachRoleDisplay[coach.role]}
                             {coachTeams.length > 0 && (
                               <span className="ml-2 text-xs">
                                 ({coachTeams.map(t => t.name).join(', ')})

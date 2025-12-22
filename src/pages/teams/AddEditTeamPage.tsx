@@ -3,11 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getAgeGroupById } from '../../data/ageGroups';
 import { getTeamById } from '../../data/teams';
 import { sampleClubs } from '../../data/clubs';
+import { teamLevels, TeamLevel } from '@/data/referenceData';
 import PageTitle from '@/components/common/PageTitle';
 import FormActions from '@/components/common/FormActions';
 import { Routes } from '@utils/routes';
-
-type TeamLevel = 'youth' | 'amateur' | 'reserve' | 'senior';
 
 const AddEditTeamPage: React.FC = () => {
   const { clubId, ageGroupId, teamId } = useParams<{ clubId: string; ageGroupId: string; teamId?: string }>();
@@ -205,10 +204,9 @@ const AddEditTeamPage: React.FC = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
-                <option value="youth">Youth</option>
-                <option value="amateur">Amateur</option>
-                <option value="reserve">Reserve</option>
-                <option value="senior">Senior</option>
+                {teamLevels.map(level => (
+                  <option key={level.value} value={level.value}>{level.label}</option>
+                ))}
               </select>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Defaults to the age group level: {ageGroup.level}

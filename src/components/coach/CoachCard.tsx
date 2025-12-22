@@ -1,4 +1,5 @@
 import { Coach } from '@/types';
+import { coachRoleDisplay } from '@/data/referenceData';
 
 interface CoachCardProps {
   coach: Coach;
@@ -12,14 +13,6 @@ export default function CoachCard({ coach, onClick }: CoachCardProps) {
     e.stopPropagation(); // Prevent card click when clicking invite button
     // In a real app, this would send an invite email via the backend
     alert(`Invite sent to ${coach.email}! (Demo - not actually sent)`);
-  };
-
-  const roleDisplay: Record<string, string> = {
-    'head-coach': 'Head Coach',
-    'assistant-coach': 'Assistant Coach',
-    'goalkeeper-coach': 'Goalkeeper Coach',
-    'fitness-coach': 'Fitness Coach',
-    'technical-coach': 'Technical Coach',
   };
 
   return (
@@ -46,7 +39,7 @@ export default function CoachCard({ coach, onClick }: CoachCardProps) {
         
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-secondary-600 dark:text-secondary-400">
-            {roleDisplay[coach.role]}
+            {coachRoleDisplay[coach.role]}
           </p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Age {age}</p>
         </div>
