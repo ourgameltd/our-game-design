@@ -617,6 +617,43 @@ export default function AddEditMatchPage() {
                       No custom kits defined. Using default kits based on club colors.
                     </p>
                   )}
+                  {kit && availableKits.length > 0 && (() => {
+                    const selectedKit = availableKits.find(k => k.id === kit);
+                    if (selectedKit) {
+                      return (
+                        <div className="mt-2 flex items-center gap-2">
+                          <span className="text-xs text-gray-600 dark:text-gray-400">Colors:</span>
+                          <div className="flex items-center gap-1">
+                            <div className="flex flex-col items-center">
+                              <div 
+                                className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
+                                style={{ backgroundColor: selectedKit.shirtColor }}
+                                title="Shirt"
+                              />
+                              <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Shirt</span>
+                            </div>
+                            <div className="flex flex-col items-center">
+                              <div 
+                                className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
+                                style={{ backgroundColor: selectedKit.shortsColor }}
+                                title="Shorts"
+                              />
+                              <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Shorts</span>
+                            </div>
+                            <div className="flex flex-col items-center">
+                              <div 
+                                className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
+                                style={{ backgroundColor: selectedKit.socksColor }}
+                                title="Socks"
+                              />
+                              <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Socks</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
                 </div>
 
                 <div>
@@ -651,9 +688,43 @@ export default function AddEditMatchPage() {
                       <option value="gk-default">Default Goalkeeper Kit</option>
                     )}
                   </select>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Select a specific kit for your goalkeeper
-                  </p>
+                  {goalkeeperKit && availableKits.length > 0 && (() => {
+                    const selectedGkKit = availableKits.find(k => k.id === goalkeeperKit);
+                    if (selectedGkKit) {
+                      return (
+                        <div className="mt-2 flex items-center gap-2">
+                          <span className="text-xs text-gray-600 dark:text-gray-400">Colors:</span>
+                          <div className="flex items-center gap-1">
+                            <div className="flex flex-col items-center">
+                              <div 
+                                className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
+                                style={{ backgroundColor: selectedGkKit.shirtColor }}
+                                title="Shirt"
+                              />
+                              <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Shirt</span>
+                            </div>
+                            <div className="flex flex-col items-center">
+                              <div 
+                                className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
+                                style={{ backgroundColor: selectedGkKit.shortsColor }}
+                                title="Shorts"
+                              />
+                              <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Shorts</span>
+                            </div>
+                            <div className="flex flex-col items-center">
+                              <div 
+                                className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
+                                style={{ backgroundColor: selectedGkKit.socksColor }}
+                                title="Socks"
+                              />
+                              <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Socks</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
                 </div>
 
                 <div>
