@@ -96,13 +96,13 @@ export default function MobileNavigation() {
       if (path.includes('/development')) return { title: 'Player Development', image: player.photo };
       if (path.includes('/album')) return { title: 'Photo Album', image: player.photo };
       if (path.includes('/settings')) return { title: 'Player Settings', image: player.photo };
-      return { title: player.name, image: player.photo };
+      return { title: `${player.firstName} ${player.lastName}`, image: player.photo };
     }
     
     // Coach pages
     if (coach) {
       if (path.includes('/settings')) return { title: 'Coach Settings', image: coach.photo };
-      return { title: coach.name, image: coach.photo };
+      return { title: `${coach.firstName} ${coach.lastName}`, image: coach.photo };
     }
     
     // Team pages
