@@ -285,6 +285,7 @@ export interface Match {
   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
   isLocked?: boolean; // Whether the match is locked from editing
   coachIds?: string[]; // Coaches assigned to this match
+  notes?: string; // Additional notes/details about the match
 }
 
 export interface MatchLineup {

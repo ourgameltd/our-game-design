@@ -120,6 +120,7 @@ export default function AddEditMatchPage() {
   );
   const [playerOfTheMatch, setPlayerOfTheMatch] = useState(existingMatch?.report?.playerOfTheMatch || '');
   const [isLocked, setIsLocked] = useState(existingMatch?.isLocked || false);
+  const [notes, setNotes] = useState(existingMatch?.notes || '');
   
   // Coach assignment state
   const [assignedCoachIds, setAssignedCoachIds] = useState<string[]>(existingMatch?.coachIds || []);
@@ -366,7 +367,8 @@ export default function AddEditMatchPage() {
         performanceRatings: ratings,
         playerOfTheMatch
       },
-      coachIds: assignedCoachIds
+      coachIds: assignedCoachIds,
+      notes
     });
     
     navigate(Routes.matches(clubId!, ageGroupId!, teamId!));
@@ -918,6 +920,26 @@ export default function AddEditMatchPage() {
                     )}
                   </div>
                 )}
+              </div>
+
+              {/* Additional Notes */}
+              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                    <span>📝</span> Additional Notes
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Add any extra information about the match such as travel arrangements, special instructions, or other details.
+                  </p>
+                </div>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  disabled={isLocked}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed resize-y"
+                  placeholder="e.g., Car pooling arrangements, bring packed lunch, meet at school gates, wear appropriate footwear..."
+                />
               </div>
             </div>
           )}
