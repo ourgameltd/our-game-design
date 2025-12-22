@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ClipboardList, Users, Activity, FileText, Lock, Unlock, Plus } from 'lucide-react';
 import { sampleMatches } from '@/data/matches';
 import { sampleTeams } from '@/data/teams';
@@ -265,11 +265,9 @@ export default function AddEditMatchPage() {
   const handleCompleteMatch = () => {
     // Validate that essential match data is filled
     if (!homeScore || !awayScore) {
-      alert('Please enter the match score before completing');
       return;
     }
     if (startingPlayers.length === 0) {
-      alert('Please add starting players before completing the match');
       return;
     }
     
@@ -279,7 +277,6 @@ export default function AddEditMatchPage() {
     
     if (confirmComplete) {
       setIsLocked(true);
-      alert('Match marked as completed and locked successfully!');
       // In a real app, this would update the backend
       console.log('Match completed and locked');
     }
@@ -292,7 +289,6 @@ export default function AddEditMatchPage() {
       );
       if (confirmUnlock) {
         setIsLocked(false);
-        alert('Match unlocked successfully! You can now make changes.');
       }
     } else {
       const confirmLock = window.confirm(
@@ -300,7 +296,6 @@ export default function AddEditMatchPage() {
       );
       if (confirmLock) {
         setIsLocked(true);
-        alert('Match locked successfully!');
       }
     }
   };
@@ -348,7 +343,6 @@ export default function AddEditMatchPage() {
       }
     });
     
-    alert('Match saved successfully! (This is a demo - no actual save performed)');
     navigate(Routes.matches(clubId!, ageGroupId!, teamId!));
   };
 
@@ -386,9 +380,10 @@ export default function AddEditMatchPage() {
         </div>
 
         {/* Tabs */}
-        <div className="card mb-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="card mb-6">
           <div className="flex justify-evenly sm:justify-start sm:flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-4">
             <button
+              type="button"
               onClick={() => setActiveTab('details')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeTab === 'details'
@@ -400,6 +395,7 @@ export default function AddEditMatchPage() {
               <span className="hidden sm:inline">Match Details</span>
             </button>
             <button
+              type="button"
               onClick={() => setActiveTab('lineup')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeTab === 'lineup'
@@ -411,6 +407,7 @@ export default function AddEditMatchPage() {
               <span className="hidden sm:inline">Team Selection</span>
             </button>
             <button
+              type="button"
               onClick={() => setActiveTab('events')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeTab === 'events'
@@ -422,6 +419,7 @@ export default function AddEditMatchPage() {
               <span className="hidden sm:inline">Match Events</span>
             </button>
             <button
+              type="button"
               onClick={() => setActiveTab('report')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeTab === 'report'
@@ -1444,58 +1442,68 @@ export default function AddEditMatchPage() {
           )}
 
           {/* Action Buttons */}
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-3">
-              <button
-                onClick={handleSave}
-                disabled={isLocked}
-                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Save
-              </button>
-              <Link
-                to={Routes.matches(clubId!, ageGroupId!, teamId!)}
-                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gray-500 text-white rounded-lg hover:bg-gray-600 font-medium text-center"
-              >
-                Cancel
-              </Link>
-              
-              {/* Match completion and lock controls */}
-              {isEditing && (
-                <>
-                  {!isLocked && existingMatch?.status !== 'completed' && (
-                    <button
-                      onClick={handleCompleteMatch}
-                      className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-                    >
-                      Complete Match
-                    </button>
-                  )}
-                  <button
-                    onClick={handleToggleLock}
-                    className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2 text-sm sm:text-base rounded-lg font-medium ${
-                      isLocked
-                        ? 'bg-amber-600 hover:bg-amber-700 text-white'
-                        : 'bg-gray-600 hover:bg-gray-700 text-white'
-                    }`}
-                  >
-                    {isLocked ? (
-                      <>
-                        <Unlock className="w-4 h-4" />
-                        Unlock
-                      </>
-                    ) : (
-                      <>
-                        <Lock className="w-4 h-4" />
-                        Lock
-                      </>
+          <div className="mt-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+              {/* Left side - Match-specific controls */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                {isEditing && (
+                  <>
+                    {!isLocked && existingMatch?.status !== 'completed' && (
+                      <button
+                        type="button"
+                        onClick={handleCompleteMatch}
+                        disabled={!homeScore || !awayScore || startingPlayers.length === 0}
+                        className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        title={!homeScore || !awayScore ? 'Enter match score to complete' : startingPlayers.length === 0 ? 'Add starting players to complete' : 'Mark match as completed'}
+                      >
+                        ✓ Complete Match
+                      </button>
                     )}
-                  </button>
-                </>
-              )}
+                    <button
+                      type="button"
+                      onClick={handleToggleLock}
+                      className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2 text-sm sm:text-base rounded-lg font-medium ${
+                        isLocked
+                          ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                          : 'bg-gray-600 hover:bg-gray-700 text-white'
+                      }`}
+                    >
+                      {isLocked ? (
+                        <>
+                          <Unlock className="w-4 h-4" />
+                          Unlock
+                        </>
+                      ) : (
+                        <>
+                          <Lock className="w-4 h-4" />
+                          Lock
+                        </>
+                      )}
+                    </button>
+                  </>
+                )}
+              </div>
+              
+              {/* Right side - Standard form actions */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <button
+                  type="button"
+                  onClick={() => navigate(Routes.matches(clubId!, ageGroupId!, teamId!))}
+                  className="px-4 sm:px-6 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLocked}
+                  className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600"
+                >
+                  {isEditing ? 'Save Changes' : 'Create Match'}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </main>
 
       {/* Cross-Team Player Selection Modal */}

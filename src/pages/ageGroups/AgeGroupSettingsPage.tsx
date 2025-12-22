@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAgeGroupById } from '@/data/ageGroups';
 import PageTitle from '@/components/common/PageTitle';
+import FormActions from '@/components/common/FormActions';
 import { Routes } from '@/utils/routes';
 
 export default function AgeGroupSettingsPage() {
@@ -80,13 +81,6 @@ export default function AgeGroupSettingsPage() {
 
   const handleCancel = () => {
     navigate(Routes.ageGroup(clubId!, ageGroupId!));
-  };
-
-  const handleDelete = () => {
-    if (confirm('Are you sure you want to delete this age group? This action cannot be undone.')) {
-      alert('Age group deleted successfully! (Demo - not saved to backend)');
-      navigate(Routes.ageGroups(clubId!));
-    }
   };
 
   const handleArchive = () => {
@@ -286,45 +280,12 @@ export default function AgeGroupSettingsPage() {
 
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-              <button
-                type="button"
-                onClick={handleArchive}
-                className={`px-4 sm:px-6 py-2 text-sm sm:text-base ${
-                  ageGroup.isArchived
-                    ? 'bg-green-600 hover:bg-green-700'
-                    : 'bg-orange-600 hover:bg-orange-700'
-                } text-white rounded-lg transition-colors whitespace-nowrap`}
-              >
-                {ageGroup.isArchived ? '📂 Unarchive' : '🗄️ Archive'}
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap"
-              >
-                Delete
-              </button>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="px-4 sm:px-6 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={ageGroup.isArchived}
-                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600"
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
+          <FormActions
+            isArchived={ageGroup.isArchived}
+            onArchive={handleArchive}
+            onCancel={handleCancel}
+            saveDisabled={ageGroup.isArchived}
+          />
         </form>
       </main>
     </div>

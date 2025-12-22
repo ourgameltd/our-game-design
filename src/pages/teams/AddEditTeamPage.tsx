@@ -4,6 +4,7 @@ import { getAgeGroupById } from '../../data/ageGroups';
 import { getTeamById } from '../../data/teams';
 import { sampleClubs } from '../../data/clubs';
 import PageTitle from '@/components/common/PageTitle';
+import FormActions from '@/components/common/FormActions';
 import { Routes } from '@utils/routes';
 
 type TeamLevel = 'youth' | 'amateur' | 'reserve' | 'senior';
@@ -315,21 +316,11 @@ const AddEditTeamPage: React.FC = () => {
             </div>
             
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 pt-4">
-              <button
-                type="submit"
-                className="flex-1 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
-              >
-                {isEditing ? 'Update Team' : 'Create Team'}
-              </button>
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="flex-1 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700"
-              >
-                Cancel
-              </button>
-            </div>
+            <FormActions
+              onCancel={handleCancel}
+              saveLabel={isEditing ? 'Update Team' : 'Create Team'}
+              showArchive={false}
+            />
           </form>
         </div>
       </main>

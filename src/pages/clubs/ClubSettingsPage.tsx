@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClubById } from '@/data/clubs';
 import PageTitle from '@/components/common/PageTitle';
+import FormActions from '@/components/common/FormActions';
 import { Routes } from '@/utils/routes';
 
 export default function ClubSettingsPage() {
@@ -340,21 +341,10 @@ export default function ClubSettingsPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="px-4 sm:px-6 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-            >
-              Save Changes
-            </button>
-          </div>
+          <FormActions
+            onCancel={handleCancel}
+            showArchive={false}
+          />
         </form>
       </main>
     </div>

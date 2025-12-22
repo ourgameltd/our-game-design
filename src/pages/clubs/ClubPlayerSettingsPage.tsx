@@ -5,6 +5,7 @@ import { getTeamsByClubId } from '@/data/teams';
 import { getClubById } from '@/data/clubs';
 import { getAgeGroupById } from '@/data/ageGroups';
 import PageTitle from '@/components/common/PageTitle';
+import FormActions from '@/components/common/FormActions';
 import { Routes } from '@/utils/routes';
 import { PlayerPosition } from '@/types';
 
@@ -328,54 +329,15 @@ export default function ClubPlayerSettingsPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="card">
-            <div className="flex flex-col sm:flex-row gap-3 justify-end">
-              <button
-                type="submit"
-                disabled={isFormDisabled}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isNewPlayer ? 'Create Player' : 'Save Changes'}
-              </button>
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          <FormActions
+            isArchived={!isNewPlayer && player?.isArchived}
+            onArchive={!isNewPlayer ? () => setShowArchiveConfirm(true) : undefined}
+            onCancel={handleCancel}
+            saveLabel={isNewPlayer ? 'Create Player' : 'Save Changes'}
+            saveDisabled={isFormDisabled}
+            showArchive={!isNewPlayer}
+          />
         </form>
-
-        {/* Archive Zone - Only show for existing players */}
-        {!isNewPlayer && (
-          <div className="card border-2 border-orange-200 dark:border-orange-900 mt-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-              <div>
-                <h3 className="text-lg sm:text-xl font-semibold text-orange-600 dark:text-orange-400 mb-2">
-                  {player!.isArchived ? 'Unarchive Player' : 'Archive Player'}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {player!.isArchived 
-                    ? 'Make this player active and allow modifications to their profile'
-                    : 'Lock this player profile and prevent modifications while keeping all data'}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowArchiveConfirm(true)}
-                className={`px-4 py-2 text-sm sm:text-base rounded-lg transition-colors font-medium whitespace-nowrap flex-shrink-0 ${
-                  player!.isArchived
-                    ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-orange-600 text-white hover:bg-orange-700'
-                }`}
-              >
-                {player!.isArchived ? 'Unarchive' : 'Archive'}
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Archive Confirmation Modal */}
         {!isNewPlayer && showArchiveConfirm && (

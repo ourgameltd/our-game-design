@@ -6,6 +6,7 @@ import { getTeamsByClubId } from '@data/teams';
 import { getAgeGroupById } from '@data/ageGroups';
 import { Routes } from '@utils/routes';
 import PageTitle from '@components/common/PageTitle';
+import FormActions from '@components/common/FormActions';
 
 export default function CoachSettingsPage() {
   const { clubId, coachId } = useParams();
@@ -31,6 +32,7 @@ export default function CoachSettingsPage() {
   const [selectedTeams, setSelectedTeams] = useState<string[]>(coach?.teamIds || []);
   const [photo, setPhoto] = useState(coach?.photo || '');
   const [photoPreview, setPhotoPreview] = useState<string>(coach?.photo || '');
+  const [showArchiveConfirm, setShowArchiveConfirm] = useState(false);
 
   if (!club) {
     return <div>Club not found</div>;
@@ -61,6 +63,13 @@ export default function CoachSettingsPage() {
   };
 
   const handleCancel = () => {
+    navigate(Routes.clubCoaches(clubId!));
+  };
+
+  const handleArchive = () => {
+    if (!coach) return;
+    const action = coach.isArchived ? 'unarchived' : 'archived';
+    alert(`Coach ${action} successfully! (Demo - not saved to backend)`);
     navigate(Routes.clubCoaches(clubId!));
   };
 
@@ -431,39 +440,58 @@ export default function CoachSettingsPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="card">
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-end">
-              <button
-                type="submit"
-                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                {isNewCoach ? 'Create Coach' : 'Save Changes'}
-              </button>
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          <FormActions
+            isArchived={!isNewCoach && coach?.isArchived}
+            onArchive={!isNewCoach ? () => setShowArchiveConfirm(true) : undefined}
+            onCancel={handleCancel}
+            saveLabel={isNewCoach ? 'Create Coach' : 'Save Changes'}
+            showArchive={!isNewCoach}
+          />
         </form>
 
-        {/* Danger Zone - Only show for existing coaches */}
-        {!isNewCoach && (
-          <div className="card border-2 border-red-200 dark:border-red-900 mt-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400 mb-2">Danger Zone</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              These actions are permanent and cannot be undone.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-              <button className="px-4 py-2 text-sm sm:text-base bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors font-medium whitespace-nowrap">
-                Archive Coach
-              </button>
-              <button className="px-4 py-2 text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium whitespace-nowrap">
-                Delete Coach
-              </button>
+        {/* Archive Confirmation Modal */}
+        {!isNewCoach && showArchiveConfirm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[1000]">
+            <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                {coach!.isArchived ? 'Unarchive Coach?' : 'Archive Coach?'}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                {coach!.isArchived ? (
+                  <>
+                    Are you sure you want to unarchive <strong>{coach!.firstName} {coach!.lastName}</strong>? 
+                    This will make their profile active again and allow modifications.
+                  </>
+                ) : (
+                  <>
+                    Are you sure you want to archive <strong>{coach!.firstName} {coach!.lastName}</strong>? 
+                    This will lock their profile and prevent modifications. All their data will be preserved and you can unarchive them later.
+                  </>
+                )}
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowArchiveConfirm(false)}
+                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowArchiveConfirm(false);
+                    handleArchive();
+                  }}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    coach!.isArchived
+                      ? 'bg-green-600 text-white hover:bg-green-700'
+                      : 'bg-orange-600 text-white hover:bg-orange-700'
+                  }`}
+                >
+                  Yes, {coach!.isArchived ? 'Unarchive' : 'Archive'} Coach
+                </button>
+              </div>
             </div>
           </div>
         )}
