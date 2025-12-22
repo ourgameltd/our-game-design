@@ -14,7 +14,9 @@ import {
   Shield,
   FileText,
   Shirt,
-  UserCircle
+  UserCircle,
+  ChevronsRight,
+  ChevronsLeft
 } from 'lucide-react';
 import { getClubById } from '@data/clubs';
 import { getTeamById } from '@data/teams';
@@ -71,16 +73,6 @@ export default function MobileNavigation() {
     }
   };
 
-  const handleHamburgerClick = () => {
-    if (window.innerWidth >= 1024) {
-      // Desktop: toggle the persistent drawer
-      toggleDesktopNav();
-    } else {
-      // Mobile: toggle the overlay drawer
-      toggleMenu();
-    }
-  };
-
   const toggleTheme = () => {
     if (theme === 'system') {
       setTheme('light');
@@ -96,10 +88,11 @@ export default function MobileNavigation() {
   return (
     <>
       {/* Mobile Header */}
-      <div className="mobile-nav-header">
+      <div className="mobile-nav-header lg:pl-[280px]">
+        {/* Mobile hamburger for overlay menu */}
         <button 
-          className="mobile-nav-hamburger"
-          onClick={handleHamburgerClick}
+          className="mobile-nav-hamburger lg:hidden"
+          onClick={toggleMenu}
           aria-label="Toggle navigation"
           aria-expanded={isOpen}
         >
@@ -253,6 +246,19 @@ export default function MobileNavigation() {
 
       {/* Slide-out Navigation Drawer */}
       <div className={`mobile-nav-drawer ${isOpen ? 'open' : ''} ${isDesktopOpen ? 'lg:open' : ''}`}>
+        {/* Collapse Bar for Desktop */}
+        <button
+          className="nav-collapse-bar hidden lg:flex"
+          onClick={toggleDesktopNav}
+          aria-label={isDesktopOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          {isDesktopOpen ? (
+            <ChevronsLeft className="w-5 h-5" />
+          ) : (
+            <ChevronsRight className="w-5 h-5" />
+          )}
+        </button>
+
         <div className="mobile-nav-drawer-header">
           <div className="mobile-nav-user-profile">
             <div className="mobile-nav-user-avatar-wrapper">

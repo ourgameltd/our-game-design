@@ -88,6 +88,12 @@
     @apply flex items-center justify-between px-4 h-16;
   }
 
+  @media (min-width: 1024px) {
+    .mobile-nav-header {
+      @apply hidden;
+    }
+  }
+
   .mobile-nav-hamburger {
     @apply p-2 -ml-2 bg-transparent border-none cursor-pointer flex flex-col gap-1 w-10 flex-shrink-0;
   }
@@ -133,11 +139,11 @@
   }
 
   .mobile-nav-overlay {
-    @apply fixed inset-0 bg-black/50 z-[998] opacity-100 transition-opacity duration-300;
+    @apply fixed inset-0 bg-black/50 z-[998] opacity-100 transition-opacity duration-300 lg:hidden;
   }
 
   .mobile-nav-drawer {
-    @apply fixed top-0 left-0 w-[280px] h-full bg-white dark:bg-gray-900 shadow-2xl transition-transform duration-300 z-[999] overflow-y-auto;
+    @apply fixed top-0 left-0 w-[280px] h-full bg-white dark:bg-gray-900 shadow-2xl transition-all duration-300 z-[999] overflow-y-auto;
     transform: translateX(-100%);
   }
 
@@ -146,17 +152,42 @@
   }
 
   @media (min-width: 1024px) {
+    .mobile-nav-header {
+      @apply transition-all duration-300;
+    }
+
     .mobile-nav-drawer {
-      @apply fixed top-16 left-0 h-[calc(100vh-4rem)] shadow-xl border-r border-gray-200 dark:border-gray-700;
+      @apply fixed top-0 left-0 h-screen shadow-xl;
+      transform: translateX(0);
     }
     
     .mobile-nav-drawer.lg\:open {
+      @apply border-r border-gray-200 dark:border-gray-700;
       transform: translateX(0);
     }
     
     .mobile-nav-drawer:not(.lg\:open) {
-      transform: translateX(-100%);
+      @apply w-[4px] overflow-visible bg-gray-300 dark:bg-gray-700;
+      box-shadow: none;
     }
+
+    .mobile-nav-drawer:not(.lg\:open) .mobile-nav-drawer-header,
+    .mobile-nav-drawer:not(.lg\:open) .mobile-nav-drawer-content {
+      @apply opacity-0 pointer-events-none;
+    }
+
+    .mobile-nav-drawer.lg\:open .nav-collapse-bar {
+      @apply right-0 rounded-l-lg rounded-r-none;
+    }
+
+    .mobile-nav-drawer:not(.lg\:open) .nav-collapse-bar {
+      @apply left-0 rounded-r-lg rounded-l-none;
+    }
+  }
+
+  /* Collapse bar for desktop sidebar */
+  .nav-collapse-bar {
+    @apply absolute top-1/2 -translate-y-1/2 w-6 h-16 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 shadow-md items-center justify-center cursor-pointer text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 transition-all z-10;
   }
 
   .mobile-nav-drawer-header {

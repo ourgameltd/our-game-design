@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserPreferencesProvider } from '@/contexts/UserPreferencesContext';
 import { NavigationProvider, useNavigation } from '@/contexts/NavigationContext';
@@ -49,6 +50,16 @@ import ScrollToTop from '@components/common/ScrollToTop';
 function AppContent() {
   const location = useLocation();
   const { isDesktopOpen } = useNavigation();
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   // Don't show header on auth pages or home page
   const hideHeader = location.pathname === '/' || 
@@ -56,15 +67,20 @@ function AppContent() {
                      location.pathname === '/register' || 
                      location.pathname === '/password-reset';
 
+  const getMarginLeft = () => {
+    if (hideHeader || !isDesktop) return '0';
+    return isDesktopOpen ? '280px' : '4px';
+  };
+
   return (
     <>
       <ScrollToTop />
       {!hideHeader && <Header />}
-      <div className={`${hideHeader ? '' : 'pt-16'}`}>
+      <div className={`${hideHeader ? '' : 'pt-16 lg:pt-0'}`}>
         <div 
           className="transition-all duration-300"
           style={{ 
-            marginLeft: !hideHeader && isDesktopOpen ? 'clamp(0px, calc((100vw - 1024px) * 999), 280px)' : '0'
+            marginLeft: getMarginLeft()
           }}
         >
           <Routes>
