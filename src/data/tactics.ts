@@ -7,7 +7,7 @@ export const sampleTactics: Tactic[] = [
     name: 'Vale Attacking 4-4-2',
     style: 'attacking',
     scope: 'club',
-    clubId: 'club1',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
     parentFormationId: 'f1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', // 4-4-2 Classic
     squadSize: 11,
     summary: `## Attacking Philosophy
@@ -61,7 +61,7 @@ This tactic emphasizes high pressing and quick transitions. Full-backs push high
     name: 'Defensive 5-3-2',
     style: 'defensive',
     scope: 'club',
-    clubId: 'club1',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
     parentFormationId: 'f12f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b', // 5-3-2
     squadSize: 11,
     summary: `## Defensive Solidity
@@ -95,8 +95,8 @@ A compact defensive block designed to frustrate opponents and hit on the counter
     name: '2014s Possession 2-3-1',
     style: 'possession',
     scope: 'ageGroup',
-    clubId: 'club1',
-    ageGroupId: 'ag1',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    ageGroupId: '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
     parentFormationId: 'f8b9c0d1-e2f3-a4b5-c6d7-e8f9a0b1c2d3', // 2-3-1
     squadSize: 7,
     summary: `## Youth Development Focus
@@ -136,9 +136,9 @@ Teaching young players to keep the ball and make smart decisions.
     name: 'Reds High Press 3-3-2',
     style: 'high-press',
     scope: 'team',
-    clubId: 'club1',
-    ageGroupId: 'ag1',
-    teamId: 'team1',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    ageGroupId: '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
+    teamId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
     parentFormationId: 'f5e6f7a8-b9c0-d1e2-f3a4-b5c6d7e8f9a0', // 3-3-2
     parentTacticId: 't3c4d5e6-f7a8-b9c0-d1e2-f3a4b5c6d7e8', // Inherits from age group tactic
     squadSize: 9,
@@ -189,7 +189,7 @@ Building on our age group possession principles, but with more aggressive pressi
     name: '5-a-side Diamond Press',
     style: 'high-press',
     scope: 'club',
-    clubId: 'club1',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
     parentFormationId: 'fbe2f3a4-b5c6-d7e8-f9a0-b1c2d3e4f5a6', // 1-2-1 (5-a-side)
     squadSize: 5,
     summary: `## Small-Sided Pressing
@@ -208,9 +208,9 @@ High-energy pressing for 5-a-side format.
     name: 'Senior Counter-Attack 4-3-3',
     style: 'counter-attack',
     scope: 'team',
-    clubId: 'club1',
-    ageGroupId: 'ag-senior',
-    teamId: 'team-senior',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    ageGroupId: '7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d',
+    teamId: 'g7h8i9j0-k1l2-3m4n-5o6p-7q8r9s0t1u2v',
     parentFormationId: 'f2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', // 4-3-3 Attack
     squadSize: 11,
     summary: `## Clinical Counter-Attacking
