@@ -102,6 +102,23 @@ export default function TacticDisplay({
               const dx = toPos.x - fromPos.x;
               const dy = toPos.y - fromPos.y;
               const dist = Math.sqrt(dx * dx + dy * dy);
+              
+              // Avoid division by zero - use straight line if positions are too close
+              if (dist < 0.01) {
+                return (
+                  <line
+                    key={`rel-${idx}`}
+                    x1={fromPos.x}
+                    y1={fromPos.y}
+                    x2={toPos.x}
+                    y2={toPos.y}
+                    stroke={lineStyle.stroke}
+                    strokeWidth="0.4"
+                    opacity={lineStyle.opacity}
+                  />
+                );
+              }
+              
               const offsetX = -dy / dist * 8; // Perpendicular offset
               const offsetY = dx / dist * 8;
               
@@ -209,13 +226,6 @@ export default function TacticDisplay({
                   <span className="text-xs sm:text-sm font-bold text-white">
                     {pos.position}
                   </span>
-                </div>
-
-                {/* Position label below */}
-                <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                  <div className="bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded text-center">
-                    {pos.position}
-                  </div>
                 </div>
               </div>
             </div>

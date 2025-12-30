@@ -156,6 +156,16 @@ export const tactic433Inherited: Tactic = {
 export function resolvePositions(tactic: Tactic, parentTactic?: Tactic): ResolvedPosition[] {
   const resolved: ResolvedPosition[] = [];
 
+  // Ensure parent tactic has same number of positions if it exists
+  if (parentTactic && parentTactic.positions.length !== tactic.positions.length) {
+    // Parent doesn't match structure - treat all as non-inherited
+    return tactic.positions.map(position => ({
+      ...position,
+      isInherited: false,
+      isOverridden: false,
+    }));
+  }
+
   for (let i = 0; i < tactic.positions.length; i++) {
     const position = tactic.positions[i];
     const isOverridden = tactic.overriddenPositionIndices?.includes(i) || false;
