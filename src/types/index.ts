@@ -357,7 +357,7 @@ export interface Formation {
   id: string;
   name: string;
   system: string; // e.g., "4-4-2", "4-3-3", "2-1-1" (5-a-side), "2-3-1" (7-a-side)
-  squadSize: SquadSize; // Number of players per side (5, 7, 9, or 11)
+  squadSize: SquadSize; // Number of players per side (4, 5, 7, 9, or 11)
   positions: {
     position: PlayerPosition;
     x: number; // 0-100 (percentage of field width)
