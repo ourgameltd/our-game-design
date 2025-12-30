@@ -58,19 +58,19 @@ export default function TacticPitchEditor({
   const getMergedPosition = useCallback(
     (index: number) => {
       const parentPos = parentFormation.positions[index];
-      const override = tactic.overrides.find((o) => o.positionIndex === index);
+      const override = tactic.positionOverrides[index];
       
       return {
         position: parentPos.position,
         x: override?.x !== undefined ? override.x : parentPos.x,
         y: override?.y !== undefined ? override.y : parentPos.y,
         direction: override?.direction,
-        role: override?.role,
+        roleDescription: override?.roleDescription,
         keyResponsibilities: override?.keyResponsibilities,
         isOverridden: !!override && (override.x !== undefined || override.y !== undefined),
       };
     },
-    [parentFormation, tactic.overrides]
+    [parentFormation, tactic.positionOverrides]
   );
 
   // Handle pointer down (start drag)
@@ -143,7 +143,6 @@ export default function TacticPitchEditor({
 
       // Update override
       onPositionChange(dragState.positionIndex, {
-        positionIndex: dragState.positionIndex,
         x: xPercent,
         y: yPercent,
       });
@@ -159,10 +158,9 @@ export default function TacticPitchEditor({
         if (index !== undefined && index !== relationshipDrag.fromIndex) {
           // Create relationship (will trigger popup in parent component)
           const newRelationship: PlayerRelationship = {
-            id: `rel-${Date.now()}`,
             fromPositionIndex: relationshipDrag.fromIndex,
             toPositionIndex: index,
-            type: 'pass-and-move', // Default, should be selected via popup
+            type: 'passing-lane', // Default, should be selected via popup
           };
           onRelationshipAdd(newRelationship);
         }
@@ -238,12 +236,12 @@ export default function TacticPitchEditor({
 
         {/* Relationships */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 140" preserveAspectRatio="none">
-          {tactic.relationships.map((rel) => {
+          {tactic.relationships.map((rel, relIndex) => {
             const fromPos = getMergedPosition(rel.fromPositionIndex);
             const toPos = getMergedPosition(rel.toPositionIndex);
             
             return (
-              <g key={rel.id}>
+              <g key={`rel-${relIndex}-${rel.fromPositionIndex}-${rel.toPositionIndex}`}>
                 <line
                   x1={fromPos.x}
                   y1={fromPos.y}

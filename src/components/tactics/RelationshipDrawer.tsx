@@ -12,9 +12,9 @@ interface RelationshipDrawerProps {
 
 const relationshipTypes: { value: RelationshipType; label: string; description: string }[] = [
   {
-    value: 'pass-and-move',
-    label: 'Pass & Move',
-    description: 'Player passes and moves into space',
+    value: 'passing-lane',
+    label: 'Passing Lane',
+    description: 'Primary passing connection between players',
   },
   {
     value: 'overlap',
@@ -22,29 +22,14 @@ const relationshipTypes: { value: RelationshipType; label: string; description: 
     description: 'Player runs beyond teammate',
   },
   {
-    value: 'switch',
-    label: 'Switch',
-    description: 'Players switch positions',
-  },
-  {
     value: 'cover',
     label: 'Cover',
     description: 'Player provides defensive cover',
   },
   {
-    value: 'press-together',
-    label: 'Press Together',
-    description: 'Players press as a unit',
-  },
-  {
-    value: 'triangle',
-    label: 'Triangle',
-    description: 'Form passing triangle',
-  },
-  {
-    value: 'give-and-go',
-    label: 'Give & Go',
-    description: 'Quick one-two passing',
+    value: 'combination',
+    label: 'Combination Play',
+    description: 'Quick combination passing and movement',
   },
 ];
 
@@ -56,7 +41,7 @@ export default function RelationshipDrawer({
   className = '',
 }: RelationshipDrawerProps) {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editType, setEditType] = useState<RelationshipType>('pass-and-move');
+  const [editType, setEditType] = useState<RelationshipType>('passing-lane');
   const [editDescription, setEditDescription] = useState('');
 
   const handleEdit = (index: number) => {
@@ -116,7 +101,7 @@ export default function RelationshipDrawer({
 
               return (
                 <div
-                  key={rel.id}
+                  key={`rel-${index}-${rel.fromPositionIndex}-${rel.toPositionIndex}`}
                   className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
                 >
                   {isEditing ? (

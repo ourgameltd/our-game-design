@@ -45,39 +45,39 @@ const sampleTactic: Tactic = {
   id: 'tactic-433-high-press',
   name: '4-3-3 High Press',
   parentFormationId: 'formation-433',
-  description: 'High pressing variant with advanced fullbacks',
-  overrides: [
-    {
-      positionIndex: 1, // LB
+  squadSize: 11,
+  summary: 'High pressing variant with advanced fullbacks',
+  scope: {
+    type: 'club',
+    clubId: 'club-1',
+  },
+  positionOverrides: {
+    1: { // LB
       y: 40,
       direction: 'attacking',
-      role: 'Advanced fullback who **overlaps** the winger',
+      roleDescription: 'Advanced fullback who **overlaps** the winger',
       keyResponsibilities: ['Support attacks', 'Overlap winger', 'Track back quickly'],
     },
-    {
-      positionIndex: 4, // RB
+    4: { // RB
       y: 40,
       direction: 'attacking',
-      role: 'Advanced fullback who provides width',
+      roleDescription: 'Advanced fullback who provides width',
       keyResponsibilities: ['Provide width', 'Cross from deep', 'Cover center-backs'],
     },
-    {
-      positionIndex: 5, // CDM
+    5: { // CDM
       direction: 'defensive',
-      role: 'Defensive shield',
+      roleDescription: 'Defensive shield',
       keyResponsibilities: ['Protect defense', 'Break up play', 'Distribute from deep'],
     },
-  ],
+  },
   relationships: [
     {
-      id: 'rel-1',
       fromPositionIndex: 1,
       toPositionIndex: 8,
       type: 'overlap',
       description: 'LB overlaps LW on attacking runs',
     },
     {
-      id: 'rel-2',
       fromPositionIndex: 5,
       toPositionIndex: 2,
       type: 'cover',
@@ -85,9 +85,8 @@ const sampleTactic: Tactic = {
     },
   ],
   createdBy: 'coach-1',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  isGlobal: true,
+  createdAt: '2024-01-01T00:00:00.000Z',
+  updatedAt: '2024-01-01T00:00:00.000Z',
 };
 
 // Interactive Story
@@ -100,23 +99,17 @@ export const Interactive: Story = {
 
     const handlePositionChange = (index: number, override: Partial<TacticalPositionOverride>) => {
       setTactic((prev) => {
-        const existingOverrideIndex = prev.overrides.findIndex((o) => o.positionIndex === index);
+        const existingOverride = prev.positionOverrides[index];
         
-        if (existingOverrideIndex >= 0) {
-          // Update existing override
-          const newOverrides = [...prev.overrides];
-          newOverrides[existingOverrideIndex] = {
-            ...newOverrides[existingOverrideIndex],
-            ...override,
-          };
-          return { ...prev, overrides: newOverrides };
-        } else {
-          // Add new override
-          return {
-            ...prev,
-            overrides: [...prev.overrides, { positionIndex: index, ...override }],
-          };
-        }
+        return {
+          ...prev,
+          positionOverrides: {
+            ...prev.positionOverrides,
+            [index]: existingOverride 
+              ? { ...existingOverride, ...override }
+              : override,
+          },
+        };
       });
     };
 
@@ -142,127 +135,109 @@ export const Interactive: Story = {
       }));
     };
 
-    const handleResetField = (field: 'direction' | 'role' | 'keyResponsibilities') => {
+    const handleResetField = (field: 'direction' | 'roleDescription' | 'keyResponsibilities') => {
       if (selectedPosition === null) return;
 
       setTactic((prev) => {
-        const existingOverrideIndex = prev.overrides.findIndex((o) => o.positionIndex === selectedPosition);
+        const existingOverride = prev.positionOverrides[selectedPosition];
+        if (!existingOverride) return prev;
+
+        const { [field]: _, ...restOverride } = existingOverride;
         
-        if (existingOverrideIndex >= 0) {
-          const newOverrides = [...prev.overrides];
-          const override = { ...newOverrides[existingOverrideIndex] };
-          
-          // Remove the field
-          delete override[field];
-          
-          // If override is now empty (only positionIndex), remove it entirely
-          if (Object.keys(override).length === 1 && 'positionIndex' in override) {
-            newOverrides.splice(existingOverrideIndex, 1);
-          } else {
-            newOverrides[existingOverrideIndex] = override;
-          }
-          
-          return { ...prev, overrides: newOverrides };
+        // If no fields left, remove the override entirely
+        const hasRemainingFields = Object.keys(restOverride).length > 0;
+        
+        if (hasRemainingFields) {
+          return {
+            ...prev,
+            positionOverrides: {
+              ...prev.positionOverrides,
+              [selectedPosition]: restOverride as TacticalPositionOverride,
+            },
+          };
+        } else {
+          const { [selectedPosition]: _removed, ...rest } = prev.positionOverrides;
+          return {
+            ...prev,
+            positionOverrides: rest,
+          };
         }
-        
-        return prev;
       });
     };
 
     const handleResetAllOverrides = () => {
       setTactic((prev) => ({
         ...prev,
-        overrides: [],
+        positionOverrides: {},
       }));
     };
 
-    const selectedOverride = selectedPosition !== null
-      ? tactic.overrides.find((o) => o.positionIndex === selectedPosition)
-      : undefined;
-
-    const parentData = {
+    const selectedOverride = selectedPosition !== null ? tactic.positionOverrides[selectedPosition] : undefined;
+    const selectedParentData = selectedPosition !== null ? {
       direction: undefined,
-      role: undefined,
+      roleDescription: undefined,
       keyResponsibilities: undefined,
-    };
+    } : { direction: undefined, roleDescription: undefined, keyResponsibilities: undefined };
 
     return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Tactic Pitch Editor
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              Interactive editor for creating tactical variations with drag-and-drop positioning
-            </p>
+      <div className="space-y-6">
+        {/* Controls */}
+        <div className="flex items-center gap-4">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={snapToGrid}
+              onChange={(e) => setSnapToGrid(e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm">Snap to grid</span>
+          </label>
+          <button
+            onClick={() => setShowResetModal(true)}
+            className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200"
+          >
+            Reset All Overrides
+          </button>
+        </div>
+
+        {/* Main content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Pitch Editor */}
+          <div className="lg:col-span-2">
+            <TacticPitchEditor
+              tactic={tactic}
+              parentFormation={sampleFormation}
+              onPositionChange={handlePositionChange}
+              onRelationshipAdd={handleRelationshipAdd}
+              onRelationshipRemove={handleRelationshipRemove}
+              snapToGrid={snapToGrid}
+              gridSize={5}
+              onPositionSelect={setSelectedPosition}
+              selectedPositionIndex={selectedPosition}
+            />
           </div>
 
-          {/* Controls */}
-          <div className="mb-4 flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={snapToGrid}
-                onChange={(e) => setSnapToGrid(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          {/* Side panels */}
+          <div className="space-y-4">
+            {/* Position Role Panel */}
+            {selectedPosition !== null && (
+              <PositionRolePanel
+                positionIndex={selectedPosition}
+                position={sampleFormation.positions[selectedPosition].position}
+                override={selectedOverride}
+                parentData={selectedParentData}
+                onUpdate={(override) => handlePositionChange(selectedPosition, override)}
+                onResetField={handleResetField}
               />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Snap to Grid (5%)
-              </span>
-            </label>
-            <button
-              onClick={() => setShowResetModal(true)}
-              className="ml-auto px-4 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              Reset All Overrides
-            </button>
-          </div>
+            )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Pitch Editor */}
-            <div className="lg:col-span-2">
-              <TacticPitchEditor
-                tactic={tactic}
-                parentFormation={sampleFormation}
-                onPositionChange={handlePositionChange}
-                onRelationshipAdd={handleRelationshipAdd}
-                snapToGrid={snapToGrid}
-                onPositionSelect={setSelectedPosition}
-                selectedPositionIndex={selectedPosition}
-              />
-            </div>
-
-            {/* Side Panel */}
-            <div className="space-y-6">
-              {/* Position Role Panel */}
-              {selectedPosition !== null && (
-                <PositionRolePanel
-                  positionIndex={selectedPosition}
-                  position={sampleFormation.positions[selectedPosition].position}
-                  override={selectedOverride}
-                  parentData={parentData}
-                  onUpdate={(override) => handlePositionChange(selectedPosition, override)}
-                  onResetField={handleResetField}
-                />
-              )}
-
-              {selectedPosition === null && (
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Click a position on the pitch to configure its role
-                  </p>
-                </div>
-              )}
-
-              {/* Relationship Drawer */}
-              <RelationshipDrawer
-                relationships={tactic.relationships}
-                positions={sampleFormation.positions.map((p) => p.position)}
-                onUpdate={handleRelationshipUpdate}
-                onRemove={handleRelationshipRemove}
-              />
-            </div>
+            {/* Relationship Drawer */}
+            <RelationshipDrawer
+              relationships={tactic.relationships}
+              positions={sampleFormation.positions.map((p) => p.position)}
+              onUpdate={handleRelationshipUpdate}
+              onRemove={handleRelationshipRemove}
+            />
           </div>
         </div>
 
@@ -271,7 +246,7 @@ export const Interactive: Story = {
           isOpen={showResetModal}
           onClose={() => setShowResetModal(false)}
           onConfirm={handleResetAllOverrides}
-          overrides={tactic.overrides}
+          overrides={tactic.positionOverrides}
           positions={sampleFormation.positions.map((p) => p.position)}
         />
       </div>
@@ -279,28 +254,35 @@ export const Interactive: Story = {
   },
 };
 
-// Simple Story with Basic Tactic
-export const BasicTactic: Story = {
+// Basic story with minimal props
+export const Basic: Story = {
   args: {
-    tactic: {
-      ...sampleTactic,
-      overrides: [],
-      relationships: [],
-    },
+    tactic: sampleTactic,
     parentFormation: sampleFormation,
     onPositionChange: () => {},
     onRelationshipAdd: () => {},
-    snapToGrid: true,
   },
 };
 
-// Story with Many Overrides
-export const WithManyOverrides: Story = {
+// Without snap to grid
+export const FreePositioning: Story = {
+  args: {
+    tactic: sampleTactic,
+    parentFormation: sampleFormation,
+    onPositionChange: () => {},
+    onRelationshipAdd: () => {},
+    snapToGrid: false,
+  },
+};
+
+// Large grid size
+export const LargeGridSize: Story = {
   args: {
     tactic: sampleTactic,
     parentFormation: sampleFormation,
     onPositionChange: () => {},
     onRelationshipAdd: () => {},
     snapToGrid: true,
+    gridSize: 10,
   },
 };

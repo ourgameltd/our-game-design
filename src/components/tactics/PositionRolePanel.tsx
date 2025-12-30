@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUp, RotateCcw, Plus, X } from 'lucide-react';
-import { Direction, TacticalPositionOverride } from '@/types';
+import { PlayerDirection, TacticalPositionOverride } from '@/types';
 
 interface PositionRolePanelProps {
   positionIndex: number;
   position: string; // Position label (e.g., "CM", "ST")
   override: TacticalPositionOverride | undefined;
   parentData: {
-    direction?: Direction;
-    role?: string;
+    direction?: PlayerDirection;
+    roleDescription?: string;
     keyResponsibilities?: string[];
   };
   onUpdate: (override: Partial<TacticalPositionOverride>) => void;
-  onResetField: (field: 'direction' | 'role' | 'keyResponsibilities') => void;
+  onResetField: (field: 'direction' | 'roleDescription' | 'keyResponsibilities') => void;
   className?: string;
 }
 
 export default function PositionRolePanel({
-  positionIndex,
+  positionIndex: _positionIndex,
   position,
   override,
   parentData,
@@ -29,24 +29,22 @@ export default function PositionRolePanel({
   const [showMarkdownPreview, setShowMarkdownPreview] = useState(false);
 
   const currentDirection = override?.direction ?? parentData.direction;
-  const currentRole = override?.role ?? parentData.role ?? '';
+  const currentRole = override?.roleDescription ?? parentData.roleDescription ?? '';
   const currentResponsibilities = override?.keyResponsibilities ?? parentData.keyResponsibilities ?? [];
 
   const isDirectionInherited = override?.direction === undefined && parentData.direction !== undefined;
-  const isRoleInherited = override?.role === undefined && parentData.role !== undefined;
+  const isRoleInherited = override?.roleDescription === undefined && parentData.roleDescription !== undefined;
   const isResponsibilitiesInherited = override?.keyResponsibilities === undefined && parentData.keyResponsibilities !== undefined;
 
-  const handleDirectionChange = (direction: Direction) => {
+  const handleDirectionChange = (direction: PlayerDirection) => {
     onUpdate({
-      positionIndex,
       direction,
     });
   };
 
-  const handleRoleChange = (role: string) => {
+  const handleRoleChange = (roleDescription: string) => {
     onUpdate({
-      positionIndex,
-      role,
+      roleDescription,
     });
   };
 
@@ -55,7 +53,6 @@ export default function PositionRolePanel({
     
     const updatedResponsibilities = [...currentResponsibilities, newResponsibility.trim()];
     onUpdate({
-      positionIndex,
       keyResponsibilities: updatedResponsibilities,
     });
     setNewResponsibility('');
@@ -64,7 +61,6 @@ export default function PositionRolePanel({
   const handleRemoveResponsibility = (index: number) => {
     const updatedResponsibilities = currentResponsibilities.filter((_, i) => i !== index);
     onUpdate({
-      positionIndex,
       keyResponsibilities: updatedResponsibilities,
     });
   };
@@ -180,7 +176,7 @@ export default function PositionRolePanel({
               </button>
               {!isRoleInherited && (
                 <button
-                  onClick={() => onResetField('role')}
+                  onClick={() => onResetField('roleDescription')}
                   className="text-xs text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1"
                   title="Reset to parent"
                 >

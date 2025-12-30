@@ -1,11 +1,16 @@
 import { AlertTriangle, X } from 'lucide-react';
 import { TacticalPositionOverride } from '@/types';
 
+interface OverrideEntry {
+  positionIndex: number;
+  override: TacticalPositionOverride;
+}
+
 interface ResetOverridesModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  overrides: TacticalPositionOverride[];
+  overrides: Record<number, TacticalPositionOverride>;
   positions: string[]; // Array of position labels
 }
 
@@ -18,6 +23,12 @@ export default function ResetOverridesModal({
 }: ResetOverridesModalProps) {
   if (!isOpen) return null;
 
+  // Convert Record to array for iteration
+  const overrideEntries: OverrideEntry[] = Object.entries(overrides).map(([key, value]) => ({
+    positionIndex: parseInt(key, 10),
+    override: value,
+  }));
+
   const getOverrideDescription = (override: TacticalPositionOverride): string[] => {
     const changes: string[] = [];
     
@@ -27,7 +38,7 @@ export default function ResetOverridesModal({
     if (override.direction !== undefined) {
       changes.push('direction');
     }
-    if (override.role !== undefined) {
+    if (override.roleDescription !== undefined) {
       changes.push('role');
     }
     if (override.keyResponsibilities !== undefined) {
@@ -37,7 +48,7 @@ export default function ResetOverridesModal({
     return changes;
   };
 
-  const totalOverrides = overrides.length;
+  const totalOverrides = overrideEntries.length;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
@@ -77,19 +88,19 @@ export default function ResetOverridesModal({
               </span>
             </div>
             
-            {overrides.length === 0 ? (
+            {overrideEntries.length === 0 ? (
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center py-8">
                 No overrides to reset
               </p>
             ) : (
               <div className="space-y-2">
-                {overrides.map((override) => {
-                  const position = positions[override.positionIndex] || `Position ${override.positionIndex}`;
+                {overrideEntries.map(({ positionIndex, override }) => {
+                  const position = positions[positionIndex] || `Position ${positionIndex}`;
                   const changes = getOverrideDescription(override);
                   
                   return (
                     <div
-                      key={override.positionIndex}
+                      key={positionIndex}
                       className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50"
                     >
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
@@ -99,7 +110,7 @@ export default function ResetOverridesModal({
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-sm text-gray-900 dark:text-white">
-                          Position {override.positionIndex + 1} ({position})
+                          Position {positionIndex + 1} ({position})
                         </div>
                         <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                           Modified: {changes.join(', ')}
@@ -115,12 +126,12 @@ export default function ResetOverridesModal({
                               </span>
                             </div>
                           )}
-                          {override.role && (
+                          {override.roleDescription && (
                             <div className="text-xs">
                               <span className="text-gray-500 dark:text-gray-400">Role:</span>
                               <span className="ml-1 text-gray-700 dark:text-gray-300">
-                                {override.role.substring(0, 50)}
-                                {override.role.length > 50 ? '...' : ''}
+                                {override.roleDescription.substring(0, 50)}
+                                {override.roleDescription.length > 50 ? '...' : ''}
                               </span>
                             </div>
                           )}
@@ -171,7 +182,7 @@ export default function ResetOverridesModal({
               onConfirm();
               onClose();
             }}
-            disabled={overrides.length === 0}
+            disabled={overrideEntries.length === 0}
             className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed transition-colors font-medium"
           >
             Reset All Overrides
