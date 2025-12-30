@@ -367,6 +367,50 @@ export interface Formation {
   tactics?: string[];
 }
 
+// Tactics Types
+export type Direction = 'defensive' | 'neutral' | 'attacking';
+
+export type RelationshipType = 
+  | 'pass-and-move'
+  | 'overlap'
+  | 'switch'
+  | 'cover'
+  | 'press-together'
+  | 'triangle'
+  | 'give-and-go';
+
+export interface PlayerRelationship {
+  id: string;
+  fromPositionIndex: number; // Index in positions array
+  toPositionIndex: number; // Index in positions array
+  type: RelationshipType;
+  description?: string;
+}
+
+export interface TacticalPositionOverride {
+  positionIndex: number; // Index in parent formation's positions array
+  x?: number; // Override x position (0-100)
+  y?: number; // Override y position (0-100)
+  direction?: Direction; // Tactical direction
+  role?: string; // Role description (markdown supported)
+  keyResponsibilities?: string[]; // List of key responsibilities
+}
+
+export interface Tactic {
+  id: string;
+  name: string;
+  parentFormationId: string; // References Formation.id
+  parentTacticId?: string; // Optional: reference to parent tactic for multi-level inheritance
+  description?: string;
+  overrides: TacticalPositionOverride[]; // Position-specific overrides
+  relationships: PlayerRelationship[]; // Relationships between positions
+  createdBy?: string; // Coach/Staff ID
+  createdAt?: Date;
+  updatedAt?: Date;
+  teamId?: string; // Optional: if tactic is specific to a team
+  isGlobal?: boolean; // Whether this tactic is shared across teams
+}
+
 // User Types
 export type UserRole = 'admin' | 'coach' | 'player' | 'parent' | 'fan';
 
