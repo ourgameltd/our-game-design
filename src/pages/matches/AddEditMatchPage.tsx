@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ClipboardList, Users, Activity, FileText, Lock, Unlock, Plus, MapPin, X } from 'lucide-react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { ClipboardList, Users, Activity, FileText, Lock, Unlock, Plus, MapPin, X, ExternalLink } from 'lucide-react';
 import { sampleMatches } from '@/data/matches';
 import { sampleTeams } from '@/data/teams';
 import { sampleClubs } from '@/data/clubs';
@@ -117,6 +117,21 @@ export default function AddEditMatchPage() {
   const availableTactics = getAvailableTactics();
   const selectedTactic = tacticId ? sampleTactics.find(t => t.id === tacticId) : null;
   const selectedFormation = formationId ? sampleFormations.find(f => f.id === formationId) : null;
+  
+  // Get the URL for viewing the selected tactic's detail page
+  const getTacticDetailUrl = (tactic: Tactic | null): string | null => {
+    if (!tactic || !clubId) return null;
+    
+    const scope = tactic.scope;
+    if (scope.type === 'team' && scope.teamId && ageGroupId) {
+      return Routes.teamTacticDetail(clubId, ageGroupId, scope.teamId, tactic.id);
+    } else if (scope.type === 'ageGroup' && scope.ageGroupId) {
+      return Routes.ageGroupTacticDetail(clubId, scope.ageGroupId, tactic.id);
+    } else if (scope.type === 'club') {
+      return Routes.clubTacticDetail(clubId, tactic.id);
+    }
+    return null;
+  };
   
   // Combined formation/tactic selection value
   const getSelectionValue = () => {
@@ -1012,69 +1027,81 @@ export default function AddEditMatchPage() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                   Formation / Tactic
                 </h3>
-                <select
-                  value={getSelectionValue()}
-                  onChange={(e) => handleSelectionChange(e.target.value)}
-                  disabled={isLocked}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <option value="">Select formation or tactic</option>
-                  
-                  {/* Base Formations */}
-                  <optgroup label="📐 Base Formations">
-                    {availableFormations.map(f => (
-                      <option key={`formation:${f.id}`} value={`formation:${f.id}`}>
-                        {f.name} ({f.system})
-                      </option>
-                    ))}
-                  </optgroup>
-                  
-                  {/* Tactics grouped by scope */}
-                  {availableTactics.filter(t => t.scope.type === 'team').length > 0 && (
-                    <optgroup label="⚽ Team Tactics">
-                      {availableTactics
-                        .filter(t => t.scope.type === 'team')
-                        .map(t => {
-                          const parentFormation = sampleFormations.find(f => f.id === t.parentFormationId);
-                          return (
-                            <option key={`tactic:${t.id}`} value={`tactic:${t.id}`}>
-                              {t.name} {parentFormation ? `(${parentFormation.system})` : ''}
-                            </option>
-                          );
-                        })}
+                <div className="flex gap-2">
+                  <select
+                    value={getSelectionValue()}
+                    onChange={(e) => handleSelectionChange(e.target.value)}
+                    disabled={isLocked}
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <option value="">Select formation or tactic</option>
+                    
+                    {/* Custom Tactics grouped by scope - shown first */}
+                    {availableTactics.filter(t => t.scope.type === 'team').length > 0 && (
+                      <optgroup label="⚽ Team Tactics">
+                        {availableTactics
+                          .filter(t => t.scope.type === 'team')
+                          .map(t => {
+                            const parentFormation = sampleFormations.find(f => f.id === t.parentFormationId);
+                            return (
+                              <option key={`tactic:${t.id}`} value={`tactic:${t.id}`}>
+                                {t.name} {parentFormation ? `(${parentFormation.system})` : ''}
+                              </option>
+                            );
+                          })}
+                      </optgroup>
+                    )}
+                    
+                    {availableTactics.filter(t => t.scope.type === 'ageGroup').length > 0 && (
+                      <optgroup label="👥 Age Group Tactics">
+                        {availableTactics
+                          .filter(t => t.scope.type === 'ageGroup')
+                          .map(t => {
+                            const parentFormation = sampleFormations.find(f => f.id === t.parentFormationId);
+                            return (
+                              <option key={`tactic:${t.id}`} value={`tactic:${t.id}`}>
+                                {t.name} {parentFormation ? `(${parentFormation.system})` : ''}
+                              </option>
+                            );
+                          })}
+                      </optgroup>
+                    )}
+                    
+                    {availableTactics.filter(t => t.scope.type === 'club').length > 0 && (
+                      <optgroup label="🏛️ Club Tactics">
+                        {availableTactics
+                          .filter(t => t.scope.type === 'club')
+                          .map(t => {
+                            const parentFormation = sampleFormations.find(f => f.id === t.parentFormationId);
+                            return (
+                              <option key={`tactic:${t.id}`} value={`tactic:${t.id}`}>
+                                {t.name} {parentFormation ? `(${parentFormation.system})` : ''}
+                              </option>
+                            );
+                          })}
+                      </optgroup>
+                    )}
+                    
+                    {/* Base Formations - shown last */}
+                    <optgroup label="📐 Base Formations">
+                      {availableFormations.map(f => (
+                        <option key={`formation:${f.id}`} value={`formation:${f.id}`}>
+                          {f.name} ({f.system})
+                        </option>
+                      ))}
                     </optgroup>
+                  </select>
+                  {selectedTactic && getTacticDetailUrl(selectedTactic) && (
+                    <Link
+                      target='_blank'
+                      to={getTacticDetailUrl(selectedTactic)!}
+                      className="flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                      title="View tactic details"
+                    >
+                      <ExternalLink className="w-5 h-5" />
+                    </Link>
                   )}
-                  
-                  {availableTactics.filter(t => t.scope.type === 'ageGroup').length > 0 && (
-                    <optgroup label="👥 Age Group Tactics">
-                      {availableTactics
-                        .filter(t => t.scope.type === 'ageGroup')
-                        .map(t => {
-                          const parentFormation = sampleFormations.find(f => f.id === t.parentFormationId);
-                          return (
-                            <option key={`tactic:${t.id}`} value={`tactic:${t.id}`}>
-                              {t.name} {parentFormation ? `(${parentFormation.system})` : ''}
-                            </option>
-                          );
-                        })}
-                    </optgroup>
-                  )}
-                  
-                  {availableTactics.filter(t => t.scope.type === 'club').length > 0 && (
-                    <optgroup label="🏛️ Club Tactics">
-                      {availableTactics
-                        .filter(t => t.scope.type === 'club')
-                        .map(t => {
-                          const parentFormation = sampleFormations.find(f => f.id === t.parentFormationId);
-                          return (
-                            <option key={`tactic:${t.id}`} value={`tactic:${t.id}`}>
-                              {t.name} {parentFormation ? `(${parentFormation.system})` : ''}
-                            </option>
-                          );
-                        })}
-                    </optgroup>
-                  )}
-                </select>
+                </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   {availableFormations.length} formations and {availableTactics.length} tactics available for {squadSize}-a-side
                 </p>
