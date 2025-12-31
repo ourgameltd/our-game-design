@@ -4,11 +4,33 @@ import { Plus } from 'lucide-react';
 import { getPlayerById } from '@data/players';
 import { groupAttributes, getQualityColor, calculateOverallRating } from '@utils/attributeHelpers';
 import { PlayerAttributes, AttributeEvaluation } from '@/types';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useTheme } from '@/contexts/ThemeContext';
+import { 
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PolarAngleAxis, PolarGrid, PolarRadiusAxis, RadarChart, Radar, Legend
+} from 'recharts';
 
 export default function PlayerAbilitiesPage() {
   const { playerId } = useParams();
   const player = getPlayerById(playerId!);
+  const { actualTheme } = useTheme();
+  const isDark = actualTheme === 'dark';
+  
+  // Theme-aware chart colors
+  const chartColors = {
+    grid: isDark ? '#4B5563' : '#D1D5DB',
+    axis: isDark ? '#9CA3AF' : '#4B5563',
+    tooltipBg: isDark ? '#1F2937' : '#FFFFFF',
+    tooltipBorder: isDark ? '#374151' : '#E5E7EB',
+    tooltipText: isDark ? '#FFFFFF' : '#1F2937',
+    labelText: isDark ? '#FFFFFF' : '#1F2937',
+    // Category colors - slightly adjusted for better contrast
+    blue: { stroke: '#3B82F6', fill: '#3B82F6' },
+    green: { stroke: '#22C55E', fill: '#22C55E' },
+    purple: { stroke: '#A855F7', fill: '#A855F7' },
+    primary: { stroke: '#2563EB', fill: '#2563EB' },
+    emerald: { stroke: '#10B981', fill: '#10B981' },
+  };
   
   // Mock current coach ID - in a real app this would come from auth context
   const currentCoachId = 'c1d2e3f4-a5b6-7c8d-9e0f-1a2b3c4d5e6f';
@@ -155,6 +177,70 @@ export default function PlayerAbilitiesPage() {
   };
 
   const abilitiesData = getHistoricalData();
+
+  // Prepare data for Polar Area chart - category averages
+  const getCategoryAverages = () => {
+    const skillsAvg = Math.round(
+      groupedAttributes.skills.reduce((sum, attr) => sum + attr.rating, 0) / groupedAttributes.skills.length
+    );
+    const physicalAvg = Math.round(
+      groupedAttributes.physical.reduce((sum, attr) => sum + attr.rating, 0) / groupedAttributes.physical.length
+    );
+    const mentalAvg = Math.round(
+      groupedAttributes.mental.reduce((sum, attr) => sum + attr.rating, 0) / groupedAttributes.mental.length
+    );
+
+    return [
+      { category: 'Skills', rating: skillsAvg, fullMark: 99 },
+      { category: 'Physical', rating: physicalAvg, fullMark: 99 },
+      { category: 'Mental', rating: mentalAvg, fullMark: 99 },
+    ];
+  };
+
+  // Prepare data for detailed abilities radar - top attributes from each category
+  const getDetailedAbilitiesData = () => {
+    // Get top 3 from each category for a balanced radar
+    const topSkills = [...groupedAttributes.skills].sort((a, b) => b.rating - a.rating).slice(0, 3);
+    const topPhysical = [...groupedAttributes.physical].sort((a, b) => b.rating - a.rating).slice(0, 3);
+    const topMental = [...groupedAttributes.mental].sort((a, b) => b.rating - a.rating).slice(0, 3);
+
+    return [...topSkills, ...topPhysical, ...topMental].map(attr => ({
+      ability: attr.name,
+      rating: attr.rating,
+      fullMark: 99
+    }));
+  };
+
+  // Prepare data for individual category radar charts
+  const getSkillsRadarData = () => {
+    return groupedAttributes.skills.map(attr => ({
+      ability: attr.name,
+      rating: attr.rating,
+      fullMark: 99
+    }));
+  };
+
+  const getPhysicalRadarData = () => {
+    return groupedAttributes.physical.map(attr => ({
+      ability: attr.name,
+      rating: attr.rating,
+      fullMark: 99
+    }));
+  };
+
+  const getMentalRadarData = () => {
+    return groupedAttributes.mental.map(attr => ({
+      ability: attr.name,
+      rating: attr.rating,
+      fullMark: 99
+    }));
+  };
+
+  const categoryAveragesData = getCategoryAverages();
+  const detailedAbilitiesData = getDetailedAbilitiesData();
+  const skillsRadarData = getSkillsRadarData();
+  const physicalRadarData = getPhysicalRadarData();
+  const mentalRadarData = getMentalRadarData();
 
   const currentAttributes = groupedAttributes[selectedCategory];
   const attributeKeyMap: Record<string, string> = {
@@ -377,40 +463,40 @@ export default function PlayerAbilitiesPage() {
           </div>
         )}
 
-        {/* Main Content */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+        {/* Main Charts Row */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* Overall Rating Chart */}
           <div className="card">
             <h3 className="text-xl font-semibold mb-4">Overall Rating Over Time</h3>
-            <div className="h-64 bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+            <div className="h-80 bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={abilitiesData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} opacity={0.3} />
                   <XAxis 
                     dataKey="date" 
-                    stroke="#6B7280"
+                    stroke={chartColors.axis}
                     style={{ fontSize: '12px' }}
                   />
                   <YAxis 
-                    stroke="#6B7280"
+                    stroke={chartColors.axis}
                     style={{ fontSize: '12px' }}
                     domain={[0, 100]}
                   />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#1F2937', 
-                      border: '1px solid #374151',
+                      backgroundColor: chartColors.tooltipBg, 
+                      border: `1px solid ${chartColors.tooltipBorder}`,
                       borderRadius: '8px',
-                      color: '#fff'
+                      color: chartColors.tooltipText
                     }}
-                    labelStyle={{ color: '#9CA3AF' }}
+                    labelStyle={{ color: chartColors.axis }}
                   />
                   <Line 
                     type="monotone" 
                     dataKey="rating" 
-                    stroke="#2563EB" 
+                    stroke={chartColors.primary.stroke}
                     strokeWidth={3}
-                    dot={{ fill: '#2563EB', r: 5 }}
+                    dot={{ fill: chartColors.primary.fill, r: 5 }}
                     activeDot={{ r: 7 }}
                   />
                 </LineChart>
@@ -421,24 +507,314 @@ export default function PlayerAbilitiesPage() {
             </div>
           </div>
 
-          {/* Top Abilities */}
+          {/* Category Averages Radar */}
           <div className="card">
-            <h3 className="text-xl font-semibold mb-4">Top 5 Abilities</h3>
-            <div className="space-y-3">
-              {topAbilities.map((ability) => (
-                <div key={ability.name}>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{ability.name}</span>
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">{ability.rating}/99</span>
-                  </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div 
-                      className="bg-primary-600 h-2 rounded-full transition-all"
-                      style={{ width: `${(ability.rating / 99) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+            <h3 className="text-xl font-semibold mb-4">Abilities by Category</h3>
+            <div className="h-80 bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="70%" data={categoryAveragesData}>
+                  <PolarGrid stroke={chartColors.grid} />
+                  <PolarAngleAxis 
+                    dataKey="category" 
+                    tick={{ fill: chartColors.axis, fontSize: 14, fontWeight: 600 }}
+                  />
+                  <PolarRadiusAxis 
+                    angle={90} 
+                    domain={[0, 99]} 
+                    tick={{ fill: chartColors.axis, fontSize: 10 }}
+                    tickCount={5}
+                  />
+                  <Radar
+                    name="Rating"
+                    dataKey="rating"
+                    stroke={chartColors.primary.stroke}
+                    fill={chartColors.primary.fill}
+                    fillOpacity={0.5}
+                    dot={{ fill: chartColors.primary.fill, r: 4 }}
+                    label={({ value, x, y }) => (
+                      <text 
+                        x={x} 
+                        y={y} 
+                        fill={chartColors.labelText}
+                        fontSize={12} 
+                        fontWeight={700}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        style={{ 
+                          textShadow: isDark ? '0 0 4px #2563EB, 0 0 8px #2563EB' : '0 0 3px #fff, 0 0 6px #fff',
+                          filter: isDark ? 'drop-shadow(0 0 2px rgba(37, 99, 235, 0.8))' : 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.9))'
+                        }}
+                      >
+                        {value}
+                      </text>
+                    )}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartColors.tooltipBg,
+                      border: `1px solid ${chartColors.tooltipBorder}`,
+                      borderRadius: '8px',
+                      color: chartColors.tooltipText
+                    }}
+                    formatter={(value: number) => [`${value}/99`, 'Average Rating']}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+              🎯 Average ratings by attribute category
+            </div>
+          </div>
+
+          {/* Detailed Top Abilities Radar */}
+          <div className="card">
+            <h3 className="text-xl font-semibold mb-4">Top Abilities Breakdown</h3>
+            <div className="h-80 bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="65%" data={detailedAbilitiesData}>
+                  <PolarGrid stroke={chartColors.grid} />
+                  <PolarAngleAxis 
+                    dataKey="ability" 
+                    tick={{ fill: chartColors.axis, fontSize: 10 }}
+                  />
+                  <PolarRadiusAxis 
+                    angle={90} 
+                    domain={[0, 99]} 
+                    tick={{ fill: chartColors.axis, fontSize: 9 }}
+                    tickCount={4}
+                  />
+                  <Radar
+                    name="Rating"
+                    dataKey="rating"
+                    stroke={chartColors.emerald.stroke}
+                    fill={chartColors.emerald.fill}
+                    fillOpacity={0.4}
+                    dot={{ fill: chartColors.emerald.fill, r: 3 }}
+                    label={({ value, x, y }) => (
+                      <text 
+                        x={x} 
+                        y={y} 
+                        fill={chartColors.labelText}
+                        fontSize={10} 
+                        fontWeight={700}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        style={{ 
+                          textShadow: isDark ? '0 0 3px #10B981, 0 0 6px #10B981' : '0 0 3px #fff, 0 0 6px #fff',
+                          filter: isDark ? 'drop-shadow(0 0 2px rgba(16, 185, 129, 0.8))' : 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.9))'
+                        }}
+                      >
+                        {value}
+                      </text>
+                    )}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartColors.tooltipBg,
+                      border: `1px solid ${chartColors.tooltipBorder}`,
+                      borderRadius: '8px',
+                      color: chartColors.tooltipText
+                    }}
+                    formatter={(value: number) => [`${value}/99`, 'Rating']}
+                  />
+                  <Legend wrapperStyle={{ color: chartColors.axis }} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+              ⭐ Top 3 abilities from each category
+            </div>
+          </div>
+        </div>
+
+        {/* Individual Category Radar Charts */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {/* Skills Radar */}
+          <div className="card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded-full text-sm">
+                Skills
+              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                ({Math.round(groupedAttributes.skills.reduce((sum, attr) => sum + attr.rating, 0) / groupedAttributes.skills.length)}/99 avg)
+              </span>
+            </h3>
+            <div className="h-72 bg-gray-100 dark:bg-gray-800 rounded-lg p-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="60%" data={skillsRadarData}>
+                  <PolarGrid stroke={chartColors.grid} />
+                  <PolarAngleAxis 
+                    dataKey="ability" 
+                    tick={{ fill: chartColors.axis, fontSize: 8 }}
+                  />
+                  <PolarRadiusAxis 
+                    angle={90} 
+                    domain={[0, 99]} 
+                    tick={{ fill: chartColors.axis, fontSize: 8 }}
+                    tickCount={4}
+                  />
+                  <Radar
+                    name="Rating"
+                    dataKey="rating"
+                    stroke={chartColors.blue.stroke}
+                    fill={chartColors.blue.fill}
+                    fillOpacity={0.4}
+                    dot={{ fill: chartColors.blue.fill, r: 2 }}
+                    label={({ value, x, y }) => (
+                      <text 
+                        x={x} 
+                        y={y} 
+                        fill={chartColors.labelText}
+                        fontSize={9} 
+                        fontWeight={700}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        style={{ 
+                          textShadow: isDark ? '0 0 3px #3B82F6, 0 0 6px #3B82F6' : '0 0 3px #fff, 0 0 6px #fff',
+                          filter: isDark ? 'drop-shadow(0 0 2px rgba(59, 130, 246, 0.8))' : 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.9))'
+                        }}
+                      >
+                        {value}
+                      </text>
+                    )}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartColors.tooltipBg,
+                      border: `1px solid ${chartColors.tooltipBorder}`,
+                      borderRadius: '8px',
+                      color: chartColors.tooltipText
+                    }}
+                    formatter={(value: number) => [`${value}/99`, 'Rating']}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Physical Radar */}
+          <div className="card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-0.5 rounded-full text-sm">
+                Physical
+              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                ({Math.round(groupedAttributes.physical.reduce((sum, attr) => sum + attr.rating, 0) / groupedAttributes.physical.length)}/99 avg)
+              </span>
+            </h3>
+            <div className="h-72 bg-gray-100 dark:bg-gray-800 rounded-lg p-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="60%" data={physicalRadarData}>
+                  <PolarGrid stroke={chartColors.grid} />
+                  <PolarAngleAxis 
+                    dataKey="ability" 
+                    tick={{ fill: chartColors.axis, fontSize: 8 }}
+                  />
+                  <PolarRadiusAxis 
+                    angle={90} 
+                    domain={[0, 99]} 
+                    tick={{ fill: chartColors.axis, fontSize: 8 }}
+                    tickCount={4}
+                  />
+                  <Radar
+                    name="Rating"
+                    dataKey="rating"
+                    stroke={chartColors.green.stroke}
+                    fill={chartColors.green.fill}
+                    fillOpacity={0.4}
+                    dot={{ fill: chartColors.green.fill, r: 2 }}
+                    label={({ value, x, y }) => (
+                      <text 
+                        x={x} 
+                        y={y} 
+                        fill={chartColors.labelText}
+                        fontSize={9} 
+                        fontWeight={700}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        style={{ 
+                          textShadow: isDark ? '0 0 3px #22C55E, 0 0 6px #22C55E' : '0 0 3px #fff, 0 0 6px #fff',
+                          filter: isDark ? 'drop-shadow(0 0 2px rgba(34, 197, 94, 0.8))' : 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.9))'
+                        }}
+                      >
+                        {value}
+                      </text>
+                    )}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartColors.tooltipBg,
+                      border: `1px solid ${chartColors.tooltipBorder}`,
+                      borderRadius: '8px',
+                      color: chartColors.tooltipText
+                    }}
+                    formatter={(value: number) => [`${value}/99`, 'Rating']}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Mental Radar */}
+          <div className="card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-0.5 rounded-full text-sm">
+                Mental
+              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                ({Math.round(groupedAttributes.mental.reduce((sum, attr) => sum + attr.rating, 0) / groupedAttributes.mental.length)}/99 avg)
+              </span>
+            </h3>
+            <div className="h-72 bg-gray-100 dark:bg-gray-800 rounded-lg p-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="60%" data={mentalRadarData}>
+                  <PolarGrid stroke={chartColors.grid} />
+                  <PolarAngleAxis 
+                    dataKey="ability" 
+                    tick={{ fill: chartColors.axis, fontSize: 8 }}
+                  />
+                  <PolarRadiusAxis 
+                    angle={90} 
+                    domain={[0, 99]} 
+                    tick={{ fill: chartColors.axis, fontSize: 8 }}
+                    tickCount={4}
+                  />
+                  <Radar
+                    name="Rating"
+                    dataKey="rating"
+                    stroke={chartColors.purple.stroke}
+                    fill={chartColors.purple.fill}
+                    fillOpacity={0.4}
+                    dot={{ fill: chartColors.purple.fill, r: 2 }}
+                    label={({ value, x, y }) => (
+                      <text 
+                        x={x} 
+                        y={y} 
+                        fill={chartColors.labelText}
+                        fontSize={9} 
+                        fontWeight={700}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        style={{ 
+                          textShadow: isDark ? '0 0 3px #A855F7, 0 0 6px #A855F7' : '0 0 3px #fff, 0 0 6px #fff',
+                          filter: isDark ? 'drop-shadow(0 0 2px rgba(168, 85, 247, 0.8))' : 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.9))'
+                        }}
+                      >
+                        {value}
+                      </text>
+                    )}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartColors.tooltipBg,
+                      border: `1px solid ${chartColors.tooltipBorder}`,
+                      borderRadius: '8px',
+                      color: chartColors.tooltipText
+                    }}
+                    formatter={(value: number) => [`${value}/99`, 'Rating']}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
