@@ -92,7 +92,7 @@ export default function TacticsListPage() {
             label: 'New Tactic',
             href: getNewTacticUrl(),
             icon: 'plus',
-            variant: 'primary'
+            variant: 'success'
           }}
         />
 
@@ -120,21 +120,31 @@ export default function TacticsListPage() {
                 <Link
                   key={tactic.id}
                   to={getTacticDetailUrl(tactic.id)}
-                  className="block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow"
+                  className="block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow h-28"
                 >
-                  <div className="aspect-[3/4] relative">
-                    <TacticDisplay
-                      tactic={tactic}
-                      resolvedPositions={resolvedPositions}
-                      showDirections={false}
-                      showInheritance={false}
-                    />
-                  </div>
-                  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">{tactic.name}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {formation?.name || 'Unknown Formation'} • {tactic.style || 'No style'}
-                    </p>
+                  <div className="flex h-full">
+                    {/* Small pitch on left */}
+                    <div className="w-20 flex-shrink-0 h-full">
+                      <TacticDisplay
+                        tactic={tactic}
+                        resolvedPositions={resolvedPositions}
+                        showDirections={false}
+                        showInheritance={false}
+                        compact={true}
+                      />
+                    </div>
+                    {/* Content on right */}
+                    <div className="flex-1 p-3 flex flex-col justify-center min-w-0">
+                      <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{tactic.name}</h3>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                        {formation?.name || 'Unknown Formation'}
+                      </p>
+                      {tactic.summary && (
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-2">
+                          {tactic.summary}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </Link>
               );
@@ -159,26 +169,36 @@ export default function TacticsListPage() {
                 return (
                   <div
                     key={tactic.id}
-                    className="block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden opacity-75"
+                    className="block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden opacity-75 h-28"
                   >
-                    <div className="aspect-[3/4] relative">
-                      <TacticDisplay
-                        tactic={tactic}
-                        resolvedPositions={resolvedPositions}
-                        showDirections={false}
-                        showInheritance={false}
-                      />
-                    </div>
-                    <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded">
-                          {scopeLabel}
-                        </span>
+                    <div className="flex h-full">
+                      {/* Small pitch on left */}
+                      <div className="w-20 flex-shrink-0 h-full">
+                        <TacticDisplay
+                          tactic={tactic}
+                          resolvedPositions={resolvedPositions}
+                          showDirections={false}
+                          showInheritance={false}
+                          compact={true}
+                        />
                       </div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white mt-2">{tactic.name}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {formation?.name || 'Unknown Formation'} • {tactic.style || 'No style'}
-                      </p>
+                      {/* Content on right */}
+                      <div className="flex-1 p-3 flex flex-col justify-center min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{tactic.name}</h3>
+                          <span className="px-1.5 py-0.5 text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded flex-shrink-0">
+                            {scopeLabel}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                          {formation?.name || 'Unknown Formation'}
+                        </p>
+                        {tactic.summary && (
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-2">
+                            {tactic.summary}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );

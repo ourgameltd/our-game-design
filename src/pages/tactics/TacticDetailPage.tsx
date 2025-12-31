@@ -103,6 +103,19 @@ export default function TacticDetailPage() {
               <div className="markdown-content">
                 <Markdown>{tactic.summary}</Markdown>
               </div>
+              {/* Tags - Under summary */}
+              {tactic.tags && tactic.tags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {tactic.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           )}
           
@@ -111,27 +124,11 @@ export default function TacticDetailPage() {
             principles={tactic.principles}
             resolvedPositions={resolvedPositions}
             selectedPositionIndex={selectedPosition}
-            onPositionClick={setSelectedPosition}
+            onPositionClick={(index) => setSelectedPosition(index)}
             readOnly
           />
         </div>
       </div>
-
-        
-
-        {/* Tags - Under summary */}
-        {tactic.tags && tactic.tags.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {tactic.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
       </main>
     </div>
   );

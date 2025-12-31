@@ -9,6 +9,7 @@ interface TacticDisplayProps {
   onPositionClick?: (index: number) => void;
   selectedPositionIndex?: number | null;
   className?: string;
+  compact?: boolean;
 }
 
 /**
@@ -52,6 +53,7 @@ export default function TacticDisplay({
   onPositionClick,
   selectedPositionIndex,
   className = '',
+  compact = false,
 }: TacticDisplayProps) {
   // Get direction arrow positioning and rotation based on compass direction
   const getDirectionStyle = (direction?: PlayerDirection): { rotation: number; position: string } | null => {
@@ -83,9 +85,9 @@ export default function TacticDisplay({
     : [];
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden ${className}`}>
+    <div className={`bg-white dark:bg-gray-800 ${compact ? '' : 'rounded-lg border border-gray-200 dark:border-gray-700'} overflow-hidden h-full ${className}`}>
       {/* Football Pitch */}
-      <div className="relative w-full bg-gradient-to-b from-green-500 to-green-600 dark:from-green-700 dark:to-green-800" style={{ paddingBottom: '140%' }}>
+      <div className="relative w-full h-full bg-gradient-to-b from-green-500 to-green-600 dark:from-green-700 dark:to-green-800" style={compact ? {} : { paddingBottom: '140%' }}>
         {/* Pitch markings SVG */}
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 140" preserveAspectRatio="none">
           {/* Outer boundary */}
@@ -152,7 +154,11 @@ export default function TacticDisplay({
               {/* Position marker */}
               <div className="relative">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border-2 shadow-lg transition-colors ${
+                  className={`${
+                    compact 
+                      ? 'w-4 h-4' 
+                      : 'w-10 h-10 sm:w-12 sm:h-12'
+                  } rounded-full flex items-center justify-center border-2 shadow-lg transition-colors ${
                     isSelected
                       ? 'bg-yellow-500 dark:bg-yellow-600 border-yellow-300 dark:border-yellow-400 ring-4 ring-yellow-400 dark:ring-yellow-500'
                       : hasOverrides
@@ -162,18 +168,20 @@ export default function TacticDisplay({
                       : 'bg-blue-600 dark:bg-blue-700 border-blue-400 dark:border-blue-500'
                   }`}
                 >
-                  <span className="text-xs sm:text-sm font-bold text-white">
-                    {pos.position}
-                  </span>
+                  {!compact && (
+                    <span className="text-xs sm:text-sm font-bold text-white">
+                      {pos.position}
+                    </span>
+                  )}
                 </div>
 
-                {/* Principle indicator dot */}
-                {hasPrinciples && !isSelected && (
+                {/* Principle indicator dot - hidden in compact mode */}
+                {!compact && hasPrinciples && !isSelected && (
                   <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-purple-500 rounded-full border border-white shadow-sm" />
                 )}
 
-                {/* Direction arrow - positioned outside the circle */}
-                {showDirections && pos.direction && (() => {
+                {/* Direction arrow - positioned outside the circle, hidden in compact mode */}
+                {!compact && showDirections && pos.direction && (() => {
                   const dirStyle = getDirectionStyle(pos.direction);
                   if (!dirStyle) return null;
                   

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Trash2, Users, User, ChevronDown, ChevronUp, GripVertical } from 'lucide-react';
+import { Plus, Trash2, Users, User, ChevronDown, ChevronUp, GripVertical, X } from 'lucide-react';
 import { TacticPrinciple } from '@/types';
 import { ResolvedPosition } from '@/data/tactics';
 
@@ -8,7 +8,7 @@ interface PrinciplePanelProps {
   resolvedPositions: ResolvedPosition[];
   onPrinciplesChange?: (principles: TacticPrinciple[]) => void;
   selectedPositionIndex?: number | null;
-  onPositionClick?: (index: number) => void;
+  onPositionClick?: (index: number | null) => void;
   readOnly?: boolean;
 }
 
@@ -286,19 +286,32 @@ export default function PrinciplePanel({
         {!readOnly && (
           <button
             onClick={handleAddPrinciple}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+            className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
           >
             <Plus className="w-4 h-4" />
-            Add Principle
           </button>
         )}
       </div>
 
       {/* No position selected message */}
-      {readOnly && selectedPositionIndex === null && (
-        <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-          Select a position on the pitch to see related principles
-        </p>
+      {readOnly && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+            {selectedPositionIndex !== null && selectedPositionIndex !== undefined
+              ? `Showing principles for ${resolvedPositions[selectedPositionIndex]?.position || 'selected position'}`
+              : 'Select a position on the pitch to filter principles'
+            }
+          </p>
+          {selectedPositionIndex !== null && selectedPositionIndex !== undefined && onPositionClick && (
+            <button
+              onClick={() => onPositionClick(null)}
+              className="flex items-center gap-1 px-2 py-1 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+            >
+              <X className="w-3 h-3" />
+              Show All
+            </button>
+          )}
+        </div>
       )}
 
       {/* Principles List */}
