@@ -1,13 +1,21 @@
-import { Tactic, TacticalPositionOverride, PlayerDirection } from '../types';
+import { Formation, TacticalPositionOverride, PlayerDirection } from '../types';
 import { getFormationById } from './formations';
 
 /**
  * Sample Tactics Data
  * 
  * Demonstrates inheritance chain: Base Formation → Club Tactic → Age Group Tactic → Team Tactic
+ * 
+ * Note: The Tactic type is now unified with Formation. User-created tactics have:
+ * - isSystemFormation: false (or undefined)
+ * - parentFormationId: points to a base system formation
+ * - scope: defines visibility (club, ageGroup, or team level)
  */
 
-export const sampleTactics: Tactic[] = [
+// Type alias for backward compatibility
+type Tactic = Formation;
+
+export const sampleTactics: Formation[] = [
   // Club-Level Tactic: High Press 4-4-2
   {
     id: 't1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6',
@@ -220,9 +228,21 @@ export interface ResolvedPosition {
  */
 export const getResolvedPositions = (tactic: Tactic): ResolvedPosition[] => {
   // Start with base formation
+  if (!tactic.parentFormationId) {
+    // This is a system formation, return its positions directly
+    return (tactic.positions || []).map((pos) => ({
+      position: pos.position,
+      x: pos.x,
+      y: pos.y,
+      direction: pos.direction,
+      sourceFormationId: tactic.id,
+      overriddenBy: [],
+    }));
+  }
+  
   const baseFormation = getFormationById(tactic.parentFormationId);
   
-  if (!baseFormation) {
+  if (!baseFormation || !baseFormation.positions) {
     console.error(`Base formation ${tactic.parentFormationId} not found for tactic ${tactic.id}`);
     return [];
   }
@@ -288,7 +308,9 @@ export const getResolvedPositions = (tactic: Tactic): ResolvedPosition[] => {
   }
 
   // Apply current tactic's overrides
-  applyOverrides(resolvedPositions, tactic.positionOverrides, tactic.id);
+  if (tactic.positionOverrides) {
+    applyOverrides(resolvedPositions, tactic.positionOverrides, tactic.id);
+  }
 
   return resolvedPositions;
 };
@@ -343,6 +365,10 @@ export const isFieldOverridden = (
   field: keyof TacticalPositionOverride
 ): boolean => {
   // Check if current tactic has an override for this position
+  if (!tactic.positionOverrides) {
+    return false;
+  }
+  
   const override = tactic.positionOverrides[positionIndex];
   if (!override || override[field] === undefined) {
     return false;
@@ -390,9 +416,18 @@ export interface OverrideInfo {
  */
 export const getOverriddenFieldsList = (tactic: Tactic): OverrideInfo[] => {
   const overrides: OverrideInfo[] = [];
+  
+  if (!tactic.parentFormationId) {
+    return overrides;
+  }
+  
   const baseFormation = getFormationById(tactic.parentFormationId);
   
-  if (!baseFormation) {
+  if (!baseFormation || !baseFormation.positions) {
+    return overrides;
+  }
+  
+  if (!tactic.positionOverrides) {
     return overrides;
   }
 
@@ -408,9 +443,9 @@ export const getOverriddenFieldsList = (tactic: Tactic): OverrideInfo[] => {
   // Check each position for overrides
   Object.entries(tactic.positionOverrides).forEach(([indexStr, override]) => {
     const index = parseInt(indexStr, 10);
-    if (isNaN(index) || index >= baseFormation.positions.length) return;
+    if (isNaN(index) || index >= baseFormation.positions!.length) return;
 
-    const basePosition = baseFormation.positions[index];
+    const basePosition = baseFormation.positions![index];
     const parentPosition = parentResolved?.[index];
 
     // Check each field
@@ -441,10 +476,13 @@ export const getOverriddenFieldsList = (tactic: Tactic): OverrideInfo[] => {
 };
 
 /**
- * Filter tactics by club ID
+ * Filter tactics by club ID (excludes system formations)
  */
 export const getTacticsByClubId = (clubId: string): Tactic[] => {
-  return sampleTactics.filter(tactic => tactic.scope.clubId === clubId);
+  return sampleTactics.filter(tactic => {
+    if (tactic.scope.type === 'system') return false;
+    return 'clubId' in tactic.scope && tactic.scope.clubId === clubId;
+  });
 };
 
 /**

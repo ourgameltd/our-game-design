@@ -113,7 +113,7 @@ export default function TacticsListPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {tactics.map(tactic => {
-              const formation = getFormationById(tactic.parentFormationId);
+              const formation = getFormationById(tactic.parentFormationId || '');
               const resolvedPositions = getResolvedPositions(tactic);
               
               return (
@@ -162,7 +162,7 @@ export default function TacticsListPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {inheritedTactics.map(tactic => {
-                const formation = getFormationById(tactic.parentFormationId);
+                const formation = getFormationById(tactic.parentFormationId || '');
                 const resolvedPositions = getResolvedPositions(tactic);
                 const scopeLabel = tactic.scope.type === 'club' ? 'Club' : 'Age Group';
                 

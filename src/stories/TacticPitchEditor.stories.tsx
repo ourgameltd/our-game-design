@@ -23,6 +23,7 @@ const sampleFormation: Formation = {
   name: '4-3-3 Attack',
   system: '4-3-3',
   squadSize: 11,
+  scope: { type: 'system' },
   positions: [
     { position: 'GK', x: 50, y: 10 },
     { position: 'LB', x: 20, y: 30 },
@@ -86,12 +87,12 @@ export const Interactive: Story = {
 
     const handlePositionChange = (index: number, override: Partial<TacticalPositionOverride>) => {
       setTactic((prev) => {
-        const existingOverride = prev.positionOverrides[index];
+        const existingOverride = prev.positionOverrides?.[index];
         
         return {
           ...prev,
           positionOverrides: {
-            ...prev.positionOverrides,
+            ...(prev.positionOverrides || {}),
             [index]: existingOverride 
               ? { ...existingOverride, ...override }
               : override,
@@ -104,7 +105,7 @@ export const Interactive: Story = {
       if (selectedPosition === null) return;
 
       setTactic((prev) => {
-        const existingOverride = prev.positionOverrides[selectedPosition];
+        const existingOverride = prev.positionOverrides?.[selectedPosition];
         if (!existingOverride) return prev;
 
         const { [field]: _, ...restOverride } = existingOverride;
@@ -116,12 +117,12 @@ export const Interactive: Story = {
           return {
             ...prev,
             positionOverrides: {
-              ...prev.positionOverrides,
+              ...(prev.positionOverrides || {}),
               [selectedPosition]: restOverride as TacticalPositionOverride,
             },
           };
         } else {
-          const { [selectedPosition]: _removed, ...rest } = prev.positionOverrides;
+          const { [selectedPosition]: _removed, ...rest } = prev.positionOverrides || {};
           return {
             ...prev,
             positionOverrides: rest,
@@ -137,7 +138,7 @@ export const Interactive: Story = {
       }));
     };
 
-    const selectedOverride = selectedPosition !== null ? tactic.positionOverrides[selectedPosition] : undefined;
+    const selectedOverride = selectedPosition !== null ? tactic.positionOverrides?.[selectedPosition] : undefined;
     const selectedParentData = selectedPosition !== null ? {
       direction: undefined,
     } : { direction: undefined };
@@ -184,7 +185,7 @@ export const Interactive: Story = {
             {selectedPosition !== null && (
               <PositionRolePanel
                 positionIndex={selectedPosition}
-                position={sampleFormation.positions[selectedPosition].position}
+                position={sampleFormation.positions?.[selectedPosition]?.position || ''}
                 override={selectedOverride}
                 parentData={selectedParentData}
                 onUpdate={(override) => handlePositionChange(selectedPosition, override)}
@@ -199,8 +200,8 @@ export const Interactive: Story = {
           isOpen={showResetModal}
           onClose={() => setShowResetModal(false)}
           onConfirm={handleResetAllOverrides}
-          overrides={tactic.positionOverrides}
-          positions={sampleFormation.positions.map((p) => p.position)}
+          overrides={tactic.positionOverrides || {}}
+          positions={(sampleFormation.positions || []).map((p) => p.position)}
         />
       </div>
     );

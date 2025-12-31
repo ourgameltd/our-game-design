@@ -1,5 +1,11 @@
-import { Tactic, PlayerDirection, TacticPrinciple } from '@/types';
+import { Plus } from 'lucide-react';
+import { Tactic, PlayerDirection, TacticPrinciple, PlayerPosition } from '@/types';
 import { ResolvedPosition } from '@/data/tactics';
+
+interface SelectedPlayer {
+  playerId: string;
+  position: PlayerPosition;
+}
 
 interface TacticDisplayProps {
   tactic: Tactic;
@@ -8,8 +14,15 @@ interface TacticDisplayProps {
   showInheritance?: boolean;
   onPositionClick?: (index: number) => void;
   selectedPositionIndex?: number | null;
+  highlightedPositionIndices?: number[]; // For principle highlighting
   className?: string;
   compact?: boolean;
+  // Player assignment props (optional - for match lineup display)
+  selectedPlayers?: SelectedPlayer[];
+  getPlayerName?: (playerId: string) => string;
+  showPlayerNames?: boolean;
+  interactive?: boolean;
+  highlightedPlayerIndex?: number | null;
 }
 
 /**
@@ -52,8 +65,15 @@ export default function TacticDisplay({
   showInheritance = false,
   onPositionClick,
   selectedPositionIndex,
+  highlightedPositionIndices = [],
   className = '',
   compact = false,
+  // Player assignment props
+  selectedPlayers = [],
+  getPlayerName,
+  showPlayerNames = true,
+  interactive = false,
+  highlightedPlayerIndex,
 }: TacticDisplayProps) {
   // Get direction arrow positioning and rotation based on compass direction
   const getDirectionStyle = (direction?: PlayerDirection): { rotation: number; position: string } | null => {
@@ -81,7 +101,7 @@ export default function TacticDisplay({
 
   // Get principles for selected position (excluding global ones that apply to everyone)
   const selectedPrinciples = selectedPositionIndex !== null && selectedPositionIndex !== undefined
-    ? getPrinciplesForPosition(tactic.principles, selectedPositionIndex, false) // Don't include global when showing for selected
+    ? getPrinciplesForPosition(tactic.principles || [], selectedPositionIndex, false) // Don't include global when showing for selected
     : [];
 
   return (
@@ -122,15 +142,24 @@ export default function TacticDisplay({
         {/* Player positions */}
         {resolvedPositions.map((pos, index) => {
           const isSelected = index === selectedPositionIndex;
+          const isPrincipleHighlighted = highlightedPositionIndices.includes(index);
           const hasOverrides = showInheritance && pos.overriddenBy && pos.overriddenBy.length > 0;
-          const hasPrinciples = hasSpecificPrinciples(tactic.principles, index);
+          const hasPrinciples = hasSpecificPrinciples(tactic.principles || [], index);
           
-          // Dim positions not related to selected position's principles
-          const isDimmed = selectedPositionIndex !== null && 
+          // Player assignment support
+          const player = selectedPlayers[index];
+          const hasPlayer = !!player;
+          const playerName = hasPlayer && getPlayerName ? getPlayerName(player.playerId) : '';
+          const initials = playerName ? playerName.split(' ').map(n => n[0]).join('') : '';
+          const isHighlighted = hasPlayer && index === highlightedPlayerIndex;
+          
+          // Dim positions not related to selected position's principles OR selected principle's positions
+          const isDimmed = (selectedPositionIndex !== null && 
             selectedPositionIndex !== undefined && 
             !isSelected &&
             selectedPrinciples.length > 0 &&
-            !selectedPrinciples.some(p => p.positionIndices.includes(index));
+            !selectedPrinciples.some(p => p.positionIndices.includes(index))) ||
+            (highlightedPositionIndices.length > 0 && !isPrincipleHighlighted);
 
           const handleClick = () => {
             if (onPositionClick) {
@@ -142,8 +171,8 @@ export default function TacticDisplay({
             <div
               key={index}
               className={`absolute transform -translate-x-1/2 -translate-y-1/2 ${
-                onPositionClick ? 'cursor-pointer hover:scale-110' : ''
-              } transition-all duration-200 group ${isDimmed ? 'opacity-40' : ''}`}
+                onPositionClick || interactive ? 'cursor-pointer hover:scale-110' : ''
+              } transition-all duration-200 group hover:z-50 ${isDimmed ? 'opacity-40' : ''}`}
               style={{
                 left: `${pos.x}%`,
                 top: `${pos.y}%`,
@@ -159,24 +188,61 @@ export default function TacticDisplay({
                       ? 'w-4 h-4' 
                       : 'w-10 h-10 sm:w-12 sm:h-12'
                   } rounded-full flex items-center justify-center border-2 shadow-lg transition-colors ${
-                    isSelected
+                    isHighlighted
+                      ? 'bg-yellow-500 dark:bg-yellow-600 border-yellow-300 dark:border-yellow-400 ring-4 ring-yellow-400 dark:ring-yellow-500 animate-pulse'
+                      : isSelected
                       ? 'bg-yellow-500 dark:bg-yellow-600 border-yellow-300 dark:border-yellow-400 ring-4 ring-yellow-400 dark:ring-yellow-500'
+                      : isPrincipleHighlighted
+                      ? 'bg-purple-500 dark:bg-purple-600 border-purple-300 dark:border-purple-400 ring-4 ring-purple-400 dark:ring-purple-500'
+                      : hasPlayer
+                      ? 'bg-blue-600 dark:bg-blue-700 border-blue-400 dark:border-blue-500'
                       : hasOverrides
                       ? 'bg-blue-600 dark:bg-blue-700 border-orange-400 dark:border-orange-500 ring-2 ring-orange-400 dark:ring-orange-500'
                       : hasPrinciples
                       ? 'bg-blue-600 dark:bg-blue-700 border-purple-400 dark:border-purple-500 ring-2 ring-purple-400/50 dark:ring-purple-500/50'
+                      : selectedPlayers.length > 0
+                      ? 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
                       : 'bg-blue-600 dark:bg-blue-700 border-blue-400 dark:border-blue-500'
                   }`}
                 >
                   {!compact && (
-                    <span className="text-xs sm:text-sm font-bold text-white">
-                      {pos.position}
+                    <span className={`text-xs sm:text-sm font-bold ${
+                      hasPlayer || (!selectedPlayers.length && !hasOverrides) || isPrincipleHighlighted
+                        ? 'text-white'
+                        : selectedPlayers.length > 0 && !hasPlayer
+                        ? 'text-gray-700 dark:text-gray-300'
+                        : 'text-white'
+                    }`}>
+                      {hasPlayer ? initials : pos.position}
                     </span>
                   )}
                 </div>
 
-                {/* Principle indicator dot - hidden in compact mode */}
-                {!compact && hasPrinciples && !isSelected && (
+                {/* Position label below */}
+                {!compact && (
+                  <div className="absolute top-full mt-1 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+                    <div className="bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded text-center">
+                      {pos.position}
+                    </div>
+                    {hasPlayer && showPlayerNames && (
+                      <div className="bg-blue-600/90 dark:bg-blue-700/90 text-white text-[10px] px-1.5 py-0.5 rounded mt-0.5 max-w-[60px] group-hover:max-w-none truncate group-hover:whitespace-nowrap transition-all duration-200 text-center">
+                        {playerName}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Empty position indicator - for player assignment mode */}
+                {!hasPlayer && interactive && selectedPlayers.length > 0 && (
+                  <div className="absolute -top-1 -right-1">
+                    <div className="w-4 h-4 bg-yellow-400 dark:bg-yellow-500 rounded-full flex items-center justify-center border border-yellow-600">
+                      <Plus className="w-3 h-3 text-yellow-900" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Principle indicator dot - hidden in compact mode and player assignment mode */}
+                {!compact && hasPrinciples && !isSelected && !selectedPlayers.length && (
                   <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-purple-500 rounded-full border border-white shadow-sm" />
                 )}
 
@@ -212,6 +278,22 @@ export default function TacticDisplay({
           );
         })}
       </div>
+
+      {/* Player count summary - only shown when in player assignment mode */}
+      {selectedPlayers.length > 0 && (
+        <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-600 dark:text-gray-400">Players assigned:</span>
+            <span className={`font-semibold ${
+              selectedPlayers.length === tactic.squadSize
+                ? 'text-green-600 dark:text-green-400'
+                : 'text-amber-600 dark:text-amber-400'
+            }`}>
+              {selectedPlayers.length} / {tactic.squadSize}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

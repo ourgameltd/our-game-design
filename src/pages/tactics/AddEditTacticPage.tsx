@@ -46,7 +46,7 @@ export default function AddEditTacticPage() {
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
 
   const formation = useMemo(() => 
-    getFormationById(tactic.parentFormationId), 
+    getFormationById(tactic.parentFormationId || ''), 
     [tactic.parentFormationId]
   );
 
@@ -85,11 +85,11 @@ export default function AddEditTacticPage() {
 
   const handlePositionChange = (index: number, override: Partial<TacticalPositionOverride>) => {
     setTactic(prev => {
-      const existingOverride = prev.positionOverrides[index];
+      const existingOverride = prev.positionOverrides?.[index];
       return {
         ...prev,
         positionOverrides: {
-          ...prev.positionOverrides,
+          ...(prev.positionOverrides || {}),
           [index]: existingOverride 
             ? { ...existingOverride, ...override }
             : override,
@@ -129,15 +129,15 @@ export default function AddEditTacticPage() {
   };
 
   const selectedOverride = selectedPosition !== null 
-    ? tactic.positionOverrides[selectedPosition] 
+    ? tactic.positionOverrides?.[selectedPosition] 
     : undefined;
 
   // Get parent data for the selected position (from formation or parent tactic)
   const selectedParentData = selectedPosition !== null && formation
     ? {
-        position: formation.positions[selectedPosition]?.position as string | undefined,
-        x: formation.positions[selectedPosition]?.x,
-        y: formation.positions[selectedPosition]?.y,
+        position: formation.positions?.[selectedPosition]?.position as string | undefined,
+        x: formation.positions?.[selectedPosition]?.x,
+        y: formation.positions?.[selectedPosition]?.y,
         direction: undefined,
       }
     : { direction: undefined };
@@ -252,7 +252,7 @@ export default function AddEditTacticPage() {
               <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                 <PositionRolePanel
                   positionIndex={selectedPosition}
-                  position={formation.positions[selectedPosition].position}
+                  position={formation.positions?.[selectedPosition]?.position || ''}
                   override={selectedOverride}
                   parentData={selectedParentData}
                   onUpdate={(override) => handlePositionChange(selectedPosition, override)}
@@ -284,7 +284,7 @@ export default function AddEditTacticPage() {
             
             {/* Principles Panel */}
             <PrinciplePanel
-              principles={tactic.principles}
+              principles={tactic.principles || []}
               resolvedPositions={resolvedPositions}
               onPrinciplesChange={handlePrinciplesChange}
               selectedPositionIndex={selectedPosition}

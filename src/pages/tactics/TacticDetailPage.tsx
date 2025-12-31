@@ -12,10 +12,28 @@ export default function TacticDetailPage() {
   const { clubId, ageGroupId, teamId, tacticId } = useParams();
   const navigate = useNavigate();
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
+  const [selectedPrincipleId, setSelectedPrincipleId] = useState<string | null>(null);
 
   const tactic = tacticId ? getTacticById(tacticId) : undefined;
-  const formation = tactic ? getFormationById(tactic.parentFormationId) : undefined;
+  const formation = tactic ? getFormationById(tactic.parentFormationId || '') : undefined;
   const resolvedPositions = tactic ? getResolvedPositions(tactic) : [];
+
+  // Get highlighted position indices from selected principle
+  const highlightedPositionIndices = selectedPrincipleId
+    ? (tactic?.principles?.find(p => p.id === selectedPrincipleId)?.positionIndices || [])
+    : [];
+
+  // Handle position click - clear principle selection when position is clicked
+  const handlePositionClick = (index: number | null) => {
+    setSelectedPosition(index === selectedPosition ? null : index);
+    setSelectedPrincipleId(null); // Clear principle selection when clicking a position
+  };
+
+  // Handle principle click - clear position selection when principle is clicked
+  const handlePrincipleClick = (principleId: string | null) => {
+    setSelectedPrincipleId(principleId);
+    setSelectedPosition(null); // Clear position selection when clicking a principle
+  };
 
   const getBackUrl = () => {
     if (!clubId) return '/dashboard';
@@ -90,8 +108,9 @@ export default function TacticDetailPage() {
             resolvedPositions={resolvedPositions}
             showDirections={true}
             showInheritance={true}
-            onPositionClick={(index) => setSelectedPosition(index === selectedPosition ? null : index)}
+            onPositionClick={handlePositionClick}
             selectedPositionIndex={selectedPosition}
+            highlightedPositionIndices={highlightedPositionIndices}
           />
         </div>
 
@@ -121,10 +140,12 @@ export default function TacticDetailPage() {
           
           {/* Principles Panel */}
           <PrinciplePanel
-            principles={tactic.principles}
+            principles={tactic.principles || []}
             resolvedPositions={resolvedPositions}
             selectedPositionIndex={selectedPosition}
-            onPositionClick={(index) => setSelectedPosition(index)}
+            onPositionClick={handlePositionClick}
+            selectedPrincipleId={selectedPrincipleId}
+            onPrincipleClick={handlePrincipleClick}
             readOnly
           />
         </div>

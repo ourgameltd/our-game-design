@@ -9,6 +9,8 @@ interface PrinciplePanelProps {
   onPrinciplesChange?: (principles: TacticPrinciple[]) => void;
   selectedPositionIndex?: number | null;
   onPositionClick?: (index: number | null) => void;
+  selectedPrincipleId?: string | null;
+  onPrincipleClick?: (principleId: string | null) => void;
   readOnly?: boolean;
 }
 
@@ -23,6 +25,8 @@ export default function PrinciplePanel({
   onPrinciplesChange,
   selectedPositionIndex,
   onPositionClick,
+  selectedPrincipleId,
+  onPrincipleClick,
   readOnly = false,
 }: PrinciplePanelProps) {
   const [expandedPrinciple, setExpandedPrinciple] = useState<string | null>(null);
@@ -94,15 +98,29 @@ export default function PrinciplePanel({
     handleUpdatePrinciple(principleId, { positionIndices: [] });
   };
 
+  const handlePrincipleCardClick = (principle: TacticPrinciple) => {
+    // Toggle expand state
+    setExpandedPrinciple(expandedPrinciple === principle.id ? null : principle.id);
+    
+    // If in read-only mode with onPrincipleClick, toggle principle selection
+    if (readOnly && onPrincipleClick) {
+      // Toggle: if already selected, deselect; otherwise select
+      onPrincipleClick(selectedPrincipleId === principle.id ? null : principle.id);
+    }
+  };
+
   const renderPrincipleCard = (principle: TacticPrinciple, isGlobal: boolean) => {
     const isExpanded = expandedPrinciple === principle.id;
     const isEditing = editingPrinciple === principle.id;
+    const isPrincipleSelected = selectedPrincipleId === principle.id;
 
     return (
       <div
         key={principle.id}
         className={`bg-white dark:bg-gray-800 rounded-lg border transition-all ${
-          isGlobal
+          isPrincipleSelected
+            ? 'border-purple-500 dark:border-purple-400 ring-2 ring-purple-500/50'
+            : isGlobal
             ? 'border-green-200 dark:border-green-800'
             : 'border-purple-200 dark:border-purple-800'
         }`}
@@ -110,11 +128,13 @@ export default function PrinciplePanel({
         {/* Header */}
         <div
           className={`flex items-center gap-2 p-3 cursor-pointer ${
-            isGlobal
+            isPrincipleSelected
+              ? 'bg-purple-100 dark:bg-purple-900/40'
+              : isGlobal
               ? 'bg-green-50 dark:bg-green-900/20'
               : 'bg-purple-50 dark:bg-purple-900/20'
           } rounded-t-lg`}
-          onClick={() => setExpandedPrinciple(isExpanded ? null : principle.id)}
+          onClick={() => handlePrincipleCardClick(principle)}
         >
           {!readOnly && (
             <GripVertical className="w-4 h-4 text-gray-400 cursor-grab" />

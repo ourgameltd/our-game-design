@@ -45,13 +45,13 @@ export default function TacticPitchEditor({
   // Get merged position (parent + override)
   const getMergedPosition = useCallback(
     (index: number) => {
-      const parentPos = parentFormation.positions[index];
-      const override = tactic.positionOverrides[index];
+      const parentPos = parentFormation.positions?.[index];
+      const override = tactic.positionOverrides?.[index];
       
       return {
-        position: parentPos.position,
-        x: override?.x !== undefined ? override.x : parentPos.x,
-        y: override?.y !== undefined ? override.y : parentPos.y,
+        position: parentPos?.position || '',
+        x: override?.x !== undefined ? override.x : (parentPos?.x ?? 50),
+        y: override?.y !== undefined ? override.y : (parentPos?.y ?? 50),
         direction: override?.direction,
         isOverridden: !!override && (override.x !== undefined || override.y !== undefined),
       };
@@ -179,7 +179,7 @@ export default function TacticPitchEditor({
         </svg>
 
         {/* Player positions */}
-        {parentFormation.positions.map((_, index) => {
+        {(parentFormation.positions || []).map((_, index) => {
           const mergedPos = getMergedPosition(index);
           const isSelected = selectedPositionIndex === index;
           const isHovered = hoverPositionIndex === index;
