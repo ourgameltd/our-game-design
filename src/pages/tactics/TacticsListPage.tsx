@@ -86,7 +86,7 @@ export default function TacticsListPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="container mx-auto px-4 py-4">
         <PageTitle
-          title="Tactics"
+          title="Formations"
           subtitle={`Manage tactical setups for your ${getScopeLabel().toLowerCase()}`}
           action={{
             label: 'New Tactic',
@@ -111,7 +111,7 @@ export default function TacticsListPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-3 md:gap-0 md:bg-white md:dark:bg-gray-800 md:rounded-lg md:border md:border-gray-200 md:dark:border-gray-700 md:overflow-hidden">
             {tactics.map(tactic => {
               const formation = getFormationById(tactic.parentFormationId || '');
               const resolvedPositions = getResolvedPositions(tactic);
@@ -120,31 +120,25 @@ export default function TacticsListPage() {
                 <Link
                   key={tactic.id}
                   to={getTacticDetailUrl(tactic.id)}
-                  className="block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow h-28"
+                  className="block bg-white dark:bg-gray-800 rounded-lg md:rounded-none p-4 md:px-4 md:py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 md:border-0 md:border-b md:last:border-b-0"
                 >
-                  <div className="flex h-full">
-                    {/* Small pitch on left */}
-                    <div className="w-20 flex-shrink-0 h-full">
-                      <TacticDisplay
-                        tactic={tactic}
-                        resolvedPositions={resolvedPositions}
-                        showDirections={false}
-                        showInheritance={false}
-                        compact={true}
-                      />
-                    </div>
-                    {/* Content on right */}
-                    <div className="flex-1 p-3 flex flex-col justify-center min-w-0">
-                      <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{tactic.name}</h3>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
-                        {formation?.name || 'Unknown Formation'}
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                    {/* Name */}
+                    <h3 className="font-semibold text-gray-900 dark:text-white text-base md:w-64 md:flex-shrink-0 truncate">
+                      {tactic.name}
+                    </h3>
+                    
+                    {/* Formation */}
+                    <p className="text-sm text-gray-600 dark:text-gray-400 md:w-48 md:flex-shrink-0 truncate">
+                      {formation?.name || 'Unknown Formation'}
+                    </p>
+                    
+                    {/* Summary */}
+                    {tactic.summary && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 md:flex-1 md:min-w-0 truncate">
+                        {tactic.summary}
                       </p>
-                      {tactic.summary && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-2">
-                          {tactic.summary}
-                        </p>
-                      )}
-                    </div>
+                    )}
                   </div>
                 </Link>
               );
@@ -160,7 +154,7 @@ export default function TacticsListPage() {
               <Users className="w-5 h-5" />
               Inherited Tactics ({inheritedTactics.length})
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-3 md:gap-0 md:bg-white md:dark:bg-gray-800 md:rounded-lg md:border md:border-gray-200 md:dark:border-gray-700 md:overflow-hidden">
               {inheritedTactics.map(tactic => {
                 const formation = getFormationById(tactic.parentFormationId || '');
                 const resolvedPositions = getResolvedPositions(tactic);
@@ -169,36 +163,30 @@ export default function TacticsListPage() {
                 return (
                   <div
                     key={tactic.id}
-                    className="block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden opacity-75 h-28"
+                    className="block bg-white dark:bg-gray-800 rounded-lg md:rounded-none p-4 md:px-4 md:py-3 border border-gray-200 dark:border-gray-700 md:border-0 md:border-b md:last:border-b-0 opacity-75"
                   >
-                    <div className="flex h-full">
-                      {/* Small pitch on left */}
-                      <div className="w-20 flex-shrink-0 h-full">
-                        <TacticDisplay
-                          tactic={tactic}
-                          resolvedPositions={resolvedPositions}
-                          showDirections={false}
-                          showInheritance={false}
-                          compact={true}
-                        />
+                    <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                      {/* Name with scope badge */}
+                      <div className="flex items-center gap-2 md:w-64 md:flex-shrink-0">
+                        <h3 className="font-semibold text-gray-900 dark:text-white text-base flex-1 truncate">
+                          {tactic.name}
+                        </h3>
+                        <span className="px-1.5 py-0.5 text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded flex-shrink-0">
+                          {scopeLabel}
+                        </span>
                       </div>
-                      {/* Content on right */}
-                      <div className="flex-1 p-3 flex flex-col justify-center min-w-0">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate">{tactic.name}</h3>
-                          <span className="px-1.5 py-0.5 text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded flex-shrink-0">
-                            {scopeLabel}
-                          </span>
-                        </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
-                          {formation?.name || 'Unknown Formation'}
+                      
+                      {/* Formation */}
+                      <p className="text-sm text-gray-600 dark:text-gray-400 md:w-48 md:flex-shrink-0 truncate">
+                        {formation?.name || 'Unknown Formation'}
+                      </p>
+                      
+                      {/* Summary */}
+                      {tactic.summary && (
+                        <p className="text-sm text-gray-500 dark:text-gray-400 md:flex-1 md:min-w-0 truncate">
+                          {tactic.summary}
                         </p>
-                        {tactic.summary && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-2">
-                            {tactic.summary}
-                          </p>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </div>
                 );

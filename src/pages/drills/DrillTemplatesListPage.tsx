@@ -1,0 +1,278 @@
+import { useState, useMemo } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { Search } from 'lucide-react';
+import { sampleDrillTemplates } from '@/data/training';
+import { sampleClubs } from '@/data/clubs';
+import { sampleAgeGroups } from '@/data/ageGroups';
+import { sampleTeams } from '@/data/teams';
+import { getAttributeLabel, getAttributeCategory } from '@/data/referenceData';
+import { Routes } from '@utils/routes';
+import PageTitle from '@components/common/PageTitle';
+
+export default function DrillTemplatesListPage() {
+  const { clubId, ageGroupId, teamId } = useParams();
+  const club = sampleClubs.find(c => c.id === clubId);
+  const ageGroup = ageGroupId ? sampleAgeGroups.find(ag => ag.id === ageGroupId) : undefined;
+  const team = teamId ? sampleTeams.find(t => t.id === teamId) : undefined;
+  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [selectedAttributes, setSelectedAttributes] = useState<string[]>([]);
+
+  // Get all unique attributes from templates
+  const availableAttributes = useMemo(() => {
+    const attributeSet = new Set<string>();
+    sampleDrillTemplates.forEach(template => {
+      template.attributes.forEach(attr => attributeSet.add(attr));
+    });
+    return Array.from(attributeSet).sort((a, b) => 
+      getAttributeLabel(a).localeCompare(getAttributeLabel(b))
+    );
+  }, []);
+
+  if (!club) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <main className="container mx-auto px-4 py-4">
+          <div className="card">
+            <h2 className="text-xl font-semibold mb-4">Club not found</h2>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Determine context level
+  const contextName = team ? team.name : ageGroup ? ageGroup.name : club.name;
+
+  // Toggle attribute selection
+  const toggleAttribute = (attr: string) => {
+    setSelectedAttributes(prev => 
+      prev.includes(attr) 
+        ? prev.filter(a => a !== attr)
+        : [...prev, attr]
+    );
+  };
+
+  // Filter templates
+  const filteredTemplates = sampleDrillTemplates.filter(template => {
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      if (!template.name.toLowerCase().includes(searchLower) && 
+          !template.description.toLowerCase().includes(searchLower) &&
+          !template.attributes.some(attr => getAttributeLabel(attr).toLowerCase().includes(searchLower))) {
+        return false;
+      }
+    }
+    if (categoryFilter !== 'all' && template.category !== categoryFilter) {
+      return false;
+    }
+    // Filter by selected attributes - template must have ALL selected attributes
+    if (selectedAttributes.length > 0) {
+      if (!selectedAttributes.every(attr => template.attributes.includes(attr))) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  const getCategoryColor = (category?: string) => {
+    switch (category) {
+      case 'technical': return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300';
+      case 'tactical': return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300';
+      case 'physical': return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300';
+      case 'mental': return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
+      case 'mixed': return 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300';
+      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300';
+    }
+  };
+
+  // Generate the correct route based on context
+  const getTemplateRoute = (templateId: string) => {
+    if (team) return Routes.teamDrillTemplate(clubId!, ageGroupId!, teamId!, templateId);
+    if (ageGroup) return Routes.ageGroupDrillTemplate(clubId!, ageGroupId!, templateId);
+    return Routes.drillTemplate(clubId!, templateId);
+  };
+
+  const getNewTemplateRoute = () => {
+    if (team) return Routes.teamDrillTemplateNew(clubId!, ageGroupId!, teamId!);
+    if (ageGroup) return Routes.ageGroupDrillTemplateNew(clubId!, ageGroupId!);
+    return Routes.drillTemplateNew(clubId!);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <main className="container mx-auto px-4 py-4">
+        {/* Header */}
+        <div className="mb-8">
+          <PageTitle
+            title="Sessions"
+            subtitle={`${contextName} - Reusable training session plans`}
+            action={{
+              label: 'Create Template',
+              icon: 'plus',
+              title: 'Create New Session Template',
+              onClick: () => window.location.href = getNewTemplateRoute(),
+              variant: 'success'
+            }}
+          />
+        </div>
+
+        {/* Filters */}
+        <div className="card mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <Search className="w-4 h-4 inline mr-1" />
+                Search Templates
+              </label>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name, description, or attributes..."
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Category
+              </label>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                <option value="all">All Categories</option>
+                <option value="technical">Technical</option>
+                <option value="tactical">Tactical</option>
+                <option value="physical">Physical</option>
+                <option value="mental">Mental</option>
+                <option value="mixed">Mixed</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Attribute Filters */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Filter by Attributes {selectedAttributes.length > 0 && `(${selectedAttributes.length} selected)`}
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {availableAttributes.map(attr => {
+                const category = getAttributeCategory(attr);
+                const isSelected = selectedAttributes.includes(attr);
+                return (
+                  <button
+                    key={attr}
+                    onClick={() => toggleAttribute(attr)}
+                    className={`px-3 py-1 text-xs rounded-full transition-colors ${
+                      isSelected 
+                        ? 'bg-primary-600 text-white dark:bg-primary-500'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {getAttributeLabel(attr)}
+                    {category && (
+                      <span className="ml-1 opacity-60 text-[10px]">
+                        {category === 'Skills' ? '⚽' : category === 'Physical' ? '💪' : '🧠'}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            {selectedAttributes.length > 0 && (
+              <button
+                onClick={() => setSelectedAttributes([])}
+                className="mt-2 text-sm text-primary-600 dark:text-primary-400 hover:underline"
+              >
+                Clear all filters
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Templates List */}
+        {filteredTemplates.length > 0 ? (
+          <div className="grid grid-cols-1 gap-3 md:gap-0 md:bg-white md:dark:bg-gray-800 md:rounded-lg md:border md:border-gray-200 md:dark:border-gray-700 md:overflow-hidden">
+            {filteredTemplates.map((template) => {
+              return (
+                <Link
+                  key={template.id}
+                  to={getTemplateRoute(template.id)}
+                  className="block bg-white dark:bg-gray-800 rounded-lg md:rounded-none p-4 md:px-4 md:py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 md:border-0 md:border-b md:last:border-b-0"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+                    {/* Name and Category */}
+                    <div className="flex items-center justify-between md:w-64 md:flex-shrink-0">
+                      <h3 className="text-base font-semibold text-gray-900 dark:text-white flex-1 truncate">
+                        {template.name}
+                      </h3>
+                      {template.category && (
+                        <span className={`px-2 py-1 text-xs rounded-full whitespace-nowrap ml-2 ${getCategoryColor(template.category)}`}>
+                          {template.category}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Description */}
+                    <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-1 md:flex-1 md:min-w-0">
+                      {template.description}
+                    </p>
+
+                    {/* Stats */}
+                    <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 md:flex-shrink-0">
+                      <span>⏱️ {template.totalDuration}m</span>
+                      <span>⚽ {template.drillIds.length}</span>
+                      {template.isPublic && <span>🌐</span>}
+                    </div>
+
+                    {/* Attributes - desktop only */}
+                    <div className="hidden md:flex flex-wrap gap-1 md:flex-shrink-0 md:w-48">
+                      {template.attributes.slice(0, 2).map((attr, i) => (
+                        <span key={i} className="px-2 py-0.5 text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 rounded truncate">
+                          {getAttributeLabel(attr)}
+                        </span>
+                      ))}
+                      {template.attributes.length > 2 && (
+                        <span className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                          +{template.attributes.length - 2}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Attributes - mobile only */}
+                    <div className="flex md:hidden flex-wrap gap-1">
+                      {template.attributes.slice(0, 3).map((attr, i) => (
+                        <span key={i} className="px-2 py-0.5 text-xs bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 rounded">
+                          {getAttributeLabel(attr)}
+                        </span>
+                      ))}
+                      {template.attributes.length > 3 && (
+                        <span className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                          +{template.attributes.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="card text-center py-12">
+            <span className="text-5xl mb-3 block">📋</span>
+            <p className="font-medium text-gray-900 dark:text-white">No sessions found</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {searchTerm || categoryFilter !== 'all' 
+                ? 'Try adjusting your filters'
+                : 'Create your first session template to get started'
+              }
+            </p>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}

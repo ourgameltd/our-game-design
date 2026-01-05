@@ -33,43 +33,40 @@ export default function ClubsListPage() {
         {/* Quick Access Section */}
         {(myTeams.length > 0 || myProfile.length > 0 || myChildren.length > 0) && (
           <div className="mb-8 space-y-6">
-            {/* My Teams */}
-            {myTeams.length > 0 && (
+            {/* My Children */}
+            {myChildren.length > 0 && (
               <>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                  My Teams
+                  My Children
                 </h2>
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {myTeams.map((team) => {
-                    const club = sampleClubs.find(c => c.id === team.clubId);
+                  {myChildren.map((player) => {
+                    const club = sampleClubs.find(c => c.id === player.clubId);
                     
                     return (
                       <Link
-                        key={team.id}
-                        to={Routes.team(team.clubId, team.ageGroupId, team.id)}
+                        key={player.id}
+                        to={Routes.player(player.clubId, player.ageGroupIds[0], player.id)}
                         className="flex items-center gap-3 p-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-colors"
                       >
-                        {club?.logo ? (
+                        {player.photo ? (
                           <img 
-                            src={club.logo} 
-                            alt={`${club.name} logo`}
-                            className="w-12 h-12 rounded object-cover"
+                            src={player.photo} 
+                            alt={`${player.firstName} ${player.lastName}`}
+                            className="w-12 h-12 rounded-full object-cover"
                           />
                         ) : (
-                          <div 
-                            className="w-12 h-12 rounded flex items-center justify-center text-sm font-bold text-white"
-                            style={{ backgroundColor: team.colors?.primary || club?.colors.primary }}
-                          >
-                            {team.shortName || team.name.substring(0, 2)}
+                          <div className="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center text-white font-semibold">
+                            {player.firstName[0]}{player.lastName[0]}
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-gray-900 dark:text-white truncate">
-                            {team.name}
+                            {player.firstName} {player.lastName}
                           </p>
                           <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                            {club?.shortName} • {team.season}
+                            {club?.shortName} • {player.preferredPositions.join(', ')}
                           </p>
                         </div>
                       </Link>
@@ -123,41 +120,46 @@ export default function ClubsListPage() {
               </div>
               </>
             )}
+          </div>
+        )}
 
-            {/* My Children */}
-            {myChildren.length > 0 && (
+{/* My Teams */}
+            {myTeams.length > 0 && (
               <>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                  My Children
+                  My Teams
                 </h2>
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {myChildren.map((player) => {
-                    const club = sampleClubs.find(c => c.id === player.clubId);
+                  {myTeams.map((team) => {
+                    const club = sampleClubs.find(c => c.id === team.clubId);
                     
                     return (
                       <Link
-                        key={player.id}
-                        to={Routes.player(player.clubId, player.ageGroupIds[0], player.id)}
+                        key={team.id}
+                        to={Routes.team(team.clubId, team.ageGroupId, team.id)}
                         className="flex items-center gap-3 p-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-colors"
                       >
-                        {player.photo ? (
+                        {club?.logo ? (
                           <img 
-                            src={player.photo} 
-                            alt={`${player.firstName} ${player.lastName}`}
-                            className="w-12 h-12 rounded-full object-cover"
+                            src={club.logo} 
+                            alt={`${club.name} logo`}
+                            className="w-12 h-12 rounded object-cover"
                           />
                         ) : (
-                          <div className="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center text-white font-semibold">
-                            {player.firstName[0]}{player.lastName[0]}
+                          <div 
+                            className="w-12 h-12 rounded flex items-center justify-center text-sm font-bold text-white"
+                            style={{ backgroundColor: team.colors?.primary || club?.colors.primary }}
+                          >
+                            {team.shortName || team.name.substring(0, 2)}
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-gray-900 dark:text-white truncate">
-                            {player.firstName} {player.lastName}
+                            {team.name}
                           </p>
                           <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                            {club?.shortName} • {player.preferredPositions.join(', ')}
+                            {club?.shortName} • {team.season}
                           </p>
                         </div>
                       </Link>
@@ -167,13 +169,11 @@ export default function ClubsListPage() {
               </div>
               </>
             )}
-          </div>
-        )}
 
         {/* Clubs Grid */}
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            All Clubs
+            My Clubs
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {sampleClubs.map((club) => (

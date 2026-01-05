@@ -50,6 +50,10 @@ import NotificationsPage from '@pages/NotificationsPage';
 import TacticsListPage from '@pages/tactics/TacticsListPage';
 import TacticDetailPage from '@pages/tactics/TacticDetailPage';
 import AddEditTacticPage from '@pages/tactics/AddEditTacticPage';
+import DrillsListPage from '@pages/drills/DrillsListPage';
+import DrillTemplatesListPage from '@pages/drills/DrillTemplatesListPage';
+import DrillFormPage from '@pages/drills/DrillFormPage';
+import DrillTemplateFormPage from '@pages/drills/DrillTemplateFormPage';
 import Header from '@components/layout/Header';
 import ScrollToTop from '@components/common/ScrollToTop';
 
@@ -193,6 +197,36 @@ function AppContent() {
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/tactics/new" element={<AddEditTacticPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/tactics/:tacticId" element={<TacticDetailPage />} />
         <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/tactics/:tacticId/edit" element={<AddEditTacticPage />} />
+
+        {/* Drills & Templates - Club Level */}
+        <Route path="/dashboard/:clubId/drills" element={<DrillsListPage />} />
+        <Route path="/dashboard/:clubId/drills/new" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/drills/:drillId" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/drills/:drillId/edit" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/drill-templates" element={<DrillTemplatesListPage />} />
+        <Route path="/dashboard/:clubId/drill-templates/new" element={<DrillTemplateFormPage />} />
+        <Route path="/dashboard/:clubId/drill-templates/:templateId" element={<DrillTemplateFormPage />} />
+        <Route path="/dashboard/:clubId/drill-templates/:templateId/edit" element={<DrillTemplateFormPage />} />
+
+        {/* Drills & Templates - Age Group Level */}
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drills" element={<DrillsListPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drills/new" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drills/:drillId" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drills/:drillId/edit" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drill-templates" element={<DrillTemplatesListPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drill-templates/new" element={<DrillTemplateFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drill-templates/:templateId" element={<DrillTemplateFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/drill-templates/:templateId/edit" element={<DrillTemplateFormPage />} />
+
+        {/* Drills & Templates - Team Level */}
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drills" element={<DrillsListPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drills/new" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drills/:drillId" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drills/:drillId/edit" element={<DrillFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drill-templates" element={<DrillTemplatesListPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drill-templates/new" element={<DrillTemplateFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drill-templates/:templateId" element={<DrillTemplateFormPage />} />
+        <Route path="/dashboard/:clubId/age-groups/:ageGroupId/teams/:teamId/drill-templates/:templateId/edit" element={<DrillTemplateFormPage />} />
 
         </Routes>
         </div>

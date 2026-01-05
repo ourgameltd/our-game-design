@@ -321,3 +321,68 @@ export const tacticStyleDisplay: Record<string, string> = Object.fromEntries(
 export function getTacticStyleLabel(style: string): string {
   return tacticStyleDisplay[style] ?? style;
 }
+
+// Helper to get all attribute keys as a flat array
+export function getAllAttributeKeys(): string[] {
+  return [
+    ...playerAttributes.skills.map(a => a.key),
+    ...playerAttributes.physical.map(a => a.key),
+    ...playerAttributes.mental.map(a => a.key),
+  ];
+}
+
+// Helper to get attribute label by key
+export function getAttributeLabel(key: string): string {
+  const allAttributes = [
+    ...playerAttributes.skills,
+    ...playerAttributes.physical,
+    ...playerAttributes.mental,
+  ];
+  const attr = allAttributes.find(a => a.key === key);
+  return attr?.label ?? key;
+}
+
+// Helper to get attribute category by key
+export function getAttributeCategory(key: string): 'Skills' | 'Physical' | 'Mental' | null {
+  if (playerAttributes.skills.some(a => a.key === key)) return 'Skills';
+  if (playerAttributes.physical.some(a => a.key === key)) return 'Physical';
+  if (playerAttributes.mental.some(a => a.key === key)) return 'Mental';
+  return null;
+}
+
+// Helper to determine drill/session category from attributes
+export function getDominantCategory(attributeKeys: string[]): 'technical' | 'tactical' | 'physical' | 'mental' | 'mixed' {
+  if (attributeKeys.length === 0) return 'mixed';
+  
+  const categoryCounts = {
+    skills: 0,
+    physical: 0,
+    mental: 0,
+  };
+  
+  attributeKeys.forEach(key => {
+    if (playerAttributes.skills.some(a => a.key === key)) categoryCounts.skills++;
+    if (playerAttributes.physical.some(a => a.key === key)) categoryCounts.physical++;
+    if (playerAttributes.mental.some(a => a.key === key)) categoryCounts.mental++;
+  });
+  
+  const total = attributeKeys.length;
+  const skillsPercent = categoryCounts.skills / total;
+  const physicalPercent = categoryCounts.physical / total;
+  const mentalPercent = categoryCounts.mental / total;
+  
+  // If one category dominates (>60%), return that category
+  if (skillsPercent > 0.6) return 'technical';
+  if (physicalPercent > 0.6) return 'physical';
+  if (mentalPercent > 0.6) {
+    // Mental attributes can indicate tactical or mental training
+    // Check for tactical indicators
+    const tacticalAttributes = ['attackingPosition', 'defensivePositioning', 'positioning', 'vision', 'awareness'];
+    const hasTactical = attributeKeys.some(key => tacticalAttributes.includes(key));
+    if (hasTactical && mentalPercent > 0.5) return 'tactical';
+    return 'mental';
+  }
+  
+  // Mixed if no clear dominant category
+  return 'mixed';
+}

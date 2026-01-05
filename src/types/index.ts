@@ -328,7 +328,8 @@ export interface TrainingSession {
   duration: number; // minutes
   location: string;
   focusAreas: string[];
-  drillIds: string[];
+  drillIds: string[]; // Individual drills added to this session
+  templateId?: string; // If created from a template
   coachIds?: string[]; // Coaches assigned to this session
   attendance?: {
     playerId: string;
@@ -345,12 +346,34 @@ export interface Drill {
   name: string;
   description: string;
   duration: number; // minutes
-  category: 'technical' | 'tactical' | 'physical' | 'mental';
-  skillsFocused: string[];
+  category: 'technical' | 'tactical' | 'physical' | 'mental'; // Auto-calculated from attributes
+  attributes: string[]; // Player attribute keys that this drill improves (e.g., ['ballControl', 'dribbling', 'pace'])
   equipment: string[];
   diagram?: string;
   instructions: string[];
   variations?: string[];
+  links?: {
+    url: string;
+    title: string;
+    type: 'youtube' | 'instagram' | 'tiktok' | 'website' | 'other';
+  }[];
+  clubId?: string; // If club-specific, otherwise it's global
+  createdBy?: string; // Coach ID who created it
+  isPublic?: boolean; // Whether it's shared across the club
+}
+
+// Drill Template (Reusable session plan)
+export interface DrillTemplate {
+  id: string;
+  name: string;
+  description: string;
+  drillIds: string[]; // Ordered list of drills
+  attributes: string[]; // Aggregated from included drills (e.g., ['ballControl', 'dribbling', 'pace'])
+  totalDuration: number; // Calculated from drills
+  category?: 'technical' | 'tactical' | 'physical' | 'mental' | 'mixed'; // Auto-calculated from attributes
+  clubId?: string; // If club-specific, otherwise it's global
+  createdBy?: string; // Coach ID who created it
+  isPublic?: boolean; // Whether it's shared across the club
 }
 
 // Formation/Tactic Types (Unified)

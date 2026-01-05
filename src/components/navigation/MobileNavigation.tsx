@@ -34,6 +34,7 @@ export default function MobileNavigation() {
   const [isStaffExpanded, setIsStaffExpanded] = useState(false);
   const [isSchedulingExpanded, setIsSchedulingExpanded] = useState(false);
   const [isManagementExpanded, setIsManagementExpanded] = useState(false);
+  const [isTacticsExpanded, setIsTacticsExpanded] = useState(false);
   const { isDesktopOpen, toggleDesktopNav } = useNavigation();
   const location = useLocation();
   const { theme, setTheme, actualTheme } = useTheme();
@@ -72,8 +73,11 @@ export default function MobileNavigation() {
   // Check if we're viewing a scheduling-related page (matches or training)
   const isSchedulingPage = location.pathname.includes('/matches') || location.pathname.includes('/training');
 
-  // Check if we're viewing a management-related page (ethos, kits, tactics)
-  const isManagementPage = location.pathname.includes('/ethos') || location.pathname.includes('/kits') || location.pathname.includes('/tactics');
+  // Check if we're viewing a management-related page (ethos, kits)
+  const isManagementPage = location.pathname.includes('/ethos') || location.pathname.includes('/kits');
+
+  // Check if we're viewing a tactics-related page (formations, drills, templates)
+  const isTacticsPage = location.pathname.includes('/tactics') || location.pathname.includes('/drills') || location.pathname.includes('/drill-templates');
 
   // Auto-expand staff section when viewing staff pages
   useEffect(() => {
@@ -95,6 +99,13 @@ export default function MobileNavigation() {
       setIsManagementExpanded(true);
     }
   }, [isManagementPage]);
+
+  // Auto-expand tactics section when viewing tactics pages
+  useEffect(() => {
+    if (isTacticsPage) {
+      setIsTacticsExpanded(true);
+    }
+  }, [isTacticsPage]);
 
   // Close menu when route changes (mobile only)
   useEffect(() => {
@@ -149,7 +160,9 @@ export default function MobileNavigation() {
       if (path.includes('/matches')) return { title: 'Matches', image: null };
       if (path.includes('/training')) return { title: 'Training', image: null };
       if (path.includes('/kit')) return { title: 'Kit Orders', image: null };
-      if (path.includes('/tactics')) return { title: 'Tactics', image: null };
+      if (path.includes('/drill-templates')) return { title: 'Sessions', image: null };
+      if (path.includes('/drills')) return { title: 'Drills', image: null };
+      if (path.includes('/tactics')) return { title: 'Formations', image: null };
       if (path.includes('/formations')) return { title: 'Formations', image: null };
       if (path.includes('/settings')) return { title: 'Team Settings', image: null };
       if (path.includes('/coaches')) return { title: 'Coaches', image: null };
@@ -163,7 +176,9 @@ export default function MobileNavigation() {
       if (path.includes('/coaches')) return { title: 'Coaches', image: null };
       if (path.includes('/matches')) return { title: 'Matches', image: null };
       if (path.includes('/training')) return { title: 'Training', image: null };
-      if (path.includes('/tactics')) return { title: 'Tactics', image: null };
+      if (path.includes('/drill-templates')) return { title: 'Sessions', image: null };
+      if (path.includes('/drills')) return { title: 'Drills', image: null };
+      if (path.includes('/tactics')) return { title: 'Formations', image: null };
       if (path.includes('/settings')) return { title: 'Age Group Settings', image: null };
       return { title: ageGroup.name, image: null };
     }
@@ -175,7 +190,9 @@ export default function MobileNavigation() {
       if (path.includes('/coaches')) return { title: 'Coaches', image: club.logo };
       if (path.includes('/ethos')) return { title: 'Club Ethos', image: club.logo };
       if (path.includes('/kit')) return { title: 'Kit Management', image: club.logo };
-      if (path.includes('/tactics')) return { title: 'Tactics', image: club.logo };
+      if (path.includes('/drill-templates')) return { title: 'Sessions', image: club.logo };
+      if (path.includes('/drills')) return { title: 'Drills', image: club.logo };
+      if (path.includes('/tactics')) return { title: 'Formations', image: club.logo };
       if (path.includes('/settings')) return { title: 'Club Settings', image: club.logo };
       return { title: club.name, image: club.logo };
     }
@@ -389,6 +406,50 @@ export default function MobileNavigation() {
                           </ul>
                         )}
                       </li>
+                      {/* Tactics Section */}
+                      <li className="mobile-nav-item">
+                        <button
+                          onClick={() => setIsTacticsExpanded(!isTacticsExpanded)}
+                          className={`mobile-nav-link pl-8 w-full justify-between ${isTacticsPage ? 'text-primary-600 dark:text-primary-400' : ''}`}
+                        >
+                          <span className="flex items-center gap-4">
+                            <FileText className="mobile-nav-icon" />
+                            <span className="mobile-nav-text">Tactics</span>
+                          </span>
+                          {isTacticsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </button>
+                        {isTacticsExpanded && (
+                          <ul className="ml-4 border-l-2 border-gray-200 dark:border-gray-700">
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/tactics`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/tactics`) && !location.pathname.includes('/drill') ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Formations</span>
+                              </Link>
+                            </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/drills`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/drills`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Drills</span>
+                              </Link>
+                            </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/drill-templates`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/drill-templates`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Sessions</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
                       {/* Management Section */}
                       <li className="mobile-nav-item">
                         <button
@@ -410,15 +471,6 @@ export default function MobileNavigation() {
                               >
                                 <Users className="mobile-nav-icon" />
                                 <span className="mobile-nav-text">Teams</span>
-                              </Link>
-                            </li>
-                            <li className="mobile-nav-item">
-                              <Link 
-                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/tactics`}
-                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/tactics`) ? 'active' : ''}`}
-                              >
-                                <FileText className="mobile-nav-icon" />
-                                <span className="mobile-nav-text">Tactics</span>
                               </Link>
                             </li>
                           </ul>
@@ -523,6 +575,50 @@ export default function MobileNavigation() {
                           </ul>
                         )}
                       </li>
+                      {/* Tactics Section */}
+                      <li className="mobile-nav-item">
+                        <button
+                          onClick={() => setIsTacticsExpanded(!isTacticsExpanded)}
+                          className={`mobile-nav-link pl-8 w-full justify-between ${isTacticsPage ? 'text-primary-600 dark:text-primary-400' : ''}`}
+                        >
+                          <span className="flex items-center gap-4">
+                            <FileText className="mobile-nav-icon" />
+                            <span className="mobile-nav-text">Tactics</span>
+                          </span>
+                          {isTacticsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </button>
+                        {isTacticsExpanded && (
+                          <ul className="ml-4 border-l-2 border-gray-200 dark:border-gray-700">
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/tactics`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/tactics`) && !location.pathname.includes('/drill') ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Formations</span>
+                              </Link>
+                            </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/drills`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/drills`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Drills</span>
+                              </Link>
+                            </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/drill-templates`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/drill-templates`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Sessions</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
                       {/* Management Section */}
                       <li className="mobile-nav-item">
                         <button
@@ -562,15 +658,6 @@ export default function MobileNavigation() {
                               >
                                 <Shirt className="mobile-nav-icon" />
                                 <span className="mobile-nav-text">Kits</span>
-                              </Link>
-                            </li>
-                            <li className="mobile-nav-item">
-                              <Link 
-                                to={`/dashboard/${clubId}/tactics`}
-                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/tactics`) ? 'active' : ''}`}
-                              >
-                                <FileText className="mobile-nav-icon" />
-                                <span className="mobile-nav-text">Tactics</span>
                               </Link>
                             </li>
                           </ul>
@@ -801,6 +888,50 @@ export default function MobileNavigation() {
                           </ul>
                         )}
                       </li>
+                      {/* Tactics Section */}
+                      <li className="mobile-nav-item">
+                        <button
+                          onClick={() => setIsTacticsExpanded(!isTacticsExpanded)}
+                          className={`mobile-nav-link pl-8 w-full justify-between ${isTacticsPage ? 'text-primary-600 dark:text-primary-400' : ''}`}
+                        >
+                          <span className="flex items-center gap-4">
+                            <FileText className="mobile-nav-icon" />
+                            <span className="mobile-nav-text">Tactics</span>
+                          </span>
+                          {isTacticsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </button>
+                        {isTacticsExpanded && (
+                          <ul className="ml-4 border-l-2 border-gray-200 dark:border-gray-700">
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/tactics`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/tactics`) && !location.pathname.includes('/drill') ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Formations</span>
+                              </Link>
+                            </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drills`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drills`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Drills</span>
+                              </Link>
+                            </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drill-templates`}
+                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drill-templates`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Sessions</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
                       {/* Management Section */}
                       <li className="mobile-nav-item">
                         <button
@@ -822,15 +953,6 @@ export default function MobileNavigation() {
                               >
                                 <Shirt className="mobile-nav-icon" />
                                 <span className="mobile-nav-text">Kits</span>
-                              </Link>
-                            </li>
-                            <li className="mobile-nav-item">
-                              <Link 
-                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/tactics`}
-                                className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/tactics`) ? 'active' : ''}`}
-                              >
-                                <FileText className="mobile-nav-icon" />
-                                <span className="mobile-nav-text">Tactics</span>
                               </Link>
                             </li>
                           </ul>

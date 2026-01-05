@@ -354,6 +354,108 @@ export class Routes {
     return `/training/${sessionId}`;
   }
 
+  // Drills Library - Club Level
+  static drills(clubId: string): string {
+    return `/dashboard/${clubId}/drills`;
+  }
+
+  static drillNew(clubId: string): string {
+    return `/dashboard/${clubId}/drills/new`;
+  }
+
+  static drill(clubId: string, drillId: string): string {
+    return `/dashboard/${clubId}/drills/${drillId}`;
+  }
+
+  static drillEdit(clubId: string, drillId: string): string {
+    return `/dashboard/${clubId}/drills/${drillId}/edit`;
+  }
+
+  // Drill Templates (Session Plans) - Club Level
+  static drillTemplates(clubId: string): string {
+    return `/dashboard/${clubId}/drill-templates`;
+  }
+
+  static drillTemplateNew(clubId: string): string {
+    return `/dashboard/${clubId}/drill-templates/new`;
+  }
+
+  static drillTemplate(clubId: string, templateId: string): string {
+    return `/dashboard/${clubId}/drill-templates/${templateId}`;
+  }
+
+  static drillTemplateEdit(clubId: string, templateId: string): string {
+    return `/dashboard/${clubId}/drill-templates/${templateId}/edit`;
+  }
+
+  // Drills Library - Age Group Level
+  static ageGroupDrills(clubId: string, ageGroupId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drills`;
+  }
+
+  static ageGroupDrillNew(clubId: string, ageGroupId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drills/new`;
+  }
+
+  static ageGroupDrill(clubId: string, ageGroupId: string, drillId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drills/${drillId}`;
+  }
+
+  static ageGroupDrillEdit(clubId: string, ageGroupId: string, drillId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drills/${drillId}/edit`;
+  }
+
+  // Drill Templates - Age Group Level
+  static ageGroupDrillTemplates(clubId: string, ageGroupId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drill-templates`;
+  }
+
+  static ageGroupDrillTemplateNew(clubId: string, ageGroupId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drill-templates/new`;
+  }
+
+  static ageGroupDrillTemplate(clubId: string, ageGroupId: string, templateId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drill-templates/${templateId}`;
+  }
+
+  static ageGroupDrillTemplateEdit(clubId: string, ageGroupId: string, templateId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/drill-templates/${templateId}/edit`;
+  }
+
+  // Drills Library - Team Level
+  static teamDrills(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drills`;
+  }
+
+  static teamDrillNew(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drills/new`;
+  }
+
+  static teamDrill(clubId: string, ageGroupId: string, teamId: string, drillId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drills/${drillId}`;
+  }
+
+  static teamDrillEdit(clubId: string, ageGroupId: string, teamId: string, drillId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drills/${drillId}/edit`;
+  }
+
+  // Drill Templates - Team Level
+  static teamDrillTemplates(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drill-templates`;
+  }
+
+  static teamDrillTemplateNew(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drill-templates/new`;
+  }
+
+  static teamDrillTemplate(clubId: string, ageGroupId: string, teamId: string, templateId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drill-templates/${templateId}`;
+  }
+
+  static teamDrillTemplateEdit(clubId: string, ageGroupId: string, teamId: string, templateId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/drill-templates/${templateId}/edit`;
+  }
+
   // Team Training Sessions
   static teamTrainingSessions(clubId: string, ageGroupId: string, teamId: string): string {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training`;

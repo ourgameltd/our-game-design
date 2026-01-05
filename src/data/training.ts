@@ -1,4 +1,5 @@
-import { TrainingSession, Drill } from '../types/index';
+import { TrainingSession, Drill, DrillTemplate } from '../types/index';
+import { getDominantCategory } from './referenceData';
 
 export const sampleDrills: Drill[] = [
   {
@@ -7,7 +8,7 @@ export const sampleDrills: Drill[] = [
     description: 'Three players form a triangle and practice quick one-touch passing',
     duration: 10,
     category: 'technical',
-    skillsFocused: ['Passing', 'First Touch', 'Communication'],
+    attributes: ['shortPassing', 'ballControl', 'communication', 'awareness'],
     equipment: ['Cones', 'Balls'],
     instructions: [
       'Set up three cones in a triangle, 10 yards apart',
@@ -20,6 +21,13 @@ export const sampleDrills: Drill[] = [
       'Increase distance between cones',
       'Use both feet',
       'Add a defender in the middle'
+    ],
+    links: [
+      {
+        url: 'https://www.youtube.com/watch?v=example1',
+        title: 'Passing Triangle Tutorial - Pro Coach Tips',
+        type: 'youtube'
+      }
     ]
   },
   {
@@ -28,7 +36,7 @@ export const sampleDrills: Drill[] = [
     description: 'Players dribble through small gates to improve close control',
     duration: 15,
     category: 'technical',
-    skillsFocused: ['Dribbling', 'Ball Control', 'Agility'],
+    attributes: ['dribbling', 'ballControl', 'agility', 'acceleration'],
     equipment: ['Cones', 'Balls'],
     instructions: [
       'Set up 10-15 small gates (2 cones, 2 yards apart) in area',
@@ -36,6 +44,18 @@ export const sampleDrills: Drill[] = [
       'Dribble through as many gates as possible in time limit',
       'Can only go through each gate once',
       'Use different surfaces of foot'
+    ],
+    links: [
+      {
+        url: 'https://www.instagram.com/reel/example',
+        title: 'Dribbling Gates Demo',
+        type: 'instagram'
+      },
+      {
+        url: 'https://www.tiktok.com/@coach/video/example',
+        title: 'Quick Dribbling Tips',
+        type: 'tiktok'
+      }
     ]
   },
   {
@@ -44,7 +64,7 @@ export const sampleDrills: Drill[] = [
     description: 'Small-sided game focusing on keeping possession',
     duration: 20,
     category: 'tactical',
-    skillsFocused: ['Passing', 'Movement', 'Decision Making'],
+    attributes: ['shortPassing', 'positioning', 'awareness', 'vision', 'ballControl'],
     equipment: ['Cones', 'Balls', 'Bibs'],
     instructions: [
       'Mark out 30x30 yard area',
@@ -60,7 +80,7 @@ export const sampleDrills: Drill[] = [
     description: 'Rotate through different finishing scenarios',
     duration: 20,
     category: 'technical',
-    skillsFocused: ['Shooting', 'Finishing', 'Movement'],
+    attributes: ['finishing', 'shotPower', 'composure', 'attackingPosition', 'volleys'],
     equipment: ['Goals', 'Balls', 'Cones'],
     instructions: [
       'Set up 4 stations around penalty area',
@@ -77,7 +97,7 @@ export const sampleDrills: Drill[] = [
     description: 'Practice maintaining defensive formation',
     duration: 15,
     category: 'tactical',
-    skillsFocused: ['Positioning', 'Communication', 'Pressing'],
+    attributes: ['defensivePositioning', 'marking', 'communication', 'interceptions', 'awareness'],
     equipment: ['Cones', 'Balls', 'Bibs'],
     instructions: [
       'Set up half pitch',
@@ -85,6 +105,54 @@ export const sampleDrills: Drill[] = [
       'Attackers try to break through',
       'Focus on holding shape and moving as a unit',
       'Coach calls out scenarios'
+    ]
+  },
+  {
+    id: 'd6f7a8b9-c0d1-e2f3-a4b5-c6d7e8f9a0b1',
+    name: 'Sprint Intervals',
+    description: 'High-intensity sprint training to build speed and endurance',
+    duration: 20,
+    category: 'physical',
+    attributes: ['pace', 'sprintSpeed', 'stamina', 'acceleration'],
+    equipment: ['Cones'],
+    instructions: [
+      'Mark 40-yard distance',
+      'Sprint full speed, jog back recovery',
+      '10 repetitions',
+      'Focus on explosive starts',
+      '2-minute rest between sets'
+    ]
+  },
+  {
+    id: 'd7a8b9c0-d1e2-f3a4-b5c6-d7e8f9a0b1c2',
+    name: '1v1 Defending',
+    description: 'Practice individual defensive techniques',
+    duration: 15,
+    category: 'technical',
+    attributes: ['standingTackle', 'slidingTackle', 'balance', 'strength', 'positioning'],
+    equipment: ['Cones', 'Balls', 'Bibs'],
+    instructions: [
+      'Set up 15x15 yard area with goal',
+      'Attacker starts with ball',
+      'Defender closes down and defends',
+      'Work on jockeying and timing',
+      'Switch roles after each attempt'
+    ]
+  },
+  {
+    id: 'd8b9c0d1-e2f3-a4b5-c6d7-e8f9a0b1c2d3',
+    name: 'Crossing & Finishing',
+    description: 'Wide players deliver crosses for strikers to finish',
+    duration: 20,
+    category: 'technical',
+    attributes: ['crossing', 'finishing', 'heading', 'attackingPosition', 'timing'],
+    equipment: ['Goals', 'Balls', 'Cones'],
+    instructions: [
+      'Set up wide positions both sides',
+      'Queue of crossers, queue of finishers',
+      'Vary cross types: low, high, cut-back',
+      'Finishers attack near and far post',
+      'Rotate positions every 5 minutes'
     ]
   }
 ];
@@ -324,4 +392,103 @@ export const getUpcomingTrainingSessions = (): TrainingSession[] => {
 
 export const getDrillById = (id: string): Drill | undefined => {
   return sampleDrills.find(drill => drill.id === id);
+};
+
+// Drill Templates - Reusable session plans
+export const sampleDrillTemplates: DrillTemplate[] = [
+  {
+    id: 'dt1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c',
+    name: 'Technical Foundation',
+    description: 'Focus on fundamental ball skills - passing, dribbling, and first touch',
+    drillIds: [
+      'd1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', // Passing Triangle
+      'd2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', // Dribbling Gates
+    ],
+    attributes: ['shortPassing', 'ballControl', 'dribbling', 'agility', 'communication'],
+    totalDuration: 25,
+    category: 'technical',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    isPublic: true
+  },
+  {
+    id: 'dt2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
+    name: 'Possession Play',
+    description: 'Small-sided games focusing on keeping the ball and building play',
+    drillIds: [
+      'd3c4d5e6-f7a8-b9c0-d1e2-f3a4b5c6d7e8', // 5v5 Possession
+      'd1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', // Passing Triangle
+    ],
+    attributes: ['shortPassing', 'positioning', 'awareness', 'vision', 'ballControl', 'communication'],
+    totalDuration: 30,
+    category: 'tactical',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    isPublic: true
+  },
+  {
+    id: 'dt3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e',
+    name: 'Shooting & Finishing',
+    description: 'Improve accuracy and confidence in front of goal',
+    drillIds: [
+      'd4d5e6f7-a8b9-c0d1-e2f3-a4b5c6d7e8f9', // Finishing Circuit
+      'd8b9c0d1-e2f3-a4b5-c6d7-e8f9a0b1c2d3', // Crossing & Finishing
+    ],
+    attributes: ['finishing', 'shotPower', 'composure', 'crossing', 'heading', 'attackingPosition'],
+    totalDuration: 40,
+    category: 'technical',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    isPublic: true
+  },
+  {
+    id: 'dt4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f',
+    name: 'High Intensity Conditioning',
+    description: 'Build fitness and endurance through game-realistic exercises',
+    drillIds: [
+      'd6f7a8b9-c0d1-e2f3-a4b5-c6d7e8f9a0b1', // Sprint Intervals
+    ],
+    attributes: ['pace', 'sprintSpeed', 'stamina', 'acceleration'],
+    totalDuration: 20,
+    category: 'physical',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    isPublic: true
+  },
+  {
+    id: 'dt5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a',
+    name: 'Defensive Fundamentals',
+    description: '1v1 defending and team defensive shape',
+    drillIds: [
+      'd7a8b9c0-d1e2-f3a4-b5c6-d7e8f9a0b1c2', // 1v1 Defending
+      'd5e6f7a8-b9c0-d1e2-f3a4-b5c6d7e8f9a0', // Defensive Shape
+    ],
+    attributes: ['standingTackle', 'slidingTackle', 'defensivePositioning', 'marking', 'communication', 'interceptions'],
+    totalDuration: 30,
+    category: 'tactical',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    isPublic: true
+  },
+  {
+    id: 'dt6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b',
+    name: 'Complete Session - Youth',
+    description: 'Full 60-minute session covering all aspects for youth players',
+    drillIds: [
+      'd2b3c4d5-e6f7-a8b9-c0d1-e2f3a4b5c6d7', // Dribbling Gates (15min)
+      'd1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', // Passing Triangle (10min)
+      'd3c4d5e6-f7a8-b9c0-d1e2-f3a4b5c6d7e8', // 5v5 Possession (20min)
+      'd4d5e6f7-a8b9-c0d1-e2f3-a4b5c6d7e8f9', // Finishing Circuit (20min)
+    ],
+    attributes: ['dribbling', 'ballControl', 'shortPassing', 'positioning', 'awareness', 'finishing', 'shotPower', 'composure'],
+    totalDuration: 65,
+    category: 'mixed',
+    clubId: '8f4e9a2b-1c3d-4e5f-6a7b-8c9d0e1f2a3b',
+    isPublic: true
+  }
+];
+
+export const getDrillTemplateById = (id: string): DrillTemplate | undefined => {
+  return sampleDrillTemplates.find(template => template.id === id);
+};
+
+export const getDrillTemplatesByClubId = (clubId: string): DrillTemplate[] => {
+  return sampleDrillTemplates.filter(template => 
+    template.clubId === clubId || !template.clubId // Include global templates
+  );
 };
