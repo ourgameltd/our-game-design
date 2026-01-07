@@ -1,0 +1,626 @@
+erDiagram
+    users {
+        uuid id PK
+        varchar email
+        varchar first_name
+        varchar last_name
+        enum role
+        uuid club_id FK
+        uuid player_id FK
+        uuid staff_id FK
+        text photo
+        jsonb preferences
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    clubs {
+        uuid id PK
+        varchar name
+        varchar short_name
+        text logo
+        varchar primary_color
+        varchar secondary_color
+        varchar accent_color
+        varchar city
+        varchar country
+        varchar venue
+        text address
+        int founded_year
+        text history
+        text ethos
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    kits {
+        uuid id PK
+        uuid club_id FK
+        uuid team_id FK
+        varchar name
+        enum type
+        varchar shirt_color
+        varchar shorts_color
+        varchar socks_color
+        varchar season
+        boolean is_active
+        timestamp created_at
+    }
+    
+    age_groups {
+        uuid id PK
+        uuid club_id FK
+        varchar name
+        varchar code
+        enum level
+        varchar current_season
+        varchar default_season
+        enum default_squad_size
+        text description
+        boolean is_archived
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    age_group_coordinators {
+        uuid id PK
+        uuid age_group_id FK
+        uuid coach_id FK
+    }
+    
+    teams {
+        uuid id PK
+        uuid club_id FK
+        uuid age_group_id FK
+        varchar name
+        varchar short_name
+        enum level
+        varchar season
+        uuid formation_id FK
+        varchar primary_color
+        varchar secondary_color
+        boolean is_archived
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    coaches {
+        uuid id PK
+        uuid club_id FK
+        varchar first_name
+        varchar last_name
+        date date_of_birth
+        text photo
+        varchar email
+        varchar phone
+        varchar association_id
+        boolean has_account
+        enum role
+        text biography
+        boolean is_archived
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    team_coaches {
+        uuid id PK
+        uuid team_id FK
+        uuid coach_id FK
+        timestamp assigned_at
+    }
+    
+    players {
+        uuid id PK
+        uuid club_id FK
+        varchar first_name
+        varchar last_name
+        varchar nickname
+        date date_of_birth
+        text photo
+        varchar association_id
+        int overall_rating
+        boolean is_archived
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    player_attributes {
+        uuid id PK
+        uuid player_id FK
+        int ball_control
+        int crossing
+        int weak_foot
+        int dribbling
+        int finishing
+        int free_kick
+        int heading
+        int long_passing
+        int long_shot
+        int penalties
+        int short_passing
+        int shot_power
+        int sliding_tackle
+        int standing_tackle
+        int volleys
+        int acceleration
+        int agility
+        int balance
+        int jumping
+        int pace
+        int reactions
+        int sprint_speed
+        int stamina
+        int strength
+        int aggression
+        int attacking_position
+        int awareness
+        int communication
+        int composure
+        int defensive_positioning
+        int interceptions
+        int marking
+        int positivity
+        int positioning
+        int vision
+        timestamp updated_at
+    }
+    
+    player_age_groups {
+        uuid id PK
+        uuid player_id FK
+        uuid age_group_id FK
+    }
+    
+    player_teams {
+        uuid id PK
+        uuid player_id FK
+        uuid team_id FK
+        timestamp assigned_at
+    }
+    
+    player_parents {
+        uuid id PK
+        uuid player_id FK
+        uuid parent_user_id FK
+    }
+    
+    player_images {
+        uuid id PK
+        uuid player_id FK
+        text url
+        varchar caption
+        timestamp photo_date
+        uuid uploaded_by FK
+        timestamp created_at
+    }
+    
+    emergency_contacts {
+        uuid id PK
+        uuid player_id FK
+        varchar name
+        varchar phone
+        varchar relationship
+        boolean is_primary
+    }
+    
+    attribute_evaluations {
+        uuid id PK
+        uuid player_id FK
+        uuid evaluated_by FK
+        timestamp evaluated_at
+        int overall_rating
+        text coach_notes
+        date period_start
+        date period_end
+    }
+    
+    evaluation_attributes {
+        uuid id PK
+        uuid evaluation_id FK
+        varchar attribute_name
+        int rating
+        text notes
+    }
+    
+    formations {
+        uuid id PK
+        varchar name
+        varchar system
+        enum squad_size
+        boolean is_system_formation
+        uuid parent_formation_id FK
+        uuid parent_tactic_id FK
+        text summary
+        varchar style
+        enum scope_type
+        uuid scope_club_id FK
+        uuid scope_age_group_id FK
+        uuid scope_team_id FK
+        uuid created_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    formation_positions {
+        uuid id PK
+        uuid formation_id FK
+        enum position
+        decimal x_coord
+        decimal y_coord
+        enum direction
+        int position_index
+    }
+    
+    position_overrides {
+        uuid id PK
+        uuid formation_id FK
+        int position_index
+        decimal x_coord
+        decimal y_coord
+        enum direction
+    }
+    
+    tactic_principles {
+        uuid id PK
+        uuid formation_id FK
+        varchar title
+        text description
+    }
+    
+    matches {
+        uuid id PK
+        uuid team_id FK
+        varchar season_id
+        enum squad_size
+        varchar opposition
+        timestamp match_date
+        timestamp meet_time
+        timestamp kick_off_time
+        varchar location
+        boolean is_home
+        varchar competition
+        uuid primary_kit_id FK
+        uuid secondary_kit_id FK
+        uuid goalkeeper_kit_id FK
+        int home_score
+        int away_score
+        enum status
+        boolean is_locked
+        text notes
+        varchar weather_condition
+        int weather_temperature
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    match_coaches {
+        uuid id PK
+        uuid match_id FK
+        uuid coach_id FK
+    }
+    
+    match_lineups {
+        uuid id PK
+        uuid match_id FK
+        uuid formation_id FK
+        uuid tactic_id FK
+    }
+    
+    lineup_players {
+        uuid id PK
+        uuid lineup_id FK
+        uuid player_id FK
+        enum position
+        boolean is_starting
+    }
+    
+    match_substitutions {
+        uuid id PK
+        uuid match_id FK
+        int minute
+        uuid player_out_id FK
+        uuid player_in_id FK
+    }
+    
+    match_reports {
+        uuid id PK
+        uuid match_id FK
+        text summary
+        uuid player_of_match_id FK
+        timestamp created_at
+    }
+    
+    goals {
+        uuid id PK
+        uuid match_report_id FK
+        uuid player_id FK
+        int minute
+        uuid assist_player_id FK
+    }
+    
+    cards {
+        uuid id PK
+        uuid match_report_id FK
+        uuid player_id FK
+        enum type
+        int minute
+        text reason
+    }
+    
+    injuries {
+        uuid id PK
+        uuid match_report_id FK
+        uuid player_id FK
+        int minute
+        text description
+        enum severity
+    }
+    
+    performance_ratings {
+        uuid id PK
+        uuid match_report_id FK
+        uuid player_id FK
+        decimal rating
+    }
+    
+    training_sessions {
+        uuid id PK
+        uuid team_id FK
+        timestamp session_date
+        timestamp meet_time
+        int duration_minutes
+        varchar location
+        uuid template_id FK
+        text notes
+        enum status
+        boolean is_locked
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    session_drills {
+        uuid id PK
+        uuid session_id FK
+        uuid drill_id FK
+        int drill_order
+    }
+    
+    session_coaches {
+        uuid id PK
+        uuid session_id FK
+        uuid coach_id FK
+    }
+    
+    session_attendance {
+        uuid id PK
+        uuid session_id FK
+        uuid player_id FK
+        boolean present
+        text notes
+    }
+    
+    drills {
+        uuid id PK
+        varchar name
+        text description
+        int duration_minutes
+        enum category
+        text diagram
+        uuid club_id FK
+        uuid created_by FK
+        boolean is_public
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    drill_links {
+        uuid id PK
+        uuid drill_id FK
+        text url
+        varchar title
+        enum type
+    }
+    
+    drill_templates {
+        uuid id PK
+        varchar name
+        text description
+        int total_duration
+        enum category
+        uuid club_id FK
+        uuid created_by FK
+        boolean is_public
+        timestamp created_at
+    }
+    
+    template_drills {
+        uuid id PK
+        uuid template_id FK
+        uuid drill_id FK
+        int drill_order
+    }
+    
+    development_plans {
+        uuid id PK
+        uuid player_id FK
+        uuid created_by FK
+        varchar title
+        text description
+        date period_start
+        date period_end
+        enum status
+        text coach_notes
+        uuid linked_report_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    development_goals {
+        uuid id PK
+        uuid plan_id FK
+        text goal
+        date start_date
+        date target_date
+        boolean completed
+        date completed_date
+        int progress
+    }
+    
+    player_reports {
+        uuid id PK
+        uuid player_id FK
+        date period_start
+        date period_end
+        decimal overall_rating
+        text coach_comments
+        uuid created_by FK
+        timestamp created_at
+    }
+    
+    report_development_actions {
+        uuid id PK
+        uuid report_id FK
+        text goal
+        date start_date
+        date target_date
+        boolean completed
+        date completed_date
+    }
+    
+    similar_professionals {
+        uuid id PK
+        uuid report_id FK
+        varchar name
+        varchar team
+        varchar position
+        text reason
+    }
+    
+    training_plans {
+        uuid id PK
+        uuid player_id FK
+        uuid created_by FK
+        date period_start
+        date period_end
+        enum status
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    training_objectives {
+        uuid id PK
+        uuid plan_id FK
+        varchar title
+        text description
+        date start_date
+        date target_date
+        enum status
+        int progress
+        boolean completed
+        date completed_date
+    }
+    
+    personal_sessions {
+        uuid id PK
+        uuid plan_id FK
+        varchar title
+        timestamp session_date
+        boolean completed
+        text notes
+    }
+    
+    personal_session_drills {
+        uuid id PK
+        uuid personal_session_id FK
+        uuid drill_id FK
+    }
+    
+    progress_notes {
+        uuid id PK
+        uuid plan_id FK
+        timestamp note_date
+        text note
+        uuid added_by FK
+    }
+    
+    kit_orders {
+        uuid id PK
+        uuid player_id FK
+        uuid team_id FK
+        decimal total_amount
+        enum status
+        uuid ordered_by FK
+        timestamp ordered_at
+    }
+    
+    kit_order_items {
+        uuid id PK
+        uuid order_id FK
+        enum type
+        varchar size
+        int quantity
+        decimal price
+    }
+
+    users ||--o| clubs : club_id
+    kits }o--|| clubs : club_id
+    kits }o--o| teams : team_id
+    age_groups }o--|| clubs : club_id
+    age_group_coordinators }o--|| age_groups : age_group_id
+    age_group_coordinators }o--|| coaches : coach_id
+    teams }o--|| clubs : club_id
+    teams }o--|| age_groups : age_group_id
+    teams }o--o| formations : formation_id
+    coaches }o--|| clubs : club_id
+    team_coaches }o--|| teams : team_id
+    team_coaches }o--|| coaches : coach_id
+    players }o--|| clubs : club_id
+    player_attributes ||--|| players : player_id
+    player_age_groups }o--|| players : player_id
+    player_age_groups }o--|| age_groups : age_group_id
+    player_teams }o--|| players : player_id
+    player_teams }o--|| teams : team_id
+    player_parents }o--|| players : player_id
+    player_parents }o--|| users : parent_user_id
+    player_images }o--|| players : player_id
+    emergency_contacts }o--|| players : player_id
+    attribute_evaluations }o--|| players : player_id
+    attribute_evaluations }o--|| coaches : evaluated_by
+    evaluation_attributes }o--|| attribute_evaluations : evaluation_id
+    formations }o--o| formations : parent_formation_id
+    formation_positions }o--|| formations : formation_id
+    position_overrides }o--|| formations : formation_id
+    tactic_principles }o--|| formations : formation_id
+    matches }o--|| teams : team_id
+    match_coaches }o--|| matches : match_id
+    match_coaches }o--|| coaches : coach_id
+    match_lineups }o--|| matches : match_id
+    match_lineups }o--|| formations : formation_id
+    lineup_players }o--|| match_lineups : lineup_id
+    lineup_players }o--|| players : player_id
+    match_substitutions }o--|| matches : match_id
+    match_reports }o--|| matches : match_id
+    goals }o--|| match_reports : match_report_id
+    cards }o--|| match_reports : match_report_id
+    injuries }o--|| match_reports : match_report_id
+    performance_ratings }o--|| match_reports : match_report_id
+    training_sessions }o--|| teams : team_id
+    session_drills }o--|| training_sessions : session_id
+    session_drills }o--|| drills : drill_id
+    session_coaches }o--|| training_sessions : session_id
+    session_attendance }o--|| training_sessions : session_id
+    drills }o--o| clubs : club_id
+    drill_links }o--|| drills : drill_id
+    drill_templates }o--o| clubs : club_id
+    template_drills }o--|| drill_templates : template_id
+    development_plans }o--|| players : player_id
+    development_goals }o--|| development_plans : plan_id
+    player_reports }o--|| players : player_id
+    report_development_actions }o--|| player_reports : report_id
+    similar_professionals }o--|| player_reports : report_id
+    training_plans }o--|| players : player_id
+    training_objectives }o--|| training_plans : plan_id
+    personal_sessions }o--|| training_plans : plan_id
+    progress_notes }o--|| training_plans : plan_id
+    kit_orders }o--|| players : player_id
+    kit_order_items }o--|| kit_orders : order_id
