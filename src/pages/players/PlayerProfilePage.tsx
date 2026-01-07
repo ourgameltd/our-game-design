@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getPlayerById } from '@data/players';
 import { getPlayerRecentPerformances, getUpcomingMatchesByTeamIds } from '@data/matches';
 import { getTeamById } from '@data/teams';
@@ -7,7 +7,6 @@ import { Routes } from '@utils/routes';
 import PageTitle from '@components/common/PageTitle';
 import RecentPerformanceCard from '@components/player/RecentPerformanceCard';
 import MatchesCard from '@components/matches/MatchesCard';
-import { FileText, Target, Camera, TrendingUp } from 'lucide-react';
 
 export default function PlayerProfilePage() {
   const { clubId, playerId, ageGroupId, teamId } = useParams();
@@ -45,29 +44,13 @@ export default function PlayerProfilePage() {
 
   // Determine settings link based on context
   let settingsLink: string;
-  let abilitiesLink: string;
-  let reportCardsLink: string;
-  let developmentPlansLink: string;
-  let albumLink: string;
   
   if (teamId && ageGroupId) {
     settingsLink = Routes.teamPlayerSettings(clubId!, ageGroupId, teamId, playerId!);
-    abilitiesLink = Routes.teamPlayerAbilities(clubId!, ageGroupId, teamId, playerId!);
-    reportCardsLink = Routes.teamPlayerReportCards(clubId!, ageGroupId, teamId, playerId!);
-    developmentPlansLink = Routes.teamPlayerDevelopmentPlans(clubId!, ageGroupId, teamId, playerId!);
-    albumLink = Routes.teamPlayerAlbum(clubId!, ageGroupId, teamId, playerId!);
   } else if (ageGroupId) {
     settingsLink = Routes.playerSettings(clubId!, ageGroupId, playerId!);
-    abilitiesLink = Routes.playerAbilities(clubId!, ageGroupId, playerId!);
-    reportCardsLink = Routes.playerReportCards(clubId!, ageGroupId, playerId!);
-    developmentPlansLink = Routes.playerDevelopmentPlans(clubId!, ageGroupId, playerId!);
-    albumLink = Routes.playerAlbum(clubId!, ageGroupId, playerId!);
   } else {
     settingsLink = Routes.clubPlayerSettings(clubId!, playerId!);
-    abilitiesLink = `#`;
-    reportCardsLink = `#`;
-    developmentPlansLink = `#`;
-    albumLink = Routes.playerAlbum(clubId!, ageGroupId!, playerId!);
   }
 
   return (
@@ -109,45 +92,6 @@ export default function PlayerProfilePage() {
             <div className="text-4xl font-bold text-gray-900 dark:text-white">3</div>
             <div className="text-sm text-gray-500 mt-1">This season</div>
           </div>
-        </div>
-
-        {/* Quick Actions / Navigation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          <Link 
-            to={abilitiesLink}
-            className="card hover:shadow-lg transition-all hover:border-blue-500 dark:hover:border-blue-400 text-center"
-          >
-            <TrendingUp className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Abilities</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Skills & ratings</p>
-          </Link>
-
-          <Link 
-            to={reportCardsLink}
-            className="card hover:shadow-lg transition-all hover:border-green-500 dark:hover:border-green-400 text-center"
-          >
-            <FileText className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Report Cards</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Performance reviews</p>
-          </Link>
-
-          <Link 
-            to={developmentPlansLink}
-            className="card hover:shadow-lg transition-all hover:border-purple-500 dark:hover:border-purple-400 text-center"
-          >
-            <Target className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Development</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Growth plans</p>
-          </Link>
-
-          <Link 
-            to={albumLink}
-            className="card hover:shadow-lg transition-all hover:border-amber-500 dark:hover:border-amber-400 text-center"
-          >
-            <Camera className="w-8 h-8 text-amber-600 dark:text-amber-400 mx-auto mb-2" />
-            <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Album</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Photos & media</p>
-          </Link>
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">

@@ -265,3 +265,63 @@ export function calculateAttributeChange(
     improved: change > 0
   };
 }
+
+/**
+ * Calculate team ratings based on selected players
+ */
+export interface TeamRatings {
+  overall: number;
+  skills: number;
+  physical: number;
+  mental: number;
+  playerCount: number;
+}
+
+/**
+ * Calculate average rating for a specific category from player attributes
+ */
+function calculateCategoryAverage(attributes: PlayerAttributes, category: 'skills' | 'physical' | 'mental'): number {
+  const grouped = groupAttributes(attributes);
+  const categoryAttributes = grouped[category];
+  if (categoryAttributes.length === 0) return 0;
+  
+  const sum = categoryAttributes.reduce((acc, attr) => acc + attr.rating, 0);
+  return sum / categoryAttributes.length;
+}
+
+/**
+ * Calculate team ratings from an array of players
+ * @param players Array of player objects with attributes
+ * @returns TeamRatings object with overall and category averages
+ */
+export function calculateTeamRatings(players: Array<{ attributes: PlayerAttributes; overallRating: number }>): TeamRatings {
+  if (players.length === 0) {
+    return {
+      overall: 0,
+      skills: 0,
+      physical: 0,
+      mental: 0,
+      playerCount: 0
+    };
+  }
+
+  let totalOverall = 0;
+  let totalSkills = 0;
+  let totalPhysical = 0;
+  let totalMental = 0;
+
+  players.forEach(player => {
+    totalOverall += player.overallRating;
+    totalSkills += calculateCategoryAverage(player.attributes, 'skills');
+    totalPhysical += calculateCategoryAverage(player.attributes, 'physical');
+    totalMental += calculateCategoryAverage(player.attributes, 'mental');
+  });
+
+  return {
+    overall: Math.round(totalOverall / players.length),
+    skills: Math.round(totalSkills / players.length),
+    physical: Math.round(totalPhysical / players.length),
+    mental: Math.round(totalMental / players.length),
+    playerCount: players.length
+  };
+}

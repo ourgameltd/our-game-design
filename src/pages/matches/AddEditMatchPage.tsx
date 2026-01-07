@@ -13,6 +13,7 @@ import { getPlayerSquadNumber } from '@/data/teams';
 import { weatherConditions, squadSizes, cardTypes, injurySeverities, coachRoleDisplay } from '@/data/referenceData';
 import { PlayerPosition, SquadSize, Tactic } from '@/types';
 import { Routes } from '@utils/routes';
+import { calculateTeamRatings, getAttributeQuality, groupAttributes } from '@utils/attributeHelpers';
 import TacticDisplay from '@/components/tactics/TacticDisplay';
 
 export default function AddEditMatchPage() {
@@ -1073,7 +1074,7 @@ export default function AddEditMatchPage() {
 
           {/* Team Selection Tab */}
           {activeTab === 'lineup' && (
-            <div className="mt-4 space-y-2">
+            <div className="mt-4 space-y-4">
 
               {/* Two Column Layout: Players List + Formation Display */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -1163,6 +1164,7 @@ export default function AddEditMatchPage() {
                   {availableFormations.length} formations and {availableTactics.length} tactics available for {squadSize}-a-side
                 </p>
               </div>
+
                   {/* Starting XI */}
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
@@ -1226,6 +1228,11 @@ export default function AddEditMatchPage() {
                               {getPlayerName(player.playerId)}
                               {isCaptain && <span className="ml-1 text-amber-500" title="Captain">©</span>}
                             </span>
+                            {playerData && (
+                              <span className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs font-bold" title="Overall Rating">
+                                {playerData.overallRating}
+                              </span>
+                            )}
                           </div>
                           <div className="flex items-center gap-2">
                             {!isLocked && (
@@ -1287,9 +1294,12 @@ export default function AddEditMatchPage() {
                               className="w-6 h-6 rounded-full object-cover"
                             />
                           )}
-                          <div className="flex-1">
-                            {player.firstName} {player.lastName}
-                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                          <div className="flex-1 flex items-center gap-2">
+                            <span>{player.firstName} {player.lastName}</span>
+                            <span className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs font-bold" title="Overall Rating">
+                              {player.overallRating}
+                            </span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
                               ({player.preferredPositions.join(', ')})
                             </span>
                           </div>
@@ -1344,6 +1354,11 @@ export default function AddEditMatchPage() {
                           <span className="text-gray-900 dark:text-white font-medium">
                             {getPlayerName(sub.playerId)}
                           </span>
+                          {playerData && (
+                            <span className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs font-bold" title="Overall Rating">
+                              {playerData.overallRating}
+                            </span>
+                          )}
                         </div>
                         <button
                           onClick={() => handleRemoveSubstitute(sub.playerId)}
@@ -1389,7 +1404,10 @@ export default function AddEditMatchPage() {
                               className="w-6 h-6 rounded-full object-cover"
                             />
                           )}
-                          {player.firstName} {player.lastName}
+                          <span>{player.firstName} {player.lastName}</span>
+                          <span className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs font-bold" title="Overall Rating">
+                            {player.overallRating}
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -1477,6 +1495,202 @@ export default function AddEditMatchPage() {
                   )}
                 </div>
               </div>
+
+              {/* Squad Ratings Panel - Below the grid */}
+              {(() => {
+                const startingPlayerIds = startingPlayers.map(p => p.playerId);
+                const substitutePlayerIds = substitutes.map(s => s.playerId);
+                const allSelectedIds = [...startingPlayerIds, ...substitutePlayerIds];
+                
+                const selectedPlayerData = allClubPlayers.filter(p => allSelectedIds.includes(p.id));
+                const startingPlayerData = allClubPlayers.filter(p => startingPlayerIds.includes(p.id));
+                
+                if (startingPlayerData.length === 0) return null;
+                
+                const startingRatings = calculateTeamRatings(startingPlayerData);
+                const squadRatings = calculateTeamRatings(selectedPlayerData);
+                
+                // Calculate average attributes for the starting XI
+                const calculateAverageAttributes = (players: typeof startingPlayerData) => {
+                  if (players.length === 0) return null;
+                  
+                  const totals: Record<string, number> = {};
+                  players.forEach(player => {
+                    const grouped = groupAttributes(player.attributes);
+                    [...grouped.skills, ...grouped.physical, ...grouped.mental].forEach(attr => {
+                      totals[attr.name] = (totals[attr.name] || 0) + attr.rating;
+                    });
+                  });
+                  
+                  const averages: Record<string, number> = {};
+                  Object.entries(totals).forEach(([name, total]) => {
+                    averages[name] = Math.round(total / players.length);
+                  });
+                  
+                  return averages;
+                };
+                
+                const avgAttributes = calculateAverageAttributes(startingPlayerData);
+                
+                const getRatingColor = (rating: number) => {
+                  const quality = getAttributeQuality(rating);
+                  switch (quality) {
+                    case 'Excellent': return 'text-green-600 dark:text-green-400';
+                    case 'Very Good': return 'text-blue-600 dark:text-blue-400';
+                    case 'Good': return 'text-cyan-600 dark:text-cyan-400';
+                    case 'Fair': return 'text-yellow-600 dark:text-yellow-400';
+                    case 'Poor': return 'text-orange-600 dark:text-orange-400';
+                    default: return 'text-red-600 dark:text-red-400';
+                  }
+                };
+
+                const getRatingBgColor = (rating: number) => {
+                  const quality = getAttributeQuality(rating);
+                  switch (quality) {
+                    case 'Excellent': return 'bg-green-100 dark:bg-green-900/30';
+                    case 'Very Good': return 'bg-blue-100 dark:bg-blue-900/30';
+                    case 'Good': return 'bg-cyan-100 dark:bg-cyan-900/30';
+                    case 'Fair': return 'bg-yellow-100 dark:bg-yellow-900/30';
+                    case 'Poor': return 'bg-orange-100 dark:bg-orange-900/30';
+                    default: return 'bg-red-100 dark:bg-red-900/30';
+                  }
+                };
+
+                const getOverallBgColor = (rating: number) => {
+                  const quality = getAttributeQuality(rating);
+                  switch (quality) {
+                    case 'Excellent': return 'bg-green-600';
+                    case 'Very Good': return 'bg-blue-600';
+                    case 'Good': return 'bg-cyan-600';
+                    case 'Fair': return 'bg-yellow-500';
+                    case 'Poor': return 'bg-orange-500';
+                    default: return 'bg-red-500';
+                  }
+                };
+                
+                // Group attributes by category
+                const skillsAttrs = ['Ball Control', 'Crossing', 'Weak Foot', 'Dribbling', 'Finishing', 'Free Kick', 'Heading', 'Long Passing', 'Long Shot', 'Penalties', 'Short Passing', 'Shot Power', 'Sliding Tackle', 'Standing Tackle', 'Volleys'];
+                const physicalAttrs = ['Acceleration', 'Agility', 'Balance', 'Jumping', 'Pace', 'Reactions', 'Sprint Speed', 'Stamina', 'Strength'];
+                const mentalAttrs = ['Aggression', 'Attacking Position', 'Awareness', 'Communication', 'Composure', 'Defensive Positioning', 'Interceptions', 'Marking', 'Positivity', 'Positioning', 'Vision'];
+
+                return (
+                  <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                    {/* Header with Overall Ratings */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-lg">📊</span>
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Squad Ratings</h4>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {startingPlayerData.length} starting{substitutes.length > 0 ? ` • ${selectedPlayerData.length} total` : ''}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-center">
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-xl ${getOverallBgColor(startingRatings.overall)}`}>
+                            {startingRatings.overall}
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Overall</p>
+                        </div>
+                        <div className="text-center">
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${getRatingColor(startingRatings.skills)} ${getRatingBgColor(startingRatings.skills)}`}>
+                            {startingRatings.skills}
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Skills</p>
+                        </div>
+                        <div className="text-center">
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${getRatingColor(startingRatings.physical)} ${getRatingBgColor(startingRatings.physical)}`}>
+                            {startingRatings.physical}
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Physical</p>
+                        </div>
+                        <div className="text-center">
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${getRatingColor(startingRatings.mental)} ${getRatingBgColor(startingRatings.mental)}`}>
+                            {startingRatings.mental}
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Mental</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Attributes Table */}
+                    {avgAttributes && (
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        {/* Skills Column */}
+                        <div>
+                          <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-2 pb-1 border-b border-gray-200 dark:border-gray-600">
+                            ⚽ Skills
+                          </h5>
+                          <div className="space-y-1">
+                            {skillsAttrs.map(attr => {
+                              const rating = avgAttributes[attr] || 0;
+                              return (
+                                <div key={attr} className="flex justify-between items-center">
+                                  <span className="text-gray-600 dark:text-gray-400 truncate pr-2">{attr}</span>
+                                  <span className={`font-semibold ${getRatingColor(rating)}`}>{rating}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Physical Column */}
+                        <div>
+                          <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-2 pb-1 border-b border-gray-200 dark:border-gray-600">
+                            🏋️ Physical
+                          </h5>
+                          <div className="space-y-1">
+                            {physicalAttrs.map(attr => {
+                              const rating = avgAttributes[attr] || 0;
+                              return (
+                                <div key={attr} className="flex justify-between items-center">
+                                  <span className="text-gray-600 dark:text-gray-400 truncate pr-2">{attr}</span>
+                                  <span className={`font-semibold ${getRatingColor(rating)}`}>{rating}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Mental Column */}
+                        <div>
+                          <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-2 pb-1 border-b border-gray-200 dark:border-gray-600">
+                            🧠 Mental
+                          </h5>
+                          <div className="space-y-1">
+                            {mentalAttrs.map(attr => {
+                              const rating = avgAttributes[attr] || 0;
+                              return (
+                                <div key={attr} className="flex justify-between items-center">
+                                  <span className="text-gray-600 dark:text-gray-400 truncate pr-2">{attr}</span>
+                                  <span className={`font-semibold ${getRatingColor(rating)}`}>{rating}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Full Squad Summary (if subs) */}
+                    {substitutes.length > 0 && (
+                      <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-600">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">Full Squad ({squadRatings.playerCount})</span>
+                          <div className="flex items-center gap-2 text-xs">
+                            <span className={`font-semibold ${getRatingColor(squadRatings.overall)}`}>{squadRatings.overall} OVR</span>
+                            <span className="text-gray-300 dark:text-gray-600">|</span>
+                            <span className={`${getRatingColor(squadRatings.skills)}`}>{squadRatings.skills} SKL</span>
+                            <span className={`${getRatingColor(squadRatings.physical)}`}>{squadRatings.physical} PHY</span>
+                            <span className={`${getRatingColor(squadRatings.mental)}`}>{squadRatings.mental} MEN</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           )}
 
@@ -2358,8 +2572,11 @@ export default function AddEditMatchPage() {
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <div className="font-medium text-gray-900 dark:text-white">
-                              {player.firstName} {player.lastName}
+                            <div className="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                              <span>{player.firstName} {player.lastName}</span>
+                              <span className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded text-xs font-bold" title="Overall Rating">
+                                {player.overallRating}
+                              </span>
                             </div>
                             <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
                               {teamNames || 'No team'}
