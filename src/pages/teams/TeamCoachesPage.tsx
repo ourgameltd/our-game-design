@@ -26,7 +26,7 @@ export default function TeamCoachesPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-4">
           <div className="flex-grow">
             <PageTitle
               title="Coaching Staff"
@@ -49,7 +49,7 @@ export default function TeamCoachesPage() {
 
         {/* Archived Notice */}
         {team.isArchived && (
-          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This team is archived. Coaches cannot be assigned or removed while the team is archived.
             </p>
@@ -58,7 +58,7 @@ export default function TeamCoachesPage() {
 
         {/* All Coaches */}
         {teamCoaches.length > 0 && (
-          <div className="mb-8">
+          <div className="mb-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4 md:gap-0 md:bg-white md:dark:bg-gray-800 md:rounded-lg md:border md:border-gray-200 md:dark:border-gray-700 md:overflow-hidden">
               {teamCoaches.map((coach) => (
                 <Link key={coach.id} to={Routes.teamCoach(clubId!, ageGroupId!, teamId!, coach.id)}>

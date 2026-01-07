@@ -27,7 +27,7 @@ export default function TeamPlayersPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-4">
           <div className="flex-grow">
             <PageTitle
               title="Squad List"
@@ -51,7 +51,7 @@ export default function TeamPlayersPage() {
 
         {/* Archived Notice */}
         {team.isArchived && (
-          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This team is archived. Players cannot be added or removed while the team is archived.
             </p>
@@ -59,7 +59,7 @@ export default function TeamPlayersPage() {
         )}
 
         {/* Archived Toggle */}
-        <div className="mb-6 flex items-center gap-2">
+        <div className="mb-4 flex items-center gap-2">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"

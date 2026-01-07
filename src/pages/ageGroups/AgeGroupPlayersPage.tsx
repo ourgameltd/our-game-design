@@ -26,7 +26,7 @@ export default function AgeGroupPlayersPage() {
         />
 
         {/* Archived Toggle */}
-        <div className="mb-6 flex items-center gap-2">
+        <div className="mb-4 flex items-center gap-2">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"

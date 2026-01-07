@@ -79,7 +79,7 @@ export default function ClubSettingsPage() {
           subtitle="Manage club information and branding"
         />
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Basic Information */}
           <div className="card">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -294,7 +294,7 @@ export default function ClubSettingsPage() {
               History & Ethos
             </h3>
             
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Club History

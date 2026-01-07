@@ -211,7 +211,7 @@ export default function PrinciplePanel({
 
         {/* Expanded Content */}
         {isExpanded && (
-          <div className="p-3 space-y-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-3 space-y-2 border-t border-gray-200 dark:border-gray-700">
             {/* Description */}
             <div>
               <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -316,7 +316,7 @@ export default function PrinciplePanel({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -365,7 +365,7 @@ export default function PrinciplePanel({
           </p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-2">
           {/* Team-Wide Principles */}
           {globalPrinciples.length > 0 && (
             <div className="space-y-2">

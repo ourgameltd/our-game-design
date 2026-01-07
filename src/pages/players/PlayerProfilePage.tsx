@@ -93,7 +93,7 @@ export default function PlayerProfilePage() {
         />
 
         {/* Player Stats */}
-        <div className="grid grid-cols-3 gap-3 mb-8">
+        <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="card">
             <div className="text-sm text-gray-600 mb-1">Appearances</div>
             <div className="text-4xl font-bold text-gray-900 dark:text-white">12</div>
@@ -112,7 +112,7 @@ export default function PlayerProfilePage() {
         </div>
 
         {/* Quick Actions / Navigation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           <Link 
             to={abilitiesLink}
             className="card hover:shadow-lg transition-all hover:border-blue-500 dark:hover:border-blue-400 text-center"
@@ -150,11 +150,11 @@ export default function PlayerProfilePage() {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4">
           {/* Player Details */}
           <div className="card">
             <h3 className="text-xl font-semibold mb-4">Player Details</h3>
-            <div className="space-y-3">
+            <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Date of Birth</span>
                 <span className="font-medium text-gray-900 dark:text-white">
@@ -195,7 +195,7 @@ export default function PlayerProfilePage() {
 
         {/* Upcoming Matches */}
         {/* Upcoming Matches */}
-        <div className="mt-6">
+        <div className="mt-4">
           <MatchesCard 
             type="upcoming"
             matches={upcomingMatches}

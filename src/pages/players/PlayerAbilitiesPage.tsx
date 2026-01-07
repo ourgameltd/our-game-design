@@ -283,7 +283,7 @@ export default function PlayerAbilitiesPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Header with Action Button */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               {player.firstName} {player.lastName} - Abilities
@@ -307,7 +307,7 @@ export default function PlayerAbilitiesPage() {
         </div>
 
         {/* Progress Summary */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-4 mb-4">
           <div className="card">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Score</div>
             <div className="text-4xl font-bold text-primary-600">
@@ -358,7 +358,7 @@ export default function PlayerAbilitiesPage() {
 
               <div className="p-6">
                 {/* Evaluation Date */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Evaluation Date
                   </label>
@@ -372,7 +372,7 @@ export default function PlayerAbilitiesPage() {
                 </div>
 
                 {/* Category Tabs */}
-                <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex gap-2 mb-4 border-b border-gray-200 dark:border-gray-700">
                   {(['skills', 'physical', 'mental'] as const).map((category) => (
                     <button
                       key={category}
@@ -390,7 +390,7 @@ export default function PlayerAbilitiesPage() {
                 </div>
 
                 {/* Attributes Grid */}
-                <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
                   {currentAttributes.map((attr) => {
                     const attrKey = attributeKeyMap[attr.name];
                     const currentRating = attributeRatings[attrKey] ?? averageAttributes[attrKey as keyof PlayerAttributes];
@@ -428,7 +428,7 @@ export default function PlayerAbilitiesPage() {
                 </div>
 
                 {/* Coach Notes */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Overall Coach Comments
                   </label>
@@ -464,7 +464,7 @@ export default function PlayerAbilitiesPage() {
         )}
 
         {/* Main Charts Row */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-4 mb-4">
           {/* Overall Rating Chart */}
           <div className="card">
             <h3 className="text-xl font-semibold mb-4">Overall Rating Over Time</h3>
@@ -628,7 +628,7 @@ export default function PlayerAbilitiesPage() {
         </div>
 
         {/* Individual Category Radar Charts */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-4 mb-4">
           {/* Skills Radar */}
           <div className="card">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -841,9 +841,9 @@ export default function PlayerAbilitiesPage() {
           </div>
           
           {showAllAbilities && (
-            <div className="mt-6">
+            <div className="mt-4">
               {/* Skills */}
-              <div className="mb-8">
+              <div className="mb-4">
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                   <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm mr-3">
                     Skills
@@ -870,7 +870,7 @@ export default function PlayerAbilitiesPage() {
               </div>
 
               {/* Physical */}
-              <div className="mb-8">
+              <div className="mb-4">
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                   <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-sm mr-3">
                     Physical
@@ -928,7 +928,7 @@ export default function PlayerAbilitiesPage() {
 
         {/* Evaluation History */}
         {player.evaluations.length > 0 && (
-          <div className="card mt-6">
+          <div className="card mt-4">
             <h3 className="text-xl font-semibold mb-4">Evaluation History</h3>
             <div className="overflow-x-auto">
               <table className="w-full">

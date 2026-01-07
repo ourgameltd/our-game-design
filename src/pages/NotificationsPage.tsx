@@ -139,7 +139,7 @@ export default function NotificationsPage() {
 
         <div className="max-w-4xl mx-auto">
         {/* Actions Bar */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             {/* Filter Buttons */}
             <div className="flex gap-2">
@@ -187,7 +187,7 @@ export default function NotificationsPage() {
         </div>
 
         {/* Notifications List */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {filteredNotifications.length === 0 ? (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-12 text-center">
               <Bell className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />

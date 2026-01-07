@@ -50,7 +50,7 @@ export default function RecentPerformanceCard({
   return (
     <div className="card">
       <h3 className="text-xl font-semibold mb-4">Recent Performance</h3>
-      <div className="space-y-3">
+      <div className="space-y-2">
         {performances.length === 0 ? (
           <p className="text-gray-600 dark:text-gray-400 text-center py-4">
             No recent performances recorded

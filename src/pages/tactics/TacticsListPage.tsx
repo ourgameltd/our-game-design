@@ -95,7 +95,7 @@ export default function TacticsListPage() {
           }}
         />
 
-        <div className="space-y-6">
+        <div className="space-y-2">
           {/* Current Scope Tactics */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">

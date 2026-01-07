@@ -99,7 +99,7 @@ export default function DrillsListPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-4">
           <PageTitle
             title="Drills"
             subtitle={`${contextName} - Manage training drills`}
@@ -114,7 +114,7 @@ export default function DrillsListPage() {
         </div>
 
         {/* Filters */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <button
             onClick={() => setFiltersExpanded(!filtersExpanded)}
             className="w-full flex items-center justify-between text-left"

@@ -40,9 +40,9 @@ export default function ProfilePage() {
         />
 
         {/* Profile Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 mb-6 transition-colors">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex items-center space-x-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 mb-4 transition-colors">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center space-x-2">
               <div className="w-20 h-20 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
                 <User className="w-10 h-10 text-primary-600 dark:text-primary-400" />
               </div>
@@ -69,8 +69,8 @@ export default function ProfilePage() {
           </div>
 
           {/* Profile Information */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
               <Mail className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               {isEditing ? (
                 <input
@@ -84,7 +84,7 @@ export default function ProfilePage() {
               )}
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               {isEditing ? (
                 <input
@@ -98,7 +98,7 @@ export default function ProfilePage() {
               )}
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
               <MapPin className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               {isEditing ? (
                 <input
@@ -112,7 +112,7 @@ export default function ProfilePage() {
               )}
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
               <Calendar className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               <span className="text-gray-900 dark:text-white">
                 Joined {new Date(userData.dateJoined).toLocaleDateString('en-GB', { 
@@ -126,7 +126,7 @@ export default function ProfilePage() {
 
           {/* Edit Actions */}
           {isEditing && (
-            <div className="flex space-x-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex space-x-2 mt-4 pt-6 border-t border-gray-200 dark:border-gray-700">
               <button
                 onClick={handleSave}
                 className="flex-1 flex items-center justify-center space-x-2 bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
@@ -145,7 +145,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Theme Settings */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 mb-6 transition-colors">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 mb-4 transition-colors">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Appearance</h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             Choose how the portal looks to you. Select a single theme, or sync with your system preferences.

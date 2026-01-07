@@ -150,7 +150,7 @@ const AddEditTeamPage: React.FC = () => {
         
         {/* Form */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-2">
             {/* Name */}
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -235,7 +235,7 @@ const AddEditTeamPage: React.FC = () => {
             </div>
             
             {/* Team Colors */}
-            <div className="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-6">
+            <div className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Team Colors</h3>
               
               {/* Primary Color */}

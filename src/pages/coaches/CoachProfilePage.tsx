@@ -71,11 +71,11 @@ export default function CoachProfilePage() {
           }}
         />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           {/* Contact Information */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
             <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Contact Information</h2>
-            <div className="space-y-3">
+            <div className="space-y-2">
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-gray-600 dark:text-gray-400">Email</p>

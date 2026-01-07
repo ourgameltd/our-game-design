@@ -109,7 +109,7 @@ export default function PlayerCard({ player, squadNumber, isCaptain = false, onC
       {/* Top Attributes - shown differently on mobile vs desktop */}
       {topAttributes.length > 0 && (
         <div className="mt-auto pt-4 md:pt-0 md:mt-0 border-t md:border-t-0 border-gray-100 dark:border-gray-700 md:order-5 md:flex-1">
-          <div className="grid grid-cols-2 md:flex md:gap-6 gap-2 md:justify-end">
+          <div className="grid grid-cols-2 md:flex md:gap-4 gap-2 md:justify-end">
             {topAttributes.map(attribute => (
               <div key={attribute.name} className="flex justify-between md:flex-row md:items-center md:gap-2 text-sm gap-1">
                 <span className="text-gray-600 dark:text-gray-400 truncate text-xs">{attribute.name}</span>

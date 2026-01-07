@@ -183,14 +183,14 @@ export default function PlayerSettingsPage() {
           badge={!isNewPlayer && player!.isArchived ? "🗄️ Archived" : undefined}
         />
         {!isNewPlayer && player!.isArchived && (
-          <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This player is archived. You cannot modify their settings while they are archived. Unarchive them to make changes.
             </p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Personal Information */}
           <div className="card">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -360,7 +360,7 @@ export default function PlayerSettingsPage() {
               Select the positions this player can play (select at least one)
             </p>
             
-            <div className="space-y-4">
+            <div className="space-y-2">
               {/* Goalkeepers */}
               <div>
                 <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Goalkeeper</h4>
@@ -460,7 +460,7 @@ export default function PlayerSettingsPage() {
               This information is kept confidential and only accessible to authorized staff
             </p>
             
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Allergies
@@ -512,7 +512,7 @@ export default function PlayerSettingsPage() {
                     No emergency contacts added yet.
                   </p>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     {emergencyContacts.map((contact, index) => (
                       <div key={contact.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                         <div className="flex items-start justify-between mb-3">
@@ -619,7 +619,7 @@ export default function PlayerSettingsPage() {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                 {player!.isArchived ? 'Unarchive Player?' : 'Archive Player?'}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {player!.isArchived ? (
                   <>
                     Are you sure you want to unarchive <strong>{player!.firstName} {player!.lastName}</strong>? 

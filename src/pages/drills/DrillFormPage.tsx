@@ -223,7 +223,7 @@ export default function DrillFormPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <PageTitle
             title={isEditMode ? (isInherited ? 'View Drill (Read-Only)' : 'Edit Drill') : 'Create Drill'}
             subtitle={`${contextName}`}
@@ -231,7 +231,7 @@ export default function DrillFormPage() {
         </div>
 
         {isInherited && (
-          <div className="card mb-6 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
+          <div className="card mb-4 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
             <div className="flex items-start gap-3">
               <span className="text-2xl">⚠️</span>
               <div>
@@ -248,11 +248,11 @@ export default function DrillFormPage() {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
+          <div className="space-y-2">
             {/* Basic Information */}
             <div className="card">
               <h3 className="text-lg font-semibold mb-4">Basic Information</h3>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Drill Name *
@@ -348,7 +348,7 @@ export default function DrillFormPage() {
             {/* Equipment */}
             <div className="card">
               <h3 className="text-lg font-semibold mb-4">Equipment</h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {!isInherited && (
                   <div className="flex gap-2">
                     <input
@@ -393,7 +393,7 @@ export default function DrillFormPage() {
             {/* Instructions */}
             <div className="card">
               <h3 className="text-lg font-semibold mb-4">Instructions *</h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {instructions.map((instruction, index) => (
                   <div key={index} className="flex gap-2">
                     <span className="text-gray-500 dark:text-gray-400 mt-2">{index + 1}.</span>
@@ -432,7 +432,7 @@ export default function DrillFormPage() {
             {/* Variations (Optional) */}
             <div className="card">
               <h3 className="text-lg font-semibold mb-4">Variations (Optional)</h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {variations.map((variation, index) => (
                   <div key={index} className="flex gap-2">
                     <textarea
@@ -470,7 +470,7 @@ export default function DrillFormPage() {
             {/* Links (Optional) */}
             <div className="card">
               <h3 className="text-lg font-semibold mb-4">Reference Links (Optional)</h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {links.map((link, index) => (
                   <div key={index} className="space-y-2 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
                     <div className="flex gap-2">

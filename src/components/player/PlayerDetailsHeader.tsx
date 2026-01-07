@@ -25,7 +25,7 @@ export default function PlayerDetailsHeader({
   const age = calculateAge(player.dateOfBirth);
 
   return (
-    <div className="flex items-start gap-6">
+    <div className="flex items-start gap-4">
       {player.photo ? (
         <img 
           src={player.photo} 

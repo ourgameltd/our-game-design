@@ -147,7 +147,7 @@ export default function AddEditTacticPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
           <PageTitle
             title={isEditing ? 'Edit Tactic' : 'New Tactic'}
             subtitle={`${formation?.name || 'Unknown Formation'} • ${tactic.squadSize}-a-side`}
@@ -157,7 +157,7 @@ export default function AddEditTacticPage() {
         </div>
 
         <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-4">
           {/* Pitch Display - 40% width on desktop */}
           <div className="lg:col-span-4">
             {formation && (
@@ -175,7 +175,7 @@ export default function AddEditTacticPage() {
           </div>
 
           {/* Tactic Details - 60% width on desktop */}
-          <div className="lg:col-span-6 space-y-6">
+          <div className="lg:col-span-6 space-y-2">
             {/* Basic Info */}
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -262,7 +262,7 @@ export default function AddEditTacticPage() {
         </div>
 
         {/* Form Actions */}
-        <div className="mt-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <div className="mt-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <FormActions
             isArchived={false}
             onArchive={isEditing ? () => console.log('Archive tactic') : undefined}

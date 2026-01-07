@@ -40,7 +40,7 @@ export default function PlayerAlbumPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Page Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <PageTitle
             title={`${player.firstName} ${player.lastName}'s Album`}
             subtitle={`${albumImages.length} ${albumImages.length === 1 ? 'image' : 'images'}`}
@@ -49,7 +49,7 @@ export default function PlayerAlbumPage() {
 
         {/* Album Info Card - Only show when there are no images */}
         {albumImages.length === 0 && (
-          <div className="card mb-6">
+          <div className="card mb-4">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0">
                 <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

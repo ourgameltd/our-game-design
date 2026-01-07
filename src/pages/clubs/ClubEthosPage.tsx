@@ -14,13 +14,13 @@ export default function ClubEthosPage() {
       <main className="mx-auto px-4 py-4">
         <div className="max-w-4xl mx-auto">
           {/* Club History */}
-          <div className="card mb-8">
+          <div className="card mb-4">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our History</h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {club.history}
             </p>
-            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <div className="grid md:grid-cols-2 gap-6">
+            <div className="mt-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Founded</div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">{club.founded}</div>
@@ -34,7 +34,7 @@ export default function ClubEthosPage() {
           </div>
 
           {/* Club Ethos */}
-          <div className="card mb-8">
+          <div className="card mb-4">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Ethos</h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
               {club.ethos}
@@ -43,8 +43,8 @@ export default function ClubEthosPage() {
 
           {/* Core Principles */}
           <div className="card">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Our Core Principles</h2>
-            <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Core Principles</h2>
+            <div className="space-y-2">
               {club.principles?.map((principle, index) => {
                 const [title, description] = principle.split(' - ');
                 return (
@@ -66,7 +66,7 @@ export default function ClubEthosPage() {
           </div>
 
           {/* Community Statement */}
-          <div className="mt-8 p-6 bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-lg border border-primary-200 dark:border-primary-700">
+          <div className="mt-4 p-6 bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-lg border border-primary-200 dark:border-primary-700">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">A Community for Everyone</h3>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               At {club.name}, we welcome players, coaches, volunteers, and supporters of all ages and abilities. 

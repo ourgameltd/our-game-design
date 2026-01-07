@@ -36,7 +36,7 @@ export default function PageTitle({ title, subtitle, badge, backLink, image, act
   };
 
   return (
-    <div className="flex items-center justify-between mb-6 w-full">
+    <div className="flex items-center justify-between mb-4 w-full">
       <div className="flex items-center gap-3">
         {backLink && (
           <Link

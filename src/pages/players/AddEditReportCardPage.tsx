@@ -160,7 +160,7 @@ export default function AddEditReportCardPage() {
 
         <form onSubmit={handleSubmit}>
           {/* Report Period */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Report Period</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -193,7 +193,7 @@ export default function AddEditReportCardPage() {
           </div>
 
           {/* Strengths */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="text-2xl">💪</span>
@@ -207,7 +207,7 @@ export default function AddEditReportCardPage() {
                 + Add Strength
               </button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {strengths.map((strength, index) => (
                 <div key={index} className="flex gap-2">
                   <input
@@ -232,7 +232,7 @@ export default function AddEditReportCardPage() {
           </div>
 
           {/* Areas for Improvement */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="text-2xl">🎯</span>
@@ -246,7 +246,7 @@ export default function AddEditReportCardPage() {
                 + Add Area
               </button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {improvements.map((improvement, index) => (
                 <div key={index} className="flex gap-2">
                   <input
@@ -271,7 +271,7 @@ export default function AddEditReportCardPage() {
           </div>
 
           {/* Coach Comments */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span className="text-2xl">💬</span>
               Coach's Comments
@@ -287,7 +287,7 @@ export default function AddEditReportCardPage() {
           </div>
 
           {/* Similar Professional Players */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="text-2xl">⭐</span>
@@ -309,7 +309,7 @@ export default function AddEditReportCardPage() {
                 No professional player comparisons added yet.
               </p>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {similarPlayers.map((player, index) => (
                   <div key={index} className="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-3">

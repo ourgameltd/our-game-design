@@ -126,7 +126,7 @@ export default function ClubCoachesPage() {
         />
 
         {/* Search and Filter */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-4">
           {/* Show Archived Toggle */}
           <div className="flex items-center justify-between gap-4 mb-4">
             <label className="flex items-center gap-2 cursor-pointer">

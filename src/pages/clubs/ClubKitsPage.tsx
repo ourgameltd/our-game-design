@@ -77,7 +77,7 @@ export default function ClubKitsPage() {
 
         {/* Kit Builder */}
         {showBuilder && (
-          <div className="mb-6">
+          <div className="mb-4">
             <KitBuilder
               kit={editingKit}
               onSave={handleSaveKit}
@@ -101,7 +101,7 @@ export default function ClubKitsPage() {
               ))}
             </div>
 
-            <div className="card mt-6 bg-gray-50 dark:bg-gray-800/50">
+            <div className="card mt-4 bg-gray-50 dark:bg-gray-800/50">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
                 About Club Kits
               </h3>

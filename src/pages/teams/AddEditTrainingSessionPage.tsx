@@ -351,7 +351,7 @@ export default function AddEditTrainingSessionPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -374,7 +374,7 @@ export default function AddEditTrainingSessionPage() {
         </div>
 
         {/* Tabs */}
-        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="card mb-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="card mb-4">
           <div className="flex justify-evenly sm:justify-start sm:flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-4">
             <button
               type="button"
@@ -416,8 +416,8 @@ export default function AddEditTrainingSessionPage() {
 
           {/* Session Details Tab */}
           {activeTab === 'details' && (
-            <div className="mt-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mt-4 space-y-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <Calendar className="w-4 h-4 inline mr-1" />
@@ -666,7 +666,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
 
           {/* Drills Tab */}
           {activeTab === 'drills' && (
-            <div className="mt-6 space-y-6">
+            <div className="mt-4 space-y-2">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -726,7 +726,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
               )}
 
               {selectedDrills.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {sessionDrills.map((sessionDrill, index) => {
                     const drill = sampleDrills.find(d => d.id === sessionDrill.drillId);
                     if (!drill) return null;
@@ -824,7 +824,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
 
           {/* Attendance Tab */}
           {activeTab === 'attendance' && (
-            <div className="mt-6 space-y-6">
+            <div className="mt-4 space-y-2">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <span>📋</span> Player Attendance
@@ -892,7 +892,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
           )}
 
           {isLocked && (
-            <div className="mt-8 pt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+            <div className="mt-4 pt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
               <p className="text-amber-800 dark:text-amber-300 font-medium">
                 🔒 This training session is locked. Unlock it to make changes.
               </p>
@@ -900,7 +900,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
           )}
 
           {/* Action Buttons */}
-          <div className="mt-6">
+          <div className="mt-4">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
               {/* Left side - Session-specific controls */}
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
@@ -1080,7 +1080,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
               {/* Drills List */}
               <div className={`p-6 overflow-y-auto ${previewDrill ? 'w-1/2 border-r border-gray-200 dark:border-gray-700' : 'w-full'}`}>
                 {filteredDrills.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {filteredDrills.map((drill) => {
                       const isSelected = selectedDrillIds.includes(drill.id);
                       const isPreviewed = previewDrill?.id === drill.id;
@@ -1174,7 +1174,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
                     </button>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     {/* Description */}
                     <div>
                       <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Description</h4>
@@ -1316,7 +1316,7 @@ Notes: Remember to bring first aid kit. Weather forecast: light rain expected.`}
             
             <div className="p-6 overflow-y-auto max-h-[50vh]">
               {filteredTemplates.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {filteredTemplates.map((template) => {
                     const templateDrills = template.drillIds
                       .map(id => sampleDrills.find(d => d.id === id))

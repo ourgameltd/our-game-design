@@ -62,7 +62,7 @@ export default function MatchesListContent({
         to={getMatchLink(match)}
         className="block bg-white dark:bg-gray-800 rounded-lg md:rounded-none p-4 md:px-4 md:py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 md:border-0 md:border-b"
       >
-        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-4">
           {/* Date & Competition - stacked on mobile, inline on desktop */}
           <div className="flex items-center gap-3 md:flex-shrink-0 md:w-[130px] md:order-1">
             <div className="flex-shrink-0">
@@ -191,7 +191,7 @@ export default function MatchesListContent({
   return (
     <>
       {/* Stats Summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
         <div className="card text-center">
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
             {matches.length}
@@ -220,7 +220,7 @@ export default function MatchesListContent({
 
       {/* Upcoming Matches */}
       {upcomingMatches.length > 0 && (
-        <div className="mb-8">
+        <div className="mb-4">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             Upcoming Matches
           </h2>

@@ -15,8 +15,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-6">
+        <div className="text-center mb-4">
+          <div className="flex justify-center mb-4">
             <Logo size={96} />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome to <span className="text-primary-300">Our Game</span></h1>
@@ -24,7 +24,7 @@ export default function LoginPage() {
         </div>
 
         <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-2">
             <div>
               <label htmlFor="email" className="label">
                 Email Address
@@ -77,7 +77,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{' '}
               <Link to="/register" className="text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 font-medium">
@@ -87,7 +87,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <Link to="/" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
             ← Back to home
           </Link>

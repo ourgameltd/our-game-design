@@ -76,7 +76,7 @@ export default function PlayerReportCardPage() {
         />
 
         {/* Current Report Header */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               Current Report <span className="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">Created {report.createdAt.toLocaleDateString('en-GB', {
@@ -97,14 +97,14 @@ export default function PlayerReportCardPage() {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
           {/* Strengths */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span className="text-2xl">💪</span>
               Strengths
             </h2>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {report.strengths.map((strength, index) => (
                 <li
                   key={index}
@@ -118,12 +118,12 @@ export default function PlayerReportCardPage() {
           </div>
           
           {/* Areas for Improvement */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span className="text-2xl">🎯</span>
               Areas for Improvement
             </h2>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {report.areasForImprovement.map((area, index) => (
                 <li 
                   key={index}
@@ -138,7 +138,7 @@ export default function PlayerReportCardPage() {
         </div>
         
         {/* Development Actions */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
             <span className="text-2xl">📋</span>
             Development Actions
@@ -216,7 +216,7 @@ export default function PlayerReportCardPage() {
         </div>
         
         {/* Coach Comments */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
             <span className="text-2xl">💬</span>
             Coach's Comments
@@ -230,7 +230,7 @@ export default function PlayerReportCardPage() {
         
         {/* Similar Professional Players */}
         {report.similarProfessionalPlayers && report.similarProfessionalPlayers.length > 0 && (
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span className="text-2xl">⭐</span>
               Professional Player Comparisons
@@ -238,7 +238,7 @@ export default function PlayerReportCardPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Study these professional players to understand how to develop your game:
             </p>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {report.similarProfessionalPlayers.map((proPlayer, index) => (
                 <div 
                   key={index}

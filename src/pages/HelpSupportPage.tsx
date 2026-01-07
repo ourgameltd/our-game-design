@@ -124,7 +124,7 @@ export default function HelpSupportPage() {
         />
 
         {/* Quick Support Options */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
               <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -172,8 +172,8 @@ export default function HelpSupportPage() {
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex items-center gap-3 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-4">
+          <div className="flex items-center gap-3 mb-4">
             <HelpCircle className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               Frequently Asked Questions
@@ -181,7 +181,7 @@ export default function HelpSupportPage() {
           </div>
 
           {/* Search Bar */}
-          <div className="relative mb-6">
+          <div className="relative mb-4">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
@@ -193,7 +193,7 @@ export default function HelpSupportPage() {
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap gap-2 mb-4">
             {categories.map(category => (
               <button
                 key={category}
@@ -210,7 +210,7 @@ export default function HelpSupportPage() {
           </div>
 
           {/* FAQ List */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             {filteredFAQs.length > 0 ? (
               filteredFAQs.map(faq => (
                 <div
@@ -258,14 +258,14 @@ export default function HelpSupportPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Contact Form */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-4">
               <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Contact Support
               </h2>
             </div>
 
-            <form onSubmit={handleSubmitContact} className="space-y-4">
+            <form onSubmit={handleSubmitContact} className="space-y-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Name
@@ -329,13 +329,13 @@ export default function HelpSupportPage() {
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-6">
+          <div className="space-y-2">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 Other Ways to Reach Us
               </h3>
 
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />

@@ -76,7 +76,7 @@ export default function TeamKitsPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-4">
           <div className="flex-grow">
             <PageTitle
               title={`${team.name} - Kit Management`}
@@ -98,7 +98,7 @@ export default function TeamKitsPage() {
 
         {/* Archived Notice */}
         {team.isArchived && (
-          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This team is archived. Kits cannot be added, edited, or deleted while the team is archived.
             </p>
@@ -107,7 +107,7 @@ export default function TeamKitsPage() {
 
         {/* Kit Builder */}
         {showBuilder && (
-          <div className="mb-6">
+          <div className="mb-4">
             <KitBuilder
               kit={editingKit}
               onSave={handleSaveKit}
@@ -119,7 +119,7 @@ export default function TeamKitsPage() {
         {/* Team Kits Section */}
         {!showBuilder && (
           <>
-            <div className="mb-8">
+            <div className="mb-4">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                 Team Kits
               </h3>
@@ -175,7 +175,7 @@ export default function TeamKitsPage() {
             )}
 
             {/* Info Box */}
-            <div className="card mt-6 bg-gray-50 dark:bg-gray-800/50">
+            <div className="card mt-4 bg-gray-50 dark:bg-gray-800/50">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
                 About Team Kits
               </h3>

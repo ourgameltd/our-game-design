@@ -30,13 +30,13 @@ export default function AttributeProgressDisplay({ player }: AttributeProgressDi
     attributes: typeof grouped.skills,
     icon: string
   ) => (
-    <div className="card mb-6">
+    <div className="card mb-4">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-2xl">{icon}</span>
         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h3>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         {attributes.map((attr) => {
           const attributeKey = attr.name.replace(/ /g, '').replace(/^(.)/, (m) => m.toLowerCase());
           const change = getAttributeChange(attributeKey);
@@ -94,7 +94,7 @@ export default function AttributeProgressDisplay({ player }: AttributeProgressDi
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       {/* Overall Rating Card */}
       <div className="card bg-gradient-to-br from-primary-600 to-primary-800 text-white">
         <div className="text-center">
@@ -186,7 +186,7 @@ export default function AttributeProgressDisplay({ player }: AttributeProgressDi
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Evaluation History
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {evaluations.map((evaluation, index) => (
               <div
                 key={evaluation.id}

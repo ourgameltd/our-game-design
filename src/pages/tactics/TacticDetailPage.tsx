@@ -84,7 +84,7 @@ export default function TacticDetailPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
           <PageTitle
             title={tactic.name}
             subtitle={`${formation?.name || 'Unknown Formation'} • ${tactic.squadSize}-a-side${tactic.style ? ` • ${tactic.style}` : ''}`}
@@ -100,7 +100,7 @@ export default function TacticDetailPage() {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-4">
         {/* Pitch Display - 30% width on desktop */}
         <div className="lg:col-span-4">
           <TacticDisplay
@@ -115,7 +115,7 @@ export default function TacticDetailPage() {
         </div>
 
         {/* Tactic Details - 70% width on desktop */}
-        <div className="lg:col-span-6 space-y-6">
+        <div className="lg:col-span-6 space-y-2">
           {/* Summary - Full width without title */}
           {tactic.summary && (
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">

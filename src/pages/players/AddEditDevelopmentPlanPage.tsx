@@ -158,9 +158,9 @@ export default function AddEditDevelopmentPlanPage() {
 
         <form onSubmit={handleSubmit}>
           {/* Plan Details */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Plan Details</h2>
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div>
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Plan Title *
@@ -238,7 +238,7 @@ export default function AddEditDevelopmentPlanPage() {
           </div>
 
           {/* Development Goals */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <span className="text-2xl">🎯</span>
@@ -256,7 +256,7 @@ export default function AddEditDevelopmentPlanPage() {
               Define specific, measurable goals for the player to work towards during this development period.
             </p>
             
-            <div className="space-y-6">
+            <div className="space-y-2">
               {goals.map((goal, goalIndex) => (
                 <div key={goalIndex} className="border border-purple-300 dark:border-purple-700 rounded-lg p-4 bg-purple-50 dark:bg-purple-900/20">
                   <div className="flex justify-between items-start mb-3">
@@ -272,7 +272,7 @@ export default function AddEditDevelopmentPlanPage() {
                     )}
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Goal Description *
@@ -372,7 +372,7 @@ export default function AddEditDevelopmentPlanPage() {
           </div>
 
           {/* Coach Notes */}
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span className="text-2xl">💬</span>
               Coach's Notes

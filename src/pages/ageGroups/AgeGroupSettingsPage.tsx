@@ -105,14 +105,14 @@ export default function AgeGroupSettingsPage() {
           badge={ageGroup.isArchived ? "🗄️ Archived" : undefined}
         />
         {ageGroup.isArchived && (
-          <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This age group is archived. You cannot modify its settings while it is archived. Unarchive it to make changes.
             </p>
           </div>
         )}
         
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Basic Information */}
           <div className="card">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -193,7 +193,7 @@ export default function AgeGroupSettingsPage() {
             </div>
 
             {/* Seasons Management */}
-            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="mt-4 pt-6 border-t border-gray-200 dark:border-gray-700">
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Seasons</h4>
               
               {/* Add Season */}

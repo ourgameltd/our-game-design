@@ -110,14 +110,14 @@ export default function TeamSettingsPage() {
           badge={team.isArchived ? "🗄️ Archived" : undefined}
         />
         {team.isArchived && (
-          <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This team is archived. You cannot modify its settings while it is archived. Unarchive it to make changes.
             </p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Basic Information */}
           <div className="card">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -284,7 +284,7 @@ export default function TeamSettingsPage() {
             )}
 
             {teamPlayers.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {teamPlayers
                   .sort((a, b) => {
                     const numA = squadNumbers.find(s => s.playerId === a.id)?.squadNumber ?? 999;

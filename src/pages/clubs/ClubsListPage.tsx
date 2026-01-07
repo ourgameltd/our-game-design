@@ -32,7 +32,7 @@ export default function ClubsListPage() {
 
         {/* Quick Access Section */}
         {(myTeams.length > 0 || myProfile.length > 0 || myChildren.length > 0) && (
-          <div className="mb-8 space-y-6">
+          <div className="mb-4 space-y-2">
             {/* My Children */}
             {myChildren.length > 0 && (
               <>
@@ -129,7 +129,7 @@ export default function ClubsListPage() {
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   My Teams
                 </h2>
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-4">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {myTeams.map((team) => {
                     const club = sampleClubs.find(c => c.id === team.clubId);

@@ -62,7 +62,7 @@ export default function AgeGroupDevelopmentPlansPage() {
         />
 
         {/* Filters */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <label htmlFor="sort" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -106,7 +106,7 @@ export default function AgeGroupDevelopmentPlansPage() {
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               No Development Plans Found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               {filterStatus !== 'all' 
                 ? `No ${filterStatus} development plans match the selected filter.`
                 : 'No development plans have been created for this age group yet.'}

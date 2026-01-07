@@ -76,7 +76,7 @@ export default function PlayerReportCardsPage() {
         />
 
         {/* Filters */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <label htmlFor="sort" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -115,7 +115,7 @@ export default function PlayerReportCardsPage() {
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               No Report Cards Found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               No report cards have been created yet.
             </p>
           </div>

@@ -69,7 +69,7 @@ export default function MatchPreviewCard({
       </div>
       
       {/* Teams Display */}
-      <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-4 pb-6 border-b border-gray-200 dark:border-gray-700">
         {/* Team Names and Score - Always Aligned */}
         <div className="flex items-center justify-between mb-4">
           <div className="text-center flex-1">
@@ -202,9 +202,9 @@ export default function MatchPreviewCard({
 
       {/* Kit Display */}
       {primaryKit && (
-        <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="mb-4 pb-6 border-b border-gray-200 dark:border-gray-700">
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Kit to Wear</h3>
-          <div className="flex flex-row items-start gap-6">
+          <div className="flex flex-row items-start gap-4">
             <div className="min-w-0">
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {primaryKit.name}
@@ -349,7 +349,7 @@ export default function MatchPreviewCard({
       </div>
       
       {isUpcoming && showFullDetails && (
-        <p className="text-gray-600 dark:text-gray-400 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 text-center italic">
+        <p className="text-gray-600 dark:text-gray-400 mt-4 pt-6 border-t border-gray-200 dark:border-gray-700 text-center italic">
           Match report will be available after the game.
         </p>
       )}

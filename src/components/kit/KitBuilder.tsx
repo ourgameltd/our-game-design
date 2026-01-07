@@ -38,14 +38,14 @@ export default function KitBuilder({ kit, onSave, onCancel }: KitBuilderProps) {
 
   return (
     <div className="card">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
         {kit ? 'Edit Kit' : 'Create New Kit'}
       </h3>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4">
           {/* Left Column - Form Fields */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Kit Name *
@@ -158,7 +158,7 @@ export default function KitBuilder({ kit, onSave, onCancel }: KitBuilderProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex gap-3 mt-4 pt-6 border-t border-gray-200 dark:border-gray-700">
           <button
             type="submit"
             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"

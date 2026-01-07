@@ -144,7 +144,7 @@ export const Interactive: Story = {
     } : { direction: undefined };
 
     return (
-      <div className="space-y-6">
+      <div className="space-y-2">
         {/* Controls */}
         <div className="flex items-center gap-4">
           <label className="flex items-center gap-2">
@@ -165,7 +165,7 @@ export const Interactive: Story = {
         </div>
 
         {/* Main content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Pitch Editor */}
           <div className="lg:col-span-2">
             <TacticPitchEditor
@@ -180,7 +180,7 @@ export const Interactive: Story = {
           </div>
 
           {/* Side panels */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             {/* Position Role Panel */}
             {selectedPosition !== null && (
               <PositionRolePanel

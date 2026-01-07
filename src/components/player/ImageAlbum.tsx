@@ -115,7 +115,7 @@ export default function ImageAlbum({ images, onAddImage, onDeleteImage, editable
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       {/* Header with filters and add button */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap gap-2">
@@ -159,7 +159,7 @@ export default function ImageAlbum({ images, onAddImage, onDeleteImage, editable
       {showAddForm && editable && (
         <div className="card bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800">
           <h3 className="text-lg font-semibold mb-4">Add New Image</h3>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {/* Drag and Drop Area */}
             <div
               onDrop={handleDrop}

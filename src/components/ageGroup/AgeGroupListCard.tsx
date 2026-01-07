@@ -101,7 +101,7 @@ const AgeGroupListCard: React.FC<AgeGroupListCardProps> = ({
       </div>
 
       {/* Desktop: Row Layout */}
-      <div className="hidden md:flex md:items-center md:gap-6">
+      <div className="hidden md:flex md:items-center md:gap-4">
         {/* Color indicator */}
         <div 
           className="w-1 h-12 rounded-full flex-shrink-0"

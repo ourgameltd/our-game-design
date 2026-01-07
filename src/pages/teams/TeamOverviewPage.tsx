@@ -44,7 +44,7 @@ export default function TeamOverviewPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-4">
           <div className="flex-grow">
             <PageTitle
               title={team.name}
@@ -67,7 +67,7 @@ export default function TeamOverviewPage() {
 
         {/* Archived Notice */}
         {team.isArchived && (
-          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This team is archived. Modifications are restricted. Go to Settings to unarchive.
             </p>
@@ -77,7 +77,7 @@ export default function TeamOverviewPage() {
         {/* Stats Grid */}
         <StatsGrid stats={stats} />
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
           <MatchesCard 
             type="upcoming"
             matches={stats.upcomingMatches}
@@ -95,11 +95,11 @@ export default function TeamOverviewPage() {
         </div>
 
         {/* Upcoming Training Sessions */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Upcoming Training Sessions</h3>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {upcomingTrainingSessions.length > 0 ? (
               upcomingTrainingSessions.map((session) => (
                 <Link
@@ -142,7 +142,7 @@ export default function TeamOverviewPage() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4">
           <TopPerformersCard 
             performers={topPerformersData}
             getPlayerLink={(playerId) => Routes.player(clubId!, ageGroupId!, playerId)}

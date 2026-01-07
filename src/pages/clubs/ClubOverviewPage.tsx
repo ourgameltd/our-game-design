@@ -46,7 +46,7 @@ export default function ClubOverviewPage() {
         />
 
         {/* Age Groups Section */}
-        <div className="mb-8">
+        <div className="mb-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Age Groups</h3>
             <Link
@@ -100,7 +100,7 @@ export default function ClubOverviewPage() {
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4">
           <MatchesCard 
             type="upcoming"
             matches={stats.upcomingMatches}

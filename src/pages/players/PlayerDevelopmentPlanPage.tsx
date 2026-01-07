@@ -94,7 +94,7 @@ export default function PlayerDevelopmentPlansPage() {
         />
 
         {/* Current Plan Header */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -152,7 +152,7 @@ export default function PlayerDevelopmentPlansPage() {
         </div>
         
         {/* Development Goals */}
-        <div className="card mb-6">
+        <div className="card mb-4">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
             <span className="text-2xl">🎯</span>
             Development Goals
@@ -161,7 +161,7 @@ export default function PlayerDevelopmentPlansPage() {
             Individual goals within this development plan. Each goal tracks progress and can be marked as completed.
           </p>
           
-          <div className="space-y-4">
+          <div className="space-y-2">
             {plan.goals.map((goal) => (
               <div 
                 key={goal.id}
@@ -266,7 +266,7 @@ export default function PlayerDevelopmentPlansPage() {
         
         {/* Coach Notes */}
         {plan.coachNotes && (
-          <div className="card mb-6">
+          <div className="card mb-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span className="text-2xl">💬</span>
               Coach Notes

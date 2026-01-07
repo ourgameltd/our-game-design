@@ -37,7 +37,7 @@ export default function AgeGroupTrainingSessionsPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-4">
           <div className="flex items-center gap-2 mb-4">
             <div className="flex-grow">
               <PageTitle

@@ -22,7 +22,7 @@ const TopPerformersCard: React.FC<TopPerformersCardProps> = ({
     <div className="card">
       <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Top Performers</h3>
       {performers.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {performers.map((perf) => (
             <div 
               key={perf.playerId} 

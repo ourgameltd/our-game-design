@@ -477,7 +477,7 @@ export default function AddEditMatchPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">{/* Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -505,7 +505,7 @@ export default function AddEditMatchPage() {
         </div>
 
         {/* Tabs */}
-        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="card mb-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="card mb-4">
           <div className="flex justify-evenly sm:justify-start sm:flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-4">
             <button
               type="button"
@@ -559,8 +559,8 @@ export default function AddEditMatchPage() {
 
           {/* Match Details Tab */}
           {activeTab === 'details' && (
-            <div className="mt-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mt-4 space-y-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Opposition *
@@ -902,7 +902,7 @@ export default function AddEditMatchPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Home Score
@@ -1043,12 +1043,12 @@ export default function AddEditMatchPage() {
 
           {/* Team Selection Tab */}
           {activeTab === 'lineup' && (
-            <div className="mt-6 space-y-6">
+            <div className="mt-4 space-y-2">
 
               {/* Two Column Layout: Players List + Formation Display */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Left Column: Starting XI and Substitutes */}
-                <div className="space-y-6">
+                <div className="space-y-2">
                    {/* Formation/Tactic Selection - Merged Dropdown */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
@@ -1452,13 +1452,13 @@ export default function AddEditMatchPage() {
 
           {/* Match Events Tab */}
           {activeTab === 'events' && (
-            <div className="mt-6 space-y-6">
+            <div className="mt-4 space-y-2">
               {/* Goals */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                   Goals ⚽
                 </h3>
-                <div className="space-y-3 mb-4">
+                <div className="space-y-2 mb-4">
                   {goals.map((goal, index) => (
                     <div key={index} className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -1543,7 +1543,7 @@ export default function AddEditMatchPage() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                   Cards 🟨 🟥
                 </h3>
-                <div className="space-y-3 mb-4">
+                <div className="space-y-2 mb-4">
                   {cards.map((card, index) => (
                     <div key={index} className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
                       <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
@@ -1639,7 +1639,7 @@ export default function AddEditMatchPage() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                   Injuries 🏥
                 </h3>
-                <div className="space-y-3 mb-4">
+                <div className="space-y-2 mb-4">
                   {injuries.map((injury, index) => (
                     <div key={index} className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800">
                       <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
@@ -1735,7 +1735,7 @@ export default function AddEditMatchPage() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                   Substitutions 🔄
                 </h3>
-                <div className="space-y-3 mb-4">
+                <div className="space-y-2 mb-4">
                   {substitutions.map((sub, index) => (
                     <div key={index} className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -1822,7 +1822,7 @@ export default function AddEditMatchPage() {
 
           {/* Report & Ratings Tab */}
           {activeTab === 'report' && (
-            <div className="mt-6 space-y-6">
+            <div className="mt-4 space-y-2">
               {/* Match Summary */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -1843,7 +1843,7 @@ export default function AddEditMatchPage() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
                   Player Ratings (Out of 10)
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {allPlayersInMatch.map(playerId => {
                     const rating = getRating(playerId);
                     return (
@@ -1910,7 +1910,7 @@ export default function AddEditMatchPage() {
           )}
 
         {isLocked && (
-            <div className="mt-8 pt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+            <div className="mt-4 pt-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
               <p className="text-amber-800 dark:text-amber-300 font-medium">
                 🔒 This match is locked. Unlock it to make changes.
               </p>
@@ -1918,7 +1918,7 @@ export default function AddEditMatchPage() {
           )}
 
           {/* Action Buttons */}
-          <div className="mt-6">
+          <div className="mt-4">
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
               {/* Left side - Match-specific controls */}
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">

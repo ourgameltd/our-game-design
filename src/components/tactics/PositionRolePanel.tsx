@@ -47,7 +47,7 @@ export default function PositionRolePanel({
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-2">
         {/* Position Override Status */}
         {hasPositionOverride && (
           <div className="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
@@ -95,7 +95,7 @@ export default function PositionRolePanel({
             )}
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-2">
             {/* Primary directions: N, S, E, W */}
             <div>
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Primary</p>

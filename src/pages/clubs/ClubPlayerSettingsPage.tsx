@@ -113,14 +113,14 @@ export default function ClubPlayerSettingsPage() {
         />
         
         {!isNewPlayer && player!.isArchived && (
-          <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This player is archived. You cannot modify their settings while they are archived. Unarchive them to make changes.
             </p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Personal Information */}
           <div className="card">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -278,7 +278,7 @@ export default function ClubPlayerSettingsPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Select which teams this player is assigned to
             </p>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {/* Group teams by age group */}
               {Array.from(new Set(allTeams.map(t => t.ageGroupId)))
                 .sort((a, b) => {
@@ -346,7 +346,7 @@ export default function ClubPlayerSettingsPage() {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                 {player!.isArchived ? 'Unarchive Player?' : 'Archive Player?'}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {player!.isArchived ? (
                   <>
                     Are you sure you want to unarchive <strong>{player!.firstName} {player!.lastName}</strong>? 

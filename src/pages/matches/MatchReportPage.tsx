@@ -142,7 +142,7 @@ export default function MatchReportPage() {
 
         {/* Coaching Staff */}
         {matchCoaches.length > 0 && (
-          <div className="card mt-6">
+          <div className="card mt-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
               <span>👨‍🏫</span> Coaching Staff
             </h2>
@@ -179,7 +179,7 @@ export default function MatchReportPage() {
           <>
             {/* Player of the Match */}
             {playerOfTheMatch && (
-              <div className="card mt-6 mb-6 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20">
+              <div className="card mt-4 mb-4 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">⭐</span>
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Player of the Match</h2>
@@ -208,8 +208,8 @@ export default function MatchReportPage() {
 
             {/* Lineup with Ratings */}
             {match.lineup && (
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="card mb-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="card mb-4">
                   <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Team Sheet & Player Ratings</h2>
                   
                   {/* Captain Display */}
@@ -225,7 +225,7 @@ export default function MatchReportPage() {
                   )}
                   
                   {/* Starting XI */}
-                  <div className="mb-6">
+                  <div className="mb-4">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Starting XI</h3>
                     <div className="grid grid-cols-1 gap-3">
                       {match.lineup.starting.map((player, index) => {
@@ -425,7 +425,7 @@ export default function MatchReportPage() {
                 </div>
 
                 {/* Summary */}
-                <div className="card mb-6">
+                <div className="card mb-4">
                   <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Match Summary</h2>
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     {match.report.summary}

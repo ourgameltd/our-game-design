@@ -118,7 +118,7 @@ export default function ClubTrainingSessionsPage() {
         to={Routes.teamTrainingSessionEdit(clubId!, team!.ageGroupId, session.teamId, session.id)}
         className="block bg-white dark:bg-gray-800 rounded-lg md:rounded-none p-4 md:px-4 md:py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 md:border-0 md:border-b"
       >
-        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-4">
           {/* Date & Time */}
           <div className="flex items-center gap-3 md:flex-shrink-0 md:w-[130px] md:order-1">
             <div className="flex-shrink-0">
@@ -208,7 +208,7 @@ export default function ClubTrainingSessionsPage() {
         />
 
         {/* Search and Filter */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-4">
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-2">
               <label className="flex items-center gap-2 cursor-pointer">

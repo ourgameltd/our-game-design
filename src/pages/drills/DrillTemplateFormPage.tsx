@@ -181,7 +181,7 @@ export default function DrillTemplateFormPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <PageTitle
             title={isEditMode ? (isInherited ? 'View Session (Read-Only)' : 'Edit Session') : 'Create Session'}
             subtitle={`${contextName}`}
@@ -189,7 +189,7 @@ export default function DrillTemplateFormPage() {
         </div>
 
         {isInherited && (
-          <div className="card mb-6 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
+          <div className="card mb-4 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
             <div className="flex items-start gap-3">
               <span className="text-2xl">⚠️</span>
               <div>
@@ -206,11 +206,11 @@ export default function DrillTemplateFormPage() {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
+          <div className="space-y-2">
             {/* Basic Information */}
             <div className="card">
               <h3 className="text-lg font-semibold mb-4">Basic Information</h3>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Session Name *
@@ -319,7 +319,7 @@ export default function DrillTemplateFormPage() {
 
               {/* Add Drill Button */}
               {!isInherited && (
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <button
                     type="button"
                     onClick={() => setShowDrillPicker(!showDrillPicker)}

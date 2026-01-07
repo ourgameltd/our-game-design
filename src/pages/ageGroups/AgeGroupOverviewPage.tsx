@@ -61,7 +61,7 @@ const AgeGroupOverviewPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-4">
           <div className="flex-grow">
             <PageTitle
               title={ageGroup.name}
@@ -84,7 +84,7 @@ const AgeGroupOverviewPage: React.FC = () => {
 
         {/* Archived Notice */}
         {ageGroup.isArchived && (
-          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+          <div className="mb-4 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
             <p className="text-sm text-orange-800 dark:text-orange-300">
               ⚠️ This age group is archived. No new teams can be added and modifications are restricted. Go to Settings to unarchive.
             </p>
@@ -95,7 +95,7 @@ const AgeGroupOverviewPage: React.FC = () => {
         <StatsGrid stats={stats} />
 
         {/* Teams Section */}
-        <div className="mb-8">
+        <div className="mb-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Teams</h3>
             {!ageGroup.isArchived && (
@@ -136,7 +136,7 @@ const AgeGroupOverviewPage: React.FC = () => {
           )}
         </div>
 
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
+      <div className="grid md:grid-cols-2 gap-4 mb-4">
         <MatchesCard 
           type="upcoming"
           matches={stats.upcomingMatches}
@@ -179,7 +179,7 @@ const AgeGroupOverviewPage: React.FC = () => {
         />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-4">
         <TopPerformersCard 
           performers={topPerformersData.map(p => ({
             playerId: p.playerId,

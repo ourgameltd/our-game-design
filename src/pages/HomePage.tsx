@@ -24,9 +24,9 @@ export default function HomePage() {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-4xl">
-          <div className="text-center mb-8">
+          <div className="text-center mb-4">
             {/* Logo */}
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4">
               <div className="bg-white/10 backdrop-blur-md rounded-full p-3 shadow-2xl">
                 <Logo size={100}/>
               </div>
@@ -37,7 +37,7 @@ export default function HomePage() {
               It's <span className="text-primary-300">Our Game</span>!
             </h1>
             
-            <p className="text-base md:text-lg mb-8 text-white/90 drop-shadow-lg max-w-xl mx-auto">
+            <p className="text-base md:text-lg mb-4 text-white/90 drop-shadow-lg max-w-xl mx-auto">
               Community Football for Everyone
             </p>
 
@@ -62,7 +62,7 @@ export default function HomePage() {
 
             {/* Welcome message for logged in users */}
             {isLoggedIn && (
-              <div className="mb-6">
+              <div className="mb-4">
                 <p className="text-xl text-white/90 drop-shadow-lg">
                   Welcome back, {currentUser.firstName}!
                 </p>

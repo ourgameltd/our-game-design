@@ -123,7 +123,7 @@ export default function CoachSettingsPage() {
           subtitle={isNewCoach ? `Add a new coach to ${club?.name}` : `Manage details for ${coach!.firstName} ${coach!.lastName}`}
         />
 
-        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-2">
           {/* Personal Information */}
           <div className="card">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -375,7 +375,7 @@ export default function CoachSettingsPage() {
                 No teams available. Create teams first to assign coaches.
               </p>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-2">
                 {/* Group teams by age group and sort */}
                 {(() => {
                   const teamsByAgeGroup = allTeams.reduce((acc, team) => {
@@ -452,7 +452,7 @@ export default function CoachSettingsPage() {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                 {coach!.isArchived ? 'Unarchive Coach?' : 'Archive Coach?'}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {coach!.isArchived ? (
                   <>
                     Are you sure you want to unarchive <strong>{coach!.firstName} {coach!.lastName}</strong>? 
