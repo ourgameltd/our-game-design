@@ -1,22 +1,21 @@
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-import { samplePlayers } from '@/data/players';
 import { getReportsByPlayerId } from '@/data/reports';
-import PlayerDetailsHeader from '@components/player/PlayerDetailsHeader';
+import { getPlayerById } from '@data/players';
+import { Routes } from '@utils/routes';
+import PageTitle from '@components/common/PageTitle';
 
 export default function PlayerReportCardPage() {
-  const { playerId } = useParams();
+  const { playerId, clubId, ageGroupId, teamId } = useParams();
   
-  const player = samplePlayers.find(p => p.id === playerId);
+  const player = getPlayerById(playerId!);
   const reports = playerId ? getReportsByPlayerId(playerId) : [];
-  const [selectedReportIndex, setSelectedReportIndex] = useState(0);
   
-  const report = reports[selectedReportIndex];
+  const report = reports[0]; // Show most recent report
   
   if (!player) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-4">
+        <main className="mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Player not found</h2>
           </div>
@@ -28,7 +27,7 @@ export default function PlayerReportCardPage() {
   if (reports.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-4">
+        <main className="mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">No Reports Available</h2>
             <p className="text-gray-600 dark:text-gray-400">
@@ -40,113 +39,102 @@ export default function PlayerReportCardPage() {
     );
   }
   
+  // Determine back link based on context
+  let backLink: string;
+  let settingsLink: string;
+  if (teamId && ageGroupId) {
+    backLink = Routes.teamPlayerReportCards(clubId!, ageGroupId, teamId, playerId!);
+    settingsLink = Routes.editTeamPlayerReportCard(clubId!, ageGroupId, teamId, playerId!, report.id);
+  } else if (ageGroupId) {
+    backLink = Routes.playerReportCards(clubId!, ageGroupId, playerId!);
+    settingsLink = Routes.editPlayerReportCard(clubId!, ageGroupId, playerId!, report.id);
+  } else {
+    backLink = Routes.clubPlayers(clubId!);
+    settingsLink = '#';
+  }
+  
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
-        {/* Player Header with Report Selector */}
-        <div className="card mb-6">
-          <PlayerDetailsHeader player={player} customColorClass="from-blue-500 to-blue-600" />
-          
-          {/* Report Selector */}
-          {reports.length > 1 && (
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700 mt-6">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex-1">
-                  <label htmlFor="report-selector" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Select Report Period
-                  </label>
-                  <select
-                    id="report-selector"
-                    value={selectedReportIndex}
-                    onChange={(e) => setSelectedReportIndex(Number(e.target.value))}
-                    className="w-full max-w-md px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
-                  >
-                    {reports.map((r, index) => (
-                      <option key={r.id} value={index}>
-                        {index === 0 ? '📊 Latest Report' : `📋 Report ${reports.length - index}`} - {r.period.start.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })} to {r.period.end.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })} (Rating: {r.overallRating})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Total Reports</div>
-                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{reports.length}</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+      <main className="mx-auto px-4 py-4">
+        {/* Page Title */}
+        <PageTitle
+          title="Report Card"
+          subtitle={`${player.firstName} ${player.lastName}`}
+          backLink={backLink}
+          image={{
+            src: player.photo,
+            alt: `${player.firstName} ${player.lastName}`,
+            initials: `${player.firstName[0]}${player.lastName[0]}`,
+            colorClass: 'from-blue-500 to-blue-600'
+          }}
+          action={{
+            label: 'Settings',
+            href: settingsLink,
+            icon: 'settings',
+            title: 'Edit Report Card'
+          }}
+        />
 
         {/* Current Report Header */}
         <div className="card mb-6">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                {selectedReportIndex === 0 ? 'Current Report' : `Report #${reports.length - selectedReportIndex}`}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Current Report <span className="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">Created {report.createdAt.toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'long', 
+                  year: 'numeric' 
+                })}</span>
               </h2>
-              <div className="flex items-center gap-4">
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                  {report.overallRating.toFixed(1)}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  <p>
-                    Period: {report.period.start.toLocaleDateString('en-GB', { 
-                      month: 'short', 
-                      year: 'numeric' 
-                    })} - {report.period.end.toLocaleDateString('en-GB', { 
-                      month: 'short', 
-                      year: 'numeric' 
-                    })}
-                  </p>
-                  <p>
-                    Created: {report.createdAt.toLocaleDateString('en-GB', { 
-                      day: 'numeric',
-                      month: 'long', 
-                      year: 'numeric' 
-                    })}
-                  </p>
-                </div>
-              </div>
+              <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                {report.period.start.toLocaleDateString('en-GB', { 
+                  month: 'short', 
+                  year: 'numeric' 
+                })} - {report.period.end.toLocaleDateString('en-GB', { 
+                  month: 'short', 
+                  year: 'numeric' 
+              })}
             </div>
           </div>
         </div>
         
-        {/* Strengths */}
-        <div className="card mb-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-            <span className="text-2xl">💪</span>
-            Strengths
-          </h2>
-          <ul className="space-y-3">
-            {report.strengths.map((strength, index) => (
-              <li 
-                key={index}
-                className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg"
-              >
-                <span className="text-green-600 dark:text-green-400 mt-1">✓</span>
-                <span className="text-gray-700 dark:text-gray-300">{strength}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        {/* Areas for Improvement */}
-        <div className="card mb-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-            <span className="text-2xl">🎯</span>
-            Areas for Improvement
-          </h2>
-          <ul className="space-y-3">
-            {report.areasForImprovement.map((area, index) => (
-              <li 
-                key={index}
-                className="flex items-start gap-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg"
-              >
-                <span className="text-amber-600 dark:text-amber-400 mt-1">→</span>
-                <span className="text-gray-700 dark:text-gray-300">{area}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
+          {/* Strengths */}
+          <div className="card mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+              <span className="text-2xl">💪</span>
+              Strengths
+            </h2>
+            <ul className="space-y-3">
+              {report.strengths.map((strength, index) => (
+                <li
+                  key={index}
+                  className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg"
+                >
+                  <span className="text-green-600 dark:text-green-400 mt-1">✓</span>
+                  <span className="text-gray-700 dark:text-gray-300">{strength}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Areas for Improvement */}
+          <div className="card mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+              <span className="text-2xl">🎯</span>
+              Areas for Improvement
+            </h2>
+            <ul className="space-y-3">
+              {report.areasForImprovement.map((area, index) => (
+                <li 
+                  key={index}
+                  className="flex items-start gap-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg"
+                >
+                  <span className="text-amber-600 dark:text-amber-400 mt-1">→</span>
+                  <span className="text-gray-700 dark:text-gray-300">{area}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         
         {/* Development Actions */}
@@ -159,7 +147,7 @@ export default function PlayerReportCardPage() {
             Recommended actions based on this report card. For comprehensive development tracking, see the Development Plans section.
           </p>
           
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {report.developmentActions.map((plan) => (
               <div 
                 key={plan.id}
@@ -170,14 +158,6 @@ export default function PlayerReportCardPage() {
                 }`}
               >
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="flex-shrink-0 mt-1">
-                    <input 
-                      type="checkbox" 
-                      checked={plan.completed}
-                      readOnly
-                      className="w-5 h-5 rounded cursor-pointer"
-                    />
-                  </div>
                   <div className="flex-1">
                     <h3 className={`font-semibold text-lg mb-2 ${
                       plan.completed 
@@ -231,6 +211,7 @@ export default function PlayerReportCardPage() {
                 </div>
               </div>
             ))}
+
           </div>
         </div>
         

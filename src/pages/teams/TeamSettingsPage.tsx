@@ -23,7 +23,7 @@ export default function TeamSettingsPage() {
   if (!team) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-4">
+        <main className="mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Team not found</h2>
           </div>
@@ -64,7 +64,7 @@ export default function TeamSettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         {/* Header */}
         <PageTitle
           title="Team Settings"

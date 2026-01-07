@@ -345,3 +345,67 @@ export const getActiveDevelopmentPlans = (playerId: string): DevelopmentPlan[] =
     .filter(plan => plan.playerId === playerId && plan.status === 'active')
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 };
+
+// Import players data to filter by club/age group/team
+import { samplePlayers } from './players';
+
+/**
+ * Get all development plans for a specific club
+ */
+export const getDevelopmentPlansByClubId = (clubId: string): DevelopmentPlan[] => {
+  const clubPlayerIds = samplePlayers
+    .filter(player => player.clubId === clubId)
+    .map(player => player.id);
+  
+  return sampleDevelopmentPlans
+    .filter(plan => clubPlayerIds.includes(plan.playerId))
+    .sort((a, b) => {
+      // Active plans first, then by created date (most recent first)
+      if (a.status === 'active' && b.status !== 'active') return -1;
+      if (a.status !== 'active' && b.status === 'active') return 1;
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+};
+
+/**
+ * Get all development plans for a specific age group
+ */
+export const getDevelopmentPlansByAgeGroupId = (clubId: string, ageGroupId: string): DevelopmentPlan[] => {
+  const ageGroupPlayerIds = samplePlayers
+    .filter(player => 
+      player.clubId === clubId && 
+      player.ageGroupIds.includes(ageGroupId)
+    )
+    .map(player => player.id);
+  
+  return sampleDevelopmentPlans
+    .filter(plan => ageGroupPlayerIds.includes(plan.playerId))
+    .sort((a, b) => {
+      // Active plans first, then by created date (most recent first)
+      if (a.status === 'active' && b.status !== 'active') return -1;
+      if (a.status !== 'active' && b.status === 'active') return 1;
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+};
+
+/**
+ * Get all development plans for a specific team
+ */
+export const getDevelopmentPlansByTeamId = (clubId: string, ageGroupId: string, teamId: string): DevelopmentPlan[] => {
+  const teamPlayerIds = samplePlayers
+    .filter(player => 
+      player.clubId === clubId && 
+      player.ageGroupIds.includes(ageGroupId) &&
+      player.teamIds.includes(teamId)
+    )
+    .map(player => player.id);
+  
+  return sampleDevelopmentPlans
+    .filter(plan => teamPlayerIds.includes(plan.playerId))
+    .sort((a, b) => {
+      // Active plans first, then by created date (most recent first)
+      if (a.status === 'active' && b.status !== 'active') return -1;
+      if (a.status !== 'active' && b.status === 'active') return 1;
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+};

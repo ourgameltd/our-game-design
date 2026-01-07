@@ -1,53 +1,34 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { getPlayerById } from '@data/players';
-import { getDevelopmentPlansByPlayerId } from '@data/developmentPlans';
-import { getAgeGroupById } from '@data/ageGroups';
-import { getTeamById } from '@data/teams';
-import { Routes } from '@utils/routes';
+import { sampleClubs } from '@/data/clubs';
+import { sampleAgeGroups } from '@/data/ageGroups';
+import { samplePlayers } from '@/data/players';
+import { getDevelopmentPlansByAgeGroupId } from '@/data/developmentPlans';
 import PageTitle from '@components/common/PageTitle';
 import DevelopmentPlanListCard from '@components/player/DevelopmentPlanListCard';
 import DevelopmentPlanTableRow from '@components/player/DevelopmentPlanTableRow';
+import { Routes } from '@utils/routes';
 import { Filter, Target } from 'lucide-react';
 
-export default function PlayerDevelopmentPlansPage() {
-  const { clubId, playerId, ageGroupId, teamId } = useParams();
+export default function AgeGroupDevelopmentPlansPage() {
+  const { clubId, ageGroupId } = useParams<{ clubId: string; ageGroupId: string }>();
   const [sortBy, setSortBy] = useState<'date' | 'progress'>('date');
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'completed' | 'archived'>('all');
-  
-  const player = getPlayerById(playerId!);
-  const plans = playerId ? getDevelopmentPlansByPlayerId(playerId) : [];
-  const ageGroup = ageGroupId ? getAgeGroupById(ageGroupId) : null;
-  const team = teamId ? getTeamById(teamId) : null;
 
-  if (!player) {
+  const club = sampleClubs.find(c => c.id === clubId);
+  const ageGroup = sampleAgeGroups.find(ag => ag.id === ageGroupId);
+  const plans = clubId && ageGroupId ? getDevelopmentPlansByAgeGroupId(clubId, ageGroupId) : [];
+
+  if (!club || !ageGroup) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <main className="mx-auto px-4 py-4">
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Player not found</h2>
+            <h2 className="text-xl font-semibold mb-4">Age Group not found</h2>
           </div>
         </main>
       </div>
     );
-  }
-
-  // Determine back link based on context (team, age group, or club)
-  let backLink: string;
-  let subtitle: string;
-  let newDevelopmentPlanLink: string;
-  if (teamId && ageGroupId) {
-    backLink = Routes.teamPlayer(clubId!, ageGroupId, teamId, playerId!);
-    subtitle = `${ageGroup?.name || 'Age Group'} • ${team?.name || 'Team'}`;
-    newDevelopmentPlanLink = Routes.newTeamPlayerDevelopmentPlan(clubId!, ageGroupId, teamId, playerId!);
-  } else if (ageGroupId) {
-    backLink = Routes.player(clubId!, ageGroupId, playerId!);
-    subtitle = ageGroup?.name || 'Age Group';
-    newDevelopmentPlanLink = Routes.newPlayerDevelopmentPlan(clubId!, ageGroupId, playerId!);
-  } else {
-    backLink = Routes.clubPlayers(clubId!);
-    subtitle = 'Club Players';
-    newDevelopmentPlanLink = '#';
   }
 
   // Filter plans
@@ -65,30 +46,19 @@ export default function PlayerDevelopmentPlansPage() {
     });
   }
 
-  // Helper to generate development plan link
-  const getDevelopmentPlanLink = () => {
-    if (teamId && ageGroupId) {
-      return Routes.teamPlayerDevelopmentPlan(clubId!, ageGroupId, teamId, playerId!);
-    } else if (ageGroupId) {
-      return Routes.playerDevelopmentPlan(clubId!, ageGroupId, playerId!);
-    }
-    return '#';
-  };
+  // Get player for each plan
+  const plansWithPlayers = filteredPlans.map(plan => ({
+    plan,
+    player: samplePlayers.find(p => p.id === plan.playerId)!
+  })).filter(item => item.player);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
         {/* Header */}
-        <PageTitle
+        <PageTitle 
           title="Development Plans"
-          subtitle={`${player.firstName} ${player.lastName} • ${subtitle}`}
-          backLink={backLink}
-          action={{
-            label: 'New Development Plan',
-            href: newDevelopmentPlanLink,
-            icon: 'plus',
-            variant: 'success'
-          }}
+          subtitle={`${ageGroup.name} development plans`}
         />
 
         {/* Filters */}
@@ -130,7 +100,7 @@ export default function PlayerDevelopmentPlansPage() {
         </div>
 
         {/* Development Plans List */}
-        {filteredPlans.length === 0 ? (
+        {plansWithPlayers.length === 0 ? (
           <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg">
             <Target className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -139,33 +109,41 @@ export default function PlayerDevelopmentPlansPage() {
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               {filterStatus !== 'all' 
                 ? `No ${filterStatus} development plans match the selected filter.`
-                : 'No development plans have been created yet.'}
+                : 'No development plans have been created for this age group yet.'}
             </p>
           </div>
         ) : (
           <>
             {/* Mobile Card View */}
             <div className="grid grid-cols-1 gap-4 md:hidden">
-              {filteredPlans.map(plan => (
-                <DevelopmentPlanListCard
-                  key={plan.id}
-                  plan={plan}
-                  player={player}
-                  linkTo={getDevelopmentPlanLink()}
-                />
-              ))}
+              {plansWithPlayers.map(({ plan, player }) => {
+                const linkTo = Routes.playerDevelopmentPlan(clubId!, ageGroupId!, player.id);
+                
+                return (
+                  <DevelopmentPlanListCard
+                    key={plan.id}
+                    plan={plan}
+                    player={player}
+                    linkTo={linkTo}
+                  />
+                );
+              })}
             </div>
 
             {/* Desktop Compact Row View */}
             <div className="hidden md:block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-              {filteredPlans.map(plan => (
-                <DevelopmentPlanTableRow
-                  key={plan.id}
-                  plan={plan}
-                  player={player}
-                  linkTo={getDevelopmentPlanLink()}
-                />
-              ))}
+              {plansWithPlayers.map(({ plan, player }) => {
+                const linkTo = Routes.playerDevelopmentPlan(clubId!, ageGroupId!, player.id);
+                
+                return (
+                  <DevelopmentPlanTableRow
+                    key={plan.id}
+                    plan={plan}
+                    player={player}
+                    linkTo={linkTo}
+                  />
+                );
+              })}
             </div>
           </>
         )}

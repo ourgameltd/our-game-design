@@ -51,7 +51,7 @@ export default function CoachProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         {/* Page Title with Back Button */}
         <PageTitle
           title={`${coach.firstName} ${coach.lastName}`}

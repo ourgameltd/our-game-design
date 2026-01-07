@@ -30,7 +30,7 @@ const AddEditTeamPage: React.FC = () => {
   
   if (!club || !ageGroup) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="mx-auto px-4 py-8">
         <p className="text-red-500">{!club ? 'Club not found' : 'Age group not found'}</p>
       </div>
     );
@@ -39,7 +39,7 @@ const AddEditTeamPage: React.FC = () => {
   // Prevent adding teams to archived age groups
   if (!isEditing && ageGroup.isArchived) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="mx-auto px-4 py-8">
         <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
           <h2 className="text-xl font-semibold text-orange-800 dark:text-orange-300 mb-2">
             Cannot Add Team
@@ -61,7 +61,7 @@ const AddEditTeamPage: React.FC = () => {
   // Prevent editing archived teams
   if (isEditing && existingTeam?.isArchived) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="mx-auto px-4 py-8">
         <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
           <h2 className="text-xl font-semibold text-orange-800 dark:text-orange-300 mb-2">
             Cannot Edit Archived Team
@@ -141,7 +141,7 @@ const AddEditTeamPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         {/* Header */}
         <PageTitle
           title={isEditing ? 'Edit Team' : 'Add New Team'}

@@ -142,7 +142,7 @@ export default function NotificationsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-4">
+      <div className="mx-auto px-4 py-4">
         <PageTitle 
           title="Notifications"
           subtitle={`You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}

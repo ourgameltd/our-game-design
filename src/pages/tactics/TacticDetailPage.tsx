@@ -60,7 +60,7 @@ export default function TacticDetailPage() {
   if (!tactic) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-4">
+        <main className="mx-auto px-4 py-4">
           <div className="text-center py-12">
             <p className="text-gray-600 dark:text-gray-400">Tactic not found</p>
             <Link to={getBackUrl()} className="text-blue-600 hover:underline mt-4 inline-block">
@@ -83,7 +83,7 @@ export default function TacticDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
           <PageTitle
             title={tactic.name}

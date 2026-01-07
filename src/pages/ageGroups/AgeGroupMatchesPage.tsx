@@ -15,7 +15,7 @@ export default function AgeGroupMatchesPage() {
   if (!club || !ageGroup) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-4">
+        <main className="mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">
               {!club ? 'Club not found' : 'Age group not found'}
@@ -40,7 +40,7 @@ export default function AgeGroupMatchesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">

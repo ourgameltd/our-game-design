@@ -432,3 +432,43 @@ export const getLatestReportForPlayer = (playerId: string): PlayerReport | undef
   return reports.length > 0 ? reports[0] : undefined;
 };
 
+// Import players data to filter by club/age group/team
+import { samplePlayers } from './players';
+
+export const getReportsByClubId = (clubId: string): PlayerReport[] => {
+  const clubPlayerIds = samplePlayers
+    .filter(player => player.clubId === clubId)
+    .map(player => player.id);
+  
+  return sampleReports
+    .filter(report => clubPlayerIds.includes(report.playerId))
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+};
+
+export const getReportsByAgeGroupId = (clubId: string, ageGroupId: string): PlayerReport[] => {
+  const ageGroupPlayerIds = samplePlayers
+    .filter(player => 
+      player.clubId === clubId && 
+      player.ageGroupIds.includes(ageGroupId)
+    )
+    .map(player => player.id);
+  
+  return sampleReports
+    .filter(report => ageGroupPlayerIds.includes(report.playerId))
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+};
+
+export const getReportsByTeamId = (clubId: string, ageGroupId: string, teamId: string): PlayerReport[] => {
+  const teamPlayerIds = samplePlayers
+    .filter(player => 
+      player.clubId === clubId && 
+      player.ageGroupIds.includes(ageGroupId) &&
+      player.teamIds.includes(teamId)
+    )
+    .map(player => player.id);
+  
+  return sampleReports
+    .filter(report => teamPlayerIds.includes(report.playerId))
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+};
+

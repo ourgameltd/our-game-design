@@ -25,7 +25,7 @@ const AgeGroupOverviewPage: React.FC = () => {
   
   if (!ageGroup || !club) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="mx-auto px-4 py-8">
         <p className="text-red-500">{!ageGroup ? 'Age group not found' : 'Club not found'}</p>
       </div>
     );
@@ -60,7 +60,7 @@ const AgeGroupOverviewPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex-grow">
             <PageTitle

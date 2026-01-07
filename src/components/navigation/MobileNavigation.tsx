@@ -73,8 +73,8 @@ export default function MobileNavigation() {
   // Check if we're viewing a scheduling-related page (matches or training)
   const isSchedulingPage = location.pathname.includes('/matches') || location.pathname.includes('/training');
 
-  // Check if we're viewing a management-related page (ethos, kits)
-  const isManagementPage = location.pathname.includes('/ethos') || location.pathname.includes('/kits');
+  // Check if we're viewing a management-related page (ethos, kits, report-cards)
+  const isManagementPage = location.pathname.includes('/ethos') || location.pathname.includes('/kits') || location.pathname.includes('/report-cards');
 
   // Check if we're viewing a tactics-related page (formations, drills, templates)
   const isTacticsPage = location.pathname.includes('/tactics') || location.pathname.includes('/drills') || location.pathname.includes('/drill-templates');
@@ -473,6 +473,15 @@ export default function MobileNavigation() {
                                 <span className="mobile-nav-text">Teams</span>
                               </Link>
                             </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/report-cards`}
+                                className={`mobile-nav-link pl-8 ${isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/report-cards`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Report Cards</span>
+                              </Link>
+                            </li>
                           </ul>
                         )}
                       </li>
@@ -572,6 +581,15 @@ export default function MobileNavigation() {
                                 <span className="mobile-nav-text">Matches</span>
                               </Link>
                             </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/training`}
+                                className={`mobile-nav-link pl-8 ${isActive(`/dashboard/${clubId}/training`) ? 'active' : ''}`}
+                              >
+                                <Shield className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Training</span>
+                              </Link>
+                            </li>
                           </ul>
                         )}
                       </li>
@@ -660,6 +678,15 @@ export default function MobileNavigation() {
                                 <span className="mobile-nav-text">Kits</span>
                               </Link>
                             </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/report-cards`}
+                                className={`mobile-nav-link pl-8 ${isActive(`/dashboard/${clubId}/report-cards`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Report Cards</span>
+                              </Link>
+                            </li>
                           </ul>
                         )}
                       </li>
@@ -716,12 +743,12 @@ export default function MobileNavigation() {
                         <Link 
                           to={teamId 
                             ? `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plans`
-                            : `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development`
+                            : `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development-plans`
                           }
                           className={`mobile-nav-link pl-8 ${
                             teamId 
                               ? isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plans`)
-                              : isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development`)
+                              : isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development-plans`)
                           } ? 'active' : ''}`}
                         >
                           <Shield className="mobile-nav-icon" />
@@ -731,17 +758,17 @@ export default function MobileNavigation() {
                       <li className="mobile-nav-item">
                         <Link 
                           to={teamId 
-                            ? `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-card`
-                            : `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-card`
+                            ? `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-cards`
+                            : `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-cards`
                           }
                           className={`mobile-nav-link pl-8 ${
                             teamId 
-                              ? isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-card`)
-                              : isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-card`)
+                              ? isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-cards`)
+                              : isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-cards`)
                           } ? 'active' : ''}`}
                         >
                           <FileText className="mobile-nav-icon" />
-                          <span className="mobile-nav-text">Report Card</span>
+                          <span className="mobile-nav-text">Report Cards</span>
                         </Link>
                       </li>
                       <li className="mobile-nav-item">
@@ -955,6 +982,15 @@ export default function MobileNavigation() {
                                 <span className="mobile-nav-text">Kits</span>
                               </Link>
                             </li>
+                            <li className="mobile-nav-item">
+                              <Link 
+                                to={`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/report-cards`}
+                                className={`mobile-nav-link pl-8 ${isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/report-cards`) ? 'active' : ''}`}
+                              >
+                                <FileText className="mobile-nav-icon" />
+                                <span className="mobile-nav-text">Report Cards</span>
+                              </Link>
+                            </li>
                           </ul>
                         )}
                       </li>
@@ -1029,7 +1065,7 @@ export default function MobileNavigation() {
           )}
 
           {/* Only show divider if not on dashboard */}
-          {location.pathname !== '/dashboard' && (
+          {(location.pathname !== '/dashboard' && location.pathname !== '/profile') && (
             <div className="mobile-nav-divider"></div>
           )}
 

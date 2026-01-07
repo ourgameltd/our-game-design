@@ -49,6 +49,10 @@ export class Routes {
     return `/dashboard/${clubId}/kits`;
   }
 
+  static clubTraining(clubId: string): string {
+    return `/dashboard/${clubId}/training`;
+  }
+
   static clubSettings(clubId: string): string {
     return `/dashboard/${clubId}/settings`;
   }
@@ -140,12 +144,62 @@ export class Routes {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-card`;
   }
 
+  static playerReportCards(
+    clubId: string,
+    ageGroupId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-cards`;
+  }
+
+  static editPlayerReportCard(
+    clubId: string,
+    ageGroupId: string,
+    playerId: string,
+    reportId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-cards/${reportId}/edit`;
+  }
+
+  static newPlayerReportCard(
+    clubId: string,
+    ageGroupId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/report-cards/new`;
+  }
+
+  static playerDevelopmentPlan(
+    clubId: string,
+    ageGroupId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development-plan`;
+  }
+
   static playerDevelopmentPlans(
     clubId: string,
     ageGroupId: string,
     playerId: string
   ): string {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development-plans`;
+  }
+
+  static editPlayerDevelopmentPlan(
+    clubId: string,
+    ageGroupId: string,
+    playerId: string,
+    planId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development-plans/${planId}/edit`;
+  }
+
+  static newPlayerDevelopmentPlan(
+    clubId: string,
+    ageGroupId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/players/${playerId}/development-plans/new`;
   }
 
   static playerAlbum(
@@ -192,6 +246,43 @@ export class Routes {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-card`;
   }
 
+  static teamPlayerReportCards(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-cards`;
+  }
+
+  static editTeamPlayerReportCard(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string,
+    reportId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-cards/${reportId}/edit`;
+  }
+
+  static newTeamPlayerReportCard(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/report-cards/new`;
+  }
+
+  static teamPlayerDevelopmentPlan(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plan`;
+  }
+
   static teamPlayerDevelopmentPlans(
     clubId: string,
     ageGroupId: string,
@@ -199,6 +290,25 @@ export class Routes {
     playerId: string
   ): string {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plans`;
+  }
+
+  static editTeamPlayerDevelopmentPlan(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string,
+    planId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plans/${planId}/edit`;
+  }
+
+  static newTeamPlayerDevelopmentPlan(
+    clubId: string,
+    ageGroupId: string,
+    teamId: string,
+    playerId: string
+  ): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/players/${playerId}/development-plans/new`;
   }
 
   static teamPlayerAlbum(
@@ -471,6 +581,32 @@ export class Routes {
 
   static teamTrainingSessionEdit(clubId: string, ageGroupId: string, teamId: string, sessionId: string): string {
     return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training/${sessionId}/edit`;
+  }
+
+  // Report Cards (Management)
+  static clubReportCards(clubId: string): string {
+    return `/dashboard/${clubId}/report-cards`;
+  }
+
+  static ageGroupReportCards(clubId: string, ageGroupId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/report-cards`;
+  }
+
+  static teamReportCards(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/report-cards`;
+  }
+
+  // Development Plans (Management)
+  static clubDevelopmentPlans(clubId: string): string {
+    return `/dashboard/${clubId}/development-plans`;
+  }
+
+  static ageGroupDevelopmentPlans(clubId: string, ageGroupId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/development-plans`;
+  }
+
+  static teamDevelopmentPlans(clubId: string, ageGroupId: string, teamId: string): string {
+    return `/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/development-plans`;
   }
 
   // Auth

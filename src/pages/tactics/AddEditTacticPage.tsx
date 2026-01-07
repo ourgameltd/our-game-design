@@ -146,7 +146,7 @@ export default function AddEditTacticPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
           <PageTitle
             title={isEditing ? 'Edit Tactic' : 'New Tactic'}

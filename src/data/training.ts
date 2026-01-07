@@ -382,6 +382,10 @@ export const getTrainingSessionsByTeamId = (teamId: string): TrainingSession[] =
   return sampleTrainingSessions.filter(session => session.teamId === teamId);
 };
 
+export const getTrainingSessionsByClubId = (teamIds: string[]): TrainingSession[] => {
+  return sampleTrainingSessions.filter(session => teamIds.includes(session.teamId));
+};
+
 export const getUpcomingTrainingSessions = (): TrainingSession[] => {
   const now = new Date();
   return sampleTrainingSessions

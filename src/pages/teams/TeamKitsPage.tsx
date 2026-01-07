@@ -19,7 +19,7 @@ export default function TeamKitsPage() {
   if (!team || !club) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="container mx-auto px-4 py-4">
+        <main className="mx-auto px-4 py-4">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Team not found</h2>
           </div>
@@ -75,7 +75,7 @@ export default function TeamKitsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <main className="container mx-auto px-4 py-4">
+      <main className="mx-auto px-4 py-4">
         <div className="flex items-center gap-2 mb-6">
           <div className="flex-grow">
             <PageTitle
