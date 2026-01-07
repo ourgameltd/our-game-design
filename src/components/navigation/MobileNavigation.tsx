@@ -18,7 +18,9 @@ import {
   ChevronsLeft,
   ChevronDown,
   ChevronUp,
-  Settings
+  Settings,
+  Calendar,
+  Dumbbell
 } from 'lucide-react';
 import { getClubById } from '@data/clubs';
 import { getTeamById } from '@data/teams';
@@ -378,7 +380,7 @@ export default function MobileNavigation() {
                           className={`mobile-nav-link pl-8 w-full justify-between ${isSchedulingPage ? 'text-primary-600 dark:text-primary-400' : ''}`}
                         >
                           <span className="flex items-center gap-4">
-                            <FileText className="mobile-nav-icon" />
+                            <Calendar className="mobile-nav-icon" />
                             <span className="mobile-nav-text">Scheduling</span>
                           </span>
                           {isSchedulingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -399,7 +401,7 @@ export default function MobileNavigation() {
                                 to={`/dashboard/${clubId}/age-groups/${ageGroupId}/training`}
                                 className={`mobile-nav-link pl-8 ${isActive(`/dashboard/${clubId}/age-groups/${ageGroupId}/training`) ? 'active' : ''}`}
                               >
-                                <Shield className="mobile-nav-icon" />
+                                <Dumbbell className="mobile-nav-icon" />
                                 <span className="mobile-nav-text">Training</span>
                               </Link>
                             </li>
@@ -565,7 +567,7 @@ export default function MobileNavigation() {
                           className={`mobile-nav-link pl-8 w-full justify-between ${isSchedulingPage ? 'text-primary-600 dark:text-primary-400' : ''}`}
                         >
                           <span className="flex items-center gap-4">
-                            <FileText className="mobile-nav-icon" />
+                            <Calendar className="mobile-nav-icon" />
                             <span className="mobile-nav-text">Scheduling</span>
                           </span>
                           {isSchedulingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -586,7 +588,7 @@ export default function MobileNavigation() {
                                 to={`/dashboard/${clubId}/training`}
                                 className={`mobile-nav-link pl-8 ${isActive(`/dashboard/${clubId}/training`) ? 'active' : ''}`}
                               >
-                                <Shield className="mobile-nav-icon" />
+                                <Dumbbell className="mobile-nav-icon" />
                                 <span className="mobile-nav-text">Training</span>
                               </Link>
                             </li>
@@ -887,7 +889,7 @@ export default function MobileNavigation() {
                           className={`mobile-nav-link pl-8 w-full justify-between ${isSchedulingPage ? 'text-primary-600 dark:text-primary-400' : ''}`}
                         >
                           <span className="flex items-center gap-4">
-                            <FileText className="mobile-nav-icon" />
+                            <Calendar className="mobile-nav-icon" />
                             <span className="mobile-nav-text">Scheduling</span>
                           </span>
                           {isSchedulingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -908,7 +910,7 @@ export default function MobileNavigation() {
                                 to={`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training`}
                                 className={`mobile-nav-link pl-8 ${location.pathname.includes(`/dashboard/${clubId}/age-groups/${ageGroupId}/teams/${teamId}/training`) ? 'active' : ''}`}
                               >
-                                <FileText className="mobile-nav-icon" />
+                                <Dumbbell className="mobile-nav-icon" />
                                 <span className="mobile-nav-text">Training</span>
                               </Link>
                             </li>
