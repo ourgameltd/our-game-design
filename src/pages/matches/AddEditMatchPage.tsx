@@ -1077,7 +1077,7 @@ export default function AddEditMatchPage() {
             <div className="mt-4 space-y-4">
 
               {/* Two Column Layout: Players List + Formation Display */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4">
                 {/* Left Column: Starting XI and Substitutes */}
                 <div className="space-y-2">
                    {/* Formation/Tactic Selection - Merged Dropdown */}
