@@ -16,4 +16,13 @@
     <PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="UseCases\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OurGame.Persistence\OurGame.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

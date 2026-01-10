@@ -1,0 +1,257 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "OurGameContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1301",
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PluralRules": null,
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "OurGame.Persistence",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "SingularRules": null,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[age_group_coordinators]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[age_groups]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[applied_templates]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[attribute_evaluations]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[cards]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[clubs]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[coaches]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[development_goals]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[development_plans]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[drill_links]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[drill_templates]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[drills]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[emergency_contacts]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[evaluation_attributes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[formation_positions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[formations]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[goals]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[injuries]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[kit_order_items]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[kit_orders]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[kits]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[lineup_players]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[match_coaches]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[match_lineups]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[match_reports]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[match_substitutions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[matches]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[performance_ratings]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[personal_session_drills]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[personal_sessions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[player_age_groups]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[player_attributes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[player_images]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[player_parents]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[player_reports]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[player_teams]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[players]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[position_overrides]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[progress_notes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[report_development_actions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[session_attendance]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[session_coaches]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[session_drills]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[similar_professionals]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tactic_principles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[team_coaches]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[teams]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[template_drills]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[training_objectives]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[training_plans]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[training_sessions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[users]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}
