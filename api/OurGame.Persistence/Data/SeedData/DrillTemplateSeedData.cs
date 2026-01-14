@@ -5,9 +5,9 @@ namespace OurGame.Persistence.Data.SeedData;
 public static class DrillTemplateSeedData
 {
     // Drill Template IDs
-    public static readonly Guid Template_TechnicalFoundations_Id = Guid.Parse("dt1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c");
-    public static readonly Guid Template_TacticalDevelopment_Id = Guid.Parse("dt2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d");
-    public static readonly Guid Template_MatchPreparation_Id = Guid.Parse("dt3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e");
+    public static readonly Guid Template_TechnicalFoundations_Id = Guid.Parse("d01a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c");
+    public static readonly Guid Template_TacticalDevelopment_Id = Guid.Parse("d02b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d");
+    public static readonly Guid Template_MatchPreparation_Id = Guid.Parse("d03c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e");
 
     public static List<DrillTemplate> GetDrillTemplates()
     {
@@ -42,6 +42,7 @@ public static class DrillTemplateSeedData
             new DrillTemplate
             {
                 Id = Template_MatchPreparation_Id,
+                Name = "Finishing Practice",
                 Description = "Improve accuracy and confidence in front of goal",
                 AggregatedAttributes = "[\"finishing\",\"shotPower\",\"composure\",\"crossing\",\"heading\",\"attackingPosition\"]",
                 TotalDuration = 40,

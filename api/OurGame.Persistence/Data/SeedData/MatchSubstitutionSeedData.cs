@@ -13,8 +13,8 @@ public static class MatchSubstitutionSeedData
             {
                 Id = Guid.NewGuid(),
                 MatchId = MatchSeedData.Match3_Id,
-                PlayerOutId = Guid.Parse("p12d4e5f-6a7b-8c9d-0e1f-2a3b4c5d6e7f"),
-                PlayerInId = Guid.Parse("p29f6a7b-8c9d-0e1f-2a3b-4c5d6e7f8a9b"),
+                PlayerOutId = PlayerSeedData.EthanDavies_Id,
+                PlayerInId = PlayerSeedData.CharlieRoberts_Id,
                 Minute = 75
             }
         };

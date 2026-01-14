@@ -8,7 +8,8 @@ public partial class OurGameContext
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         // Apply all seed data configurations from the Configurations folder
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OurGameContext).Assembly);
+        // Note: Temporarily disabled due to reflection issues with HasData() calls
+        // modelBuilder.ApplyConfigurationsFromAssembly(typeof(OurGameContext).Assembly);
         
         // Configure UTC DateTime conversion for all DateTime properties
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
