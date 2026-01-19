@@ -20,6 +20,7 @@ public static class UserSeedData
             new User
             {
                 Id = DemoUser_Id,
+                AzureUserId = "demo-azure-user-id-123",
                 Email = "demo@valefc.com",
                 FirstName = "Demo",
                 LastName = "User",
@@ -32,6 +33,7 @@ public static class UserSeedData
             new User
             {
                 Id = PlayerUser_Id,
+                AzureUserId = "player-azure-user-id-456",
                 Email = "oliver.thompson@example.com",
                 FirstName = "Oliver",
                 LastName = "Thompson",
@@ -44,6 +46,7 @@ public static class UserSeedData
             new User
             {
                 Id = ParentUser_Id,
+                AzureUserId = "parent-azure-user-id-789",
                 Email = "sarah.thompson@example.com",
                 FirstName = "Sarah",
                 LastName = "Thompson",
@@ -56,6 +59,7 @@ public static class UserSeedData
             new User
             {
                 Id = FanUser_Id,
+                AzureUserId = "fan-azure-user-id-101",
                 Email = "mike.anderson@example.com",
                 FirstName = "Mike",
                 LastName = "Anderson",

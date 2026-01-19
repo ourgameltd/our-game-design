@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 
 namespace OurGame.Api.Extensions;
@@ -17,6 +18,20 @@ public static class HttpRequestDataX
     /// <returns>ClaimsPrincipal if authenticated, null otherwise</returns>
     public static ClaimsPrincipal? GetClientPrincipal(this HttpRequestData req)
     {
+        var json = string.Empty;
+
+#if DEBUG
+        // ML: Mother of all hacks while this bug gets fixed
+        // https://github.com/Azure/static-web-apps/issues/897
+
+        if (req.Cookies.Any(i => i.Name == "StaticWebAppsAuthCookie"))
+        {
+            var cookieData = req.Cookies.First(i => i.Name == "StaticWebAppsAuthCookie").Value;
+            var decoded = Convert.FromBase64String(cookieData);
+            json = Encoding.UTF8.GetString(decoded);
+        }
+#endif
+
         if (!req.Headers.TryGetValues("x-ms-client-principal", out var headerValues))
         {
             return null;
@@ -30,9 +45,13 @@ public static class HttpRequestDataX
 
         try
         {
-            // The header is base64 encoded JSON
-            var data = Convert.FromBase64String(header);
-            var json = System.Text.Encoding.UTF8.GetString(data);
+            if (string.IsNullOrWhiteSpace(json))
+            { 
+                // The header is base64 encoded JSON
+                var data = Convert.FromBase64String(header);
+                json = System.Text.Encoding.UTF8.GetString(data);
+            }
+
             var principal = JsonSerializer.Deserialize<ClientPrincipalData>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
@@ -133,6 +152,18 @@ public static class HttpRequestDataX
     public static bool IsAuthenticated(this HttpRequestData req)
     {
         return req.GetClientPrincipal() != null;
+    }
+
+    /// <summary>
+    /// Gets a query parameter value from the request URL
+    /// </summary>
+    /// <param name="req">The HTTP request</param>
+    /// <param name="paramName">The name of the query parameter</param>
+    /// <returns>The parameter value if found, null otherwise</returns>
+    public static string? GetQueryParam(this HttpRequestData req, string paramName)
+    {
+        var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
+        return query[paramName];
     }
 }
 

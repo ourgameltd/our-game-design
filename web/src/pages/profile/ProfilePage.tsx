@@ -1,35 +1,91 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Shield, Save, Moon, Sun, Monitor } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { getCurrentUser, UserProfile } from '@/api/users';
 import PageTitle from '@components/common/PageTitle';
 
 export default function ProfilePage() {
   const { theme, setTheme } = useTheme();
+  const { isAuthenticated, isLoading } = useAuth();
   
-  // Mock user data - in real app this would come from API
-  const [userData, setUserData] = useState({
-    name: 'John Smith',
-    email: 'john.smith@example.com',
-    phone: '+44 7700 900000',
-    location: 'Manchester, UK',
-    dateJoined: '2024-01-15',
-    role: 'Coach',
-    clubAffiliations: ['Vale FC', 'Manchester Youth'],
+  // User data from API
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
   });
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(userData);
+  // Fetch user profile
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (isAuthenticated && !isLoading) {
+        try {
+          setIsLoadingProfile(true);
+          const profile = await getCurrentUser();
+          setUserProfile(profile);
+          setFormData({
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            email: profile.email,
+          });
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+        } finally {
+          setIsLoadingProfile(false);
+        }
+      }
+    };
+
+    fetchProfile();
+  }, [isAuthenticated, isLoading]);
 
   const handleSave = () => {
-    setUserData(formData);
-    setIsEditing(false);
     // In real app, save to backend here
+    if (userProfile) {
+      setUserProfile({
+        ...userProfile,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+      });
+    }
+    setIsEditing(false);
   };
 
   const handleCancel = () => {
-    setFormData(userData);
+    if (userProfile) {
+      setFormData({
+        firstName: userProfile.firstName,
+        lastName: userProfile.lastName,
+        email: userProfile.email,
+      });
+    }
     setIsEditing(false);
   };
+
+  if (isLoadingProfile || isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center text-gray-600 dark:text-gray-400">Loading profile...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!userProfile) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center text-gray-600 dark:text-gray-400">Failed to load profile</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -43,14 +99,43 @@ export default function ProfilePage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-card p-6 mb-4 transition-colors">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <div className="w-20 h-20 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
-                <User className="w-10 h-10 text-primary-600 dark:text-primary-400" />
+              <div className="w-20 h-20 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center overflow-hidden">
+                {userProfile.photo ? (
+                  <img 
+                    src={userProfile.photo} 
+                    alt={`${userProfile.firstName} ${userProfile.lastName}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-10 h-10 text-primary-600 dark:text-primary-400" />
+                )}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{userData.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {isEditing ? (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        placeholder="First Name"
+                      />
+                      <input
+                        type="text"
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                        className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        placeholder="Last Name"
+                      />
+                    </div>
+                  ) : (
+                    `${userProfile.firstName} ${userProfile.lastName}`
+                  )}
+                </h2>
                 <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 mt-1">
                   <Shield className="w-4 h-4" />
-                  <span className="text-sm">{userData.role}</span>
+                  <span className="text-sm">{userProfile.role}</span>
                 </div>
               </div>
             </div>
@@ -80,42 +165,14 @@ export default function ProfilePage() {
                   className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               ) : (
-                <span className="text-gray-900 dark:text-white">{userData.email}</span>
-              )}
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Phone className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-              {isEditing ? (
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                />
-              ) : (
-                <span className="text-gray-900 dark:text-white">{userData.phone}</span>
-              )}
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                />
-              ) : (
-                <span className="text-gray-900 dark:text-white">{userData.location}</span>
+                <span className="text-gray-900 dark:text-white">{userProfile.email}</span>
               )}
             </div>
 
             <div className="flex items-center space-x-2">
               <Calendar className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               <span className="text-gray-900 dark:text-white">
-                Joined {new Date(userData.dateJoined).toLocaleDateString('en-GB', { 
+                Joined {new Date(userProfile.createdAt).toLocaleDateString('en-GB', { 
                   day: 'numeric', 
                   month: 'long', 
                   year: 'numeric' 

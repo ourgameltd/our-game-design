@@ -29,6 +29,8 @@ import { getPlayerById } from '@data/players';
 import { getCoachById } from '@data/coaches';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useNavigation } from '@/contexts/NavigationContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { getCurrentUser, UserProfile } from '@/api/users';
 
 export default function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +39,9 @@ export default function MobileNavigation() {
   const [isSchedulingExpanded, setIsSchedulingExpanded] = useState(false);
   const [isManagementExpanded, setIsManagementExpanded] = useState(false);
   const [isTacticsExpanded, setIsTacticsExpanded] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { isDesktopOpen, toggleDesktopNav } = useNavigation();
+  const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
   const { theme, setTheme, actualTheme } = useTheme();
   
@@ -108,6 +112,26 @@ export default function MobileNavigation() {
       setIsTacticsExpanded(true);
     }
   }, [isTacticsPage]);
+
+  // Fetch user profile data when authenticated
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (isAuthenticated && !isLoading) {
+        try {
+          console.log('Fetching user profile...');
+          const profile = await getCurrentUser();
+          console.log('User profile fetched:', profile);
+          setUserProfile(profile);
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+        }
+      } else {
+        console.log('Not fetching profile - authenticated:', isAuthenticated, 'loading:', isLoading);
+      }
+    };
+
+    fetchUserProfile();
+  }, [isAuthenticated, isLoading]);
 
   // Close menu when route changes (mobile only)
   useEffect(() => {
@@ -295,11 +319,23 @@ export default function MobileNavigation() {
           </Link>
           <Link to="/profile" className="mobile-nav-user-profile hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors ml-auto">
             <div className="mobile-nav-user-avatar-wrapper">
-              <User className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+              {userProfile?.photo ? (
+                <img 
+                  src={userProfile.photo} 
+                  alt={`${userProfile.firstName} ${userProfile.lastName}`}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <User className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+              )}
             </div>
             <div className="mobile-nav-user-info">
-              <span className="mobile-nav-user-name">John Doe</span>
-              <span className="mobile-nav-user-role">Coach</span>
+              <span className="mobile-nav-user-name">
+                {userProfile ? `${userProfile.firstName} ${userProfile.lastName}` : 'Loading...'}
+              </span>
+              <span className="mobile-nav-user-role">
+                {userProfile?.role || 'User'}
+              </span>
             </div>
           </Link>
           <button 

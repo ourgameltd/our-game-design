@@ -44,21 +44,6 @@ export default function ClubsListPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
-        {/* User Info Debug Section (remove in production) */}
-        {user && (
-          <div className="mb-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              Authenticated User Info
-            </h3>
-            <div className="text-xs space-y-1 text-blue-800 dark:text-blue-200">
-              <p><strong>User ID:</strong> {user.userId}</p>
-              <p><strong>Display Name:</strong> {displayName || 'N/A'}</p>
-              <p><strong>Email:</strong> {email || 'N/A'}</p>
-              <p><strong>Identity Provider:</strong> {user.identityProvider}</p>
-              <p><strong>Roles:</strong> {user.userRoles.join(', ')}</p>
-            </div>
-          </div>
-        )}
 
         <PageTitle
           title={displayName ? `Welcome, ${displayName}!` : "Welcome!"}
