@@ -18,12 +18,6 @@ public partial class User
 
     public UserRole Role { get; set; }
 
-    public Guid? ClubId { get; set; }
-
-    public Guid? PlayerId { get; set; }
-
-    public Guid? StaffId { get; set; }
-
     public string Photo { get; set; }
 
     public string Preferences { get; set; }
@@ -31,8 +25,6 @@ public partial class User
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
-
-    public virtual Club Club { get; set; }
 
     public virtual ICollection<KitOrder> KitOrders { get; set; } = new List<KitOrder>();
 

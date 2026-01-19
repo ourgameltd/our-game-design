@@ -39,6 +39,7 @@ public static class PlayerSeedData
                 AssociationId = "SFA-Y-40123",
                 PreferredPositions = "[\"GK\"]",
                 OverallRating = 50,
+                UserId = UserSeedData.PlayerUser_Id,
                 Allergies = null,
                 MedicalConditions = null,
                 IsArchived = false,

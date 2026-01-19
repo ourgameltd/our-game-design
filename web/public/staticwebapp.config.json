@@ -5,8 +5,28 @@
   },
   "routes": [
     {
-      "route": "/api/*",
+      "route": "/",
       "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/login",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/register",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/password-reset",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/*",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/*",
+      "allowedRoles": ["authenticated"]
     }
   ],
   "globalHeaders": {
@@ -16,6 +36,10 @@
     "Access-Control-Allow-Headers": "Content-Type, Authorization"
   },
   "responseOverrides": {
+    "401": {
+      "statusCode": 302,
+      "redirect": "/.auth/login/aad?post_login_redirect_uri=.referrer"
+    },
     "404": {
       "rewrite": "/index.html",
       "statusCode": 200

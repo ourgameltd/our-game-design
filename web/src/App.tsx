@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { UserPreferencesProvider } from '@/contexts/UserPreferencesContext';
 import { NavigationProvider, useNavigation } from '@/contexts/NavigationContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 import HomePage from '@pages/HomePage';
 import LoginPage from '@pages/auth/LoginPage';
 import RegisterPage from '@pages/auth/RegisterPage';
@@ -269,9 +270,11 @@ function App() {
     <ThemeProvider>
       <UserPreferencesProvider>
         <NavigationProvider>
-          <Router basename={import.meta.env.BASE_URL}>
-            <AppContent />
-          </Router>
+          <AuthProvider>
+            <Router basename={import.meta.env.BASE_URL}>
+              <AppContent />
+            </Router>
+          </AuthProvider>
         </NavigationProvider>
       </UserPreferencesProvider>
     </ThemeProvider>

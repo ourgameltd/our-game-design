@@ -34,6 +34,8 @@ public partial class Coach
 
     public string Specializations { get; set; }
 
+    public Guid? UserId { get; set; }
+
     public bool IsArchived { get; set; }
 
     public DateTime CreatedAt { get; set; }
@@ -65,4 +67,6 @@ public partial class Coach
     public virtual ICollection<TeamCoach> TeamCoaches { get; set; } = new List<TeamCoach>();
 
     public virtual ICollection<TrainingPlan> TrainingPlans { get; set; } = new List<TrainingPlan>();
+
+    public virtual User User { get; set; }
 }

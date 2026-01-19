@@ -34,6 +34,7 @@ public static class CoachSeedData
                 Role = CoachRole.HeadCoach,
                 Biography = "Experienced youth coach with over 15 years developing young talent. Former professional player with Vale of Leven FC and passionate about grassroots football development.",
                 Specializations = "[\"Youth Development\",\"Tactical Training\",\"Team Building\"]",
+                UserId = UserSeedData.DemoUser_Id,
                 IsArchived = false,
                 CreatedAt = now,
                 UpdatedAt = now

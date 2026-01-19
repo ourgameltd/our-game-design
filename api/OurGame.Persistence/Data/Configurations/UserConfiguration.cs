@@ -38,15 +38,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion<string>()
             .HasMaxLength(50);
             
-        builder.Property(u => u.ClubId)
-            .HasColumnName("club_id");
-            
-        builder.Property(u => u.PlayerId)
-            .HasColumnName("player_id");
-            
-        builder.Property(u => u.StaffId)
-            .HasColumnName("staff_id");
-            
         builder.Property(u => u.Photo)
             .HasColumnName("photo");
             
@@ -60,19 +51,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.UpdatedAt)
             .HasColumnName("updated_at")
             .HasDefaultValueSql("GETUTCDATE()");
-            
-        builder.HasOne(u => u.Club)
-            .WithMany(c => c.Users)
-            .HasForeignKey(u => u.ClubId)
-            .HasConstraintName("FK_users_clubs");
-            
-        builder.HasIndex(u => u.ClubId)
-            .HasDatabaseName("IX_users_club_id");
-            
-        builder.HasIndex(u => u.PlayerId)
-            .HasDatabaseName("IX_users_player_id");
-            
-        builder.HasIndex(u => u.StaffId)
-            .HasDatabaseName("IX_users_staff_id");
     }
 }

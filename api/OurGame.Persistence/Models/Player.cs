@@ -27,6 +27,8 @@ public partial class Player
 
     public int? OverallRating { get; set; }
 
+    public Guid? UserId { get; set; }
+
     public string Allergies { get; set; }
 
     public string MedicalConditions { get; set; }
@@ -82,4 +84,6 @@ public partial class Player
     public virtual ICollection<SessionAttendance> SessionAttendances { get; set; } = new List<SessionAttendance>();
 
     public virtual ICollection<TrainingPlan> TrainingPlans { get; set; } = new List<TrainingPlan>();
+
+    public virtual User User { get; set; }
 }

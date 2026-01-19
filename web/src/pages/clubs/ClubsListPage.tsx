@@ -5,8 +5,12 @@ import { currentUser } from '@data/currentUser';
 import PageTitle from '@components/common/PageTitle';
 import { Routes } from '@utils/routes';
 import { useClubs } from '@/api/hooks';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ClubsListPage() {
+  // Get authenticated user information
+  const { user, email, displayName, isLoading: authLoading } = useAuth();
+  
   // Fetch clubs from API
   const { data: apiClubs, isLoading, error } = useClubs();
 
@@ -25,11 +29,39 @@ export default function ClubsListPage() {
     ? samplePlayers.filter(p => currentUser.childrenIds!.includes(p.id)) 
     : [];
 
+  // Show loading state while authentication is loading
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading user information...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="mx-auto px-4 py-4">
+        {/* User Info Debug Section (remove in production) */}
+        {user && (
+          <div className="mb-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+              Authenticated User Info
+            </h3>
+            <div className="text-xs space-y-1 text-blue-800 dark:text-blue-200">
+              <p><strong>User ID:</strong> {user.userId}</p>
+              <p><strong>Display Name:</strong> {displayName || 'N/A'}</p>
+              <p><strong>Email:</strong> {email || 'N/A'}</p>
+              <p><strong>Identity Provider:</strong> {user.identityProvider}</p>
+              <p><strong>Roles:</strong> {user.userRoles.join(', ')}</p>
+            </div>
+          </div>
+        )}
+
         <PageTitle
-          title="Welcome!"
+          title={displayName ? `Welcome, ${displayName}!` : "Welcome!"}
           subtitle="You can find things here quickly. Select a club or information relevant to you to get started."
         />
 

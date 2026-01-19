@@ -56,6 +56,4 @@ public partial class Club
     public virtual ICollection<Player> Players { get; set; } = new List<Player>();
 
     public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
-
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

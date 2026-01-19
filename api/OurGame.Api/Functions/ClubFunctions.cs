@@ -5,6 +5,7 @@ using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using OurGame.Api.Extensions;
 using OurGame.Application.Abstractions.Exceptions;
 using OurGame.Application.Abstractions.Responses;
 using OurGame.Application.UseCases.Clubs.DTOs;
@@ -42,6 +43,16 @@ public class ClubFunctions
     {
         try
         {
+            // Get authenticated user information from SWA
+            var userId = req.GetUserId();
+            var userEmail = req.GetUserEmail();
+            var userName = req.GetUserDisplayName();
+            
+            _logger.LogInformation("GetAllClubs called by user: {UserId} ({UserName} - {Email})", 
+                userId ?? "anonymous", userName ?? "unknown", userEmail ?? "no-email");
+            
+            // TODO: Filter clubs based on user permissions
+            // For now, return all clubs - implement role-based filtering later
             var clubs = await _mediator.Send(new GetAllClubsQuery());
             
             var response = req.CreateResponse(HttpStatusCode.OK);
