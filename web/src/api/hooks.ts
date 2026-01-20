@@ -16,6 +16,7 @@ import type {
   MatchLineupDto,
   AgeGroupListItemDto,
   ClubSummaryDto,
+  TeamListItemDto,
 } from './client';
 
 // Generic hook state
@@ -189,6 +190,16 @@ export function useTeamSquad(teamId: string | undefined): UseApiState<PlayerProf
       return apiClient.teams.getSquad(teamId);
     },
     [teamId]
+  );
+}
+
+/**
+ * Hook to fetch teams the current user has access to
+ */
+export function useMyTeams(): UseApiState<TeamListItemDto[]> {
+  return useApiCall<TeamListItemDto[]>(
+    () => apiClient.teams.getMyTeams(),
+    []
   );
 }
 

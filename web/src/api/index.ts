@@ -32,6 +32,7 @@ export {
   useAgeGroups,
   useTeam,
   useTeamSquad,
+  useMyTeams,
   usePlayer,
   usePlayerAttributes,
   useMatch,

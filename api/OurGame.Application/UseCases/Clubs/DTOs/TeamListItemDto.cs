@@ -15,6 +15,33 @@ public class TeamColorsDto
 }
 
 /// <summary>
+/// DTO representing club information in team context
+/// </summary>
+public class TeamClubDto
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("shortName")]
+    public string ShortName { get; set; } = string.Empty;
+
+    [JsonPropertyName("logo")]
+    public string? Logo { get; set; }
+
+    [JsonPropertyName("primaryColor")]
+    public string? PrimaryColor { get; set; }
+
+    [JsonPropertyName("secondaryColor")]
+    public string? SecondaryColor { get; set; }
+
+    [JsonPropertyName("accentColor")]
+    public string? AccentColor { get; set; }
+
+    [JsonPropertyName("foundedYear")]
+    public int? FoundedYear { get; set; }
+}
+
+/// <summary>
 /// DTO representing a team in a club list
 /// </summary>
 public class TeamListItemDto
@@ -51,4 +78,7 @@ public class TeamListItemDto
 
     [JsonPropertyName("isArchived")]
     public bool IsArchived { get; set; }
+
+    [JsonPropertyName("club")]
+    public TeamClubDto? Club { get; set; }
 }

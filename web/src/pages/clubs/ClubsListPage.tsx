@@ -1,23 +1,45 @@
 import { Link } from 'react-router-dom';
-import { sampleTeams } from '@data/teams';
 import { samplePlayers } from '@data/players';
 import { currentUser } from '@data/currentUser';
 import PageTitle from '@components/common/PageTitle';
 import { Routes } from '@utils/routes';
-import { useClubs } from '@/api/hooks';
+import { useMyTeams } from '@/api/hooks';
 import { useAuth } from '@/contexts/AuthContext';
+import { useMemo } from 'react';
 
 export default function ClubsListPage() {
   // Get authenticated user information
-  const { user, email, displayName, isLoading: authLoading } = useAuth();
-  
-  // Fetch clubs from API
-  const { data: apiClubs, isLoading, error } = useClubs();
+  const { displayName, isLoading: authLoading } = useAuth();
 
-  // Get teams assigned to the current user (if they are a coach/staff)
-  const myTeams = currentUser.staffId 
-    ? sampleTeams.filter(team => team.coachIds.includes(currentUser.staffId!))
-    : [];
+  // Fetch teams the current user has access to
+  const { data: myTeams, isLoading: myTeamsLoading, error: myTeamsError } = useMyTeams();
+
+  const myTeamsList = myTeams ?? [];
+  const hasMyTeams = myTeamsList.length > 0;
+
+  // Extract unique clubs from teams data
+  const myClubs = useMemo(() => {
+    if (!myTeams || myTeams.length === 0) return [];
+    
+    const clubMap = new Map();
+    myTeams.forEach(team => {
+      if (team.club && team.clubId && !clubMap.has(team.clubId)) {
+        clubMap.set(team.clubId, {
+          id: team.clubId,
+          name: team.club.name,
+          shortName: team.club.shortName,
+          logo: team.club.logo,
+          primaryColor: team.club.primaryColor,
+          secondaryColor: team.club.secondaryColor,
+          accentColor: team.club.accentColor,
+          foundedYear: team.club.foundedYear,
+        });
+      }
+    });
+    return Array.from(clubMap.values());
+  }, [myTeams]);
+
+  const hasClubs = myClubs.length > 0;
 
   // Get the current user's own player profile (if they are a player)
   const myProfile = currentUser.playerId 
@@ -46,12 +68,12 @@ export default function ClubsListPage() {
       <main className="mx-auto px-4 py-4">
 
         <PageTitle
-          title={displayName ? `Welcome, ${displayName}!` : "Welcome!"}
+          title={"Welcome!"}
           subtitle="You can find things here quickly. Select a club or information relevant to you to get started."
         />
 
         {/* Quick Access Section */}
-        {(myTeams.length > 0 || myProfile.length > 0 || myChildren.length > 0) && (
+        {(hasMyTeams || myProfile.length > 0 || myChildren.length > 0) && (
           <div className="mb-4 space-y-2">
             {/* My Children */}
             {myChildren.length > 0 && (
@@ -62,7 +84,7 @@ export default function ClubsListPage() {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {myChildren.map((player) => {
-                    const club = apiClubs?.find(c => c.id === player.clubId);
+                    const club = myClubs.find(c => c.id === player.clubId);
                     
                     return (
                       <Link
@@ -106,7 +128,7 @@ export default function ClubsListPage() {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {myProfile.map((player) => {
-                    const club = apiClubs?.find(c => c.id === player.clubId);
+                    const club = myClubs.find(c => c.id === player.clubId);
                     
                     return (
                       <Link
@@ -143,16 +165,32 @@ export default function ClubsListPage() {
           </div>
         )}
 
-{/* My Teams */}
-            {myTeams.length > 0 && (
-              <>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                  My Teams
-                </h2>
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-4">
+        {/* My Teams */}
+        {(myTeamsLoading || myTeamsError || hasMyTeams) && (
+          <>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              My Teams
+            </h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-4">
+              {myTeamsLoading && (
+                <div className="flex items-center justify-center py-6">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                </div>
+              )}
+
+              {myTeamsError && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                  <p className="text-red-800 dark:text-red-200 font-medium">Failed to load your teams</p>
+                  <p className="text-red-600 dark:text-red-300 text-sm mt-1">{myTeamsError.message}</p>
+                </div>
+              )}
+
+              {hasMyTeams && (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {myTeams.map((team) => {
-                    const club = apiClubs?.find(c => c.id === team.clubId);
+                  {myTeamsList.map((team) => {
+                    if (!team.id || !team.clubId || !team.ageGroupId) {
+                      return null;
+                    }
                     
                     return (
                       <Link
@@ -160,18 +198,18 @@ export default function ClubsListPage() {
                         to={Routes.team(team.clubId, team.ageGroupId, team.id)}
                         className="flex items-center gap-3 p-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-colors"
                       >
-                        {club?.logo ? (
+                        {team.club?.logo ? (
                           <img 
-                            src={club.logo} 
-                            alt={`${club.name} logo`}
+                            src={team.club.logo} 
+                            alt={`${team.club.name} logo`}
                             className="w-12 h-12 rounded object-cover"
                           />
                         ) : (
                           <div 
                             className="w-12 h-12 rounded flex items-center justify-center text-sm font-bold text-white"
-                            style={{ backgroundColor: team.colors?.primary || club?.primaryColor || '#3b82f6' }}
+                            style={{ backgroundColor: team.colors?.primary || team.club?.primaryColor || '#3b82f6' }}
                           >
-                            {team.shortName || team.name.substring(0, 2)}
+                            {(team.name || '').substring(0, 2)}
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
@@ -179,16 +217,17 @@ export default function ClubsListPage() {
                             {team.name}
                           </p>
                           <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                            {club?.shortName} • {team.season}
+                            {team.club?.shortName} • {team.season}
                           </p>
                         </div>
                       </Link>
                     );
                   })}
                 </div>
-              </div>
-              </>
-            )}
+              )}
+            </div>
+          </>
+        )}
 
         {/* Clubs Grid */}
         <div>
@@ -197,27 +236,27 @@ export default function ClubsListPage() {
           </h2>
           
           {/* Loading State */}
-          {isLoading && (
+          {myTeamsLoading && (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             </div>
           )}
 
           {/* Error State */}
-          {error && (
+          {myTeamsError && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <p className="text-red-800 dark:text-red-200 font-medium">Failed to load clubs</p>
-              <p className="text-red-600 dark:text-red-300 text-sm mt-1">{error.message}</p>
+              <p className="text-red-600 dark:text-red-300 text-sm mt-1">{myTeamsError.message}</p>
               <p className="text-red-600 dark:text-red-300 text-sm mt-2">
                 💡 Make sure Azure Functions is running: <code className="bg-red-100 dark:bg-red-900/40 px-2 py-1 rounded">cd api/OurGame.Api && func start</code>
               </p>
             </div>
           )}
 
-          {/* Clubs Grid - API data only */}
-          {!isLoading && !error && apiClubs && (
+          {/* Clubs Grid - Derived from teams data */}
+          {!myTeamsLoading && !myTeamsError && hasClubs && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {apiClubs.map((club) => (
+              {myClubs.map((club) => (
                 <Link
                   key={club.id}
                   to={Routes.club(club.id!)}
@@ -242,11 +281,6 @@ export default function ClubsListPage() {
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
                         {club.name}
                       </h3>
-                      {club.city && club.country && (
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {club.city}, {club.country}
-                        </p>
-                      )}
                     </div>
                   </div>
                   

@@ -63,6 +63,17 @@ export interface TeamColorsDto {
   secondary?: string;
 }
 
+// Team club DTO
+export interface TeamClubDto {
+  name?: string;
+  shortName?: string;
+  logo?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  foundedYear?: number;
+}
+
 // Team coach DTO
 export interface TeamCoachDto {
   id?: string;
@@ -84,6 +95,7 @@ export interface TeamListItemDto {
   coaches?: TeamCoachDto[];
   playerCount?: number;
   isArchived?: boolean;
+  club?: TeamClubDto;
 }
 
 // Player list item DTO for club players endpoint
@@ -209,6 +221,8 @@ export const apiClient = {
       fetchApi<ApiResponseTeamDetailDto>(`/v1/teams/${teamId}`),
     getSquad: (teamId: string) =>
       fetchApi<ApiResponse<PlayerProfileDto[]>>(`/v1/teams/${teamId}/squad`),
+    getMyTeams: () =>
+      fetchApi<ApiResponse<TeamListItemDto[]>>(`/v1/teams/my`),
   },
 
   players: {

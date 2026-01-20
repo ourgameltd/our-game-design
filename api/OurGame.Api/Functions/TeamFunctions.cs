@@ -7,8 +7,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using OurGame.Application.Abstractions.Exceptions;
 using OurGame.Application.Abstractions.Responses;
+using OurGame.Application.UseCases.Clubs.DTOs;
 using OurGame.Application.UseCases.Teams.DTOs;
 using OurGame.Application.UseCases.Teams.Queries;
+using OurGame.Api.Extensions;
 using System.Net;
 
 namespace OurGame.Api.Functions;
@@ -113,6 +115,57 @@ public class TeamFunctions
             var response = req.CreateResponse(HttpStatusCode.InternalServerError);
             await response.WriteAsJsonAsync(ApiResponse<List<TeamSquadPlayerDto>>.ErrorResponse(
                 "An error occurred while retrieving the team squad", 500));
+            return response;
+        }
+    }
+
+    /// <summary>
+    /// Get teams accessible for the current user (coach assignments)
+    /// </summary>
+    /// <param name="req">The HTTP request</param>
+    /// <returns>List of teams the user has access to</returns>
+    [Function("GetMyTeams")]
+    [OpenApiOperation(operationId: "GetMyTeams", tags: new[] { "Teams" }, Summary = "Get my teams", Description = "Retrieves teams the current user has access to via coach assignments")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ApiResponse<List<TeamListItemDto>>), Description = "Teams retrieved successfully")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.Unauthorized, contentType: "application/json", bodyType: typeof(ApiResponse<List<TeamListItemDto>>), Description = "User not authenticated")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(ApiResponse<List<TeamListItemDto>>), Description = "User profile not found")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(ApiResponse<List<TeamListItemDto>>), Description = "Internal server error")]
+    public async Task<HttpResponseData> GetMyTeams(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/teams/my")] HttpRequestData req)
+    {
+        try
+        {
+            var azureUserId = req.GetUserId();
+
+            if (string.IsNullOrEmpty(azureUserId))
+            {
+                _logger.LogWarning("Unauthorized request to /teams/my endpoint");
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(ApiResponse<List<TeamListItemDto>>.ErrorResponse(
+                    "User not authenticated", 401));
+                return unauthorizedResponse;
+            }
+
+            var teams = await _mediator.Send(new GetMyTeamsQuery(azureUserId));
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(ApiResponse<List<TeamListItemDto>>.SuccessResponse(teams));
+            return response;
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogWarning(ex, "User profile not found for teams access");
+            var response = req.CreateResponse(HttpStatusCode.NotFound);
+            await response.WriteAsJsonAsync(ApiResponse<List<TeamListItemDto>>.NotFoundResponse(
+                "User profile not found. Please contact an administrator."));
+            return response;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving teams for current user");
+            var response = req.CreateResponse(HttpStatusCode.InternalServerError);
+            await response.WriteAsJsonAsync(ApiResponse<List<TeamListItemDto>>.ErrorResponse(
+                "An error occurred while retrieving your teams", 500));
             return response;
         }
     }

@@ -41,7 +41,7 @@ export default function MobileNavigation() {
   const [isTacticsExpanded, setIsTacticsExpanded] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { isDesktopOpen, toggleDesktopNav } = useNavigation();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, displayName } = useAuth();
   const location = useLocation();
   const { theme, setTheme, actualTheme } = useTheme();
   
@@ -113,25 +113,6 @@ export default function MobileNavigation() {
     }
   }, [isTacticsPage]);
 
-  // Fetch user profile data when authenticated
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (isAuthenticated && !isLoading) {
-        try {
-          console.log('Fetching user profile...');
-          const profile = await getCurrentUser();
-          console.log('User profile fetched:', profile);
-          setUserProfile(profile);
-        } catch (error) {
-          console.error('Failed to fetch user profile:', error);
-        }
-      } else {
-        console.log('Not fetching profile - authenticated:', isAuthenticated, 'loading:', isLoading);
-      }
-    };
-
-    fetchUserProfile();
-  }, [isAuthenticated, isLoading]);
 
   // Close menu when route changes (mobile only)
   useEffect(() => {
@@ -331,10 +312,7 @@ export default function MobileNavigation() {
             </div>
             <div className="mobile-nav-user-info">
               <span className="mobile-nav-user-name">
-                {userProfile ? `${userProfile.firstName} ${userProfile.lastName}` : 'Loading...'}
-              </span>
-              <span className="mobile-nav-user-role">
-                {userProfile?.role || 'User'}
+                {displayName || 'Loading...'}
               </span>
             </div>
           </Link>
