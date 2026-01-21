@@ -3,7 +3,7 @@ import { samplePlayers } from '@data/players';
 import { currentUser } from '@data/currentUser';
 import PageTitle from '@components/common/PageTitle';
 import { Routes } from '@utils/routes';
-import { useMyTeams } from '@/api/hooks';
+import { useMyTeams, useMyChildren } from '@/api/hooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMemo } from 'react';
 
@@ -14,8 +14,14 @@ export default function ClubsListPage() {
   // Fetch teams the current user has access to
   const { data: myTeams, isLoading: myTeamsLoading, error: myTeamsError } = useMyTeams();
 
+  // Fetch children for the current user (if they are a parent)
+  const { data: myChildren, isLoading: myChildrenLoading, error: myChildrenError } = useMyChildren();
+
   const myTeamsList = myTeams ?? [];
   const hasMyTeams = myTeamsList.length > 0;
+
+  const myChildrenList = myChildren ?? [];
+  const hasMyChildren = myChildrenList.length > 0;
 
   // Extract unique clubs from teams data
   const myClubs = useMemo(() => {
@@ -46,11 +52,6 @@ export default function ClubsListPage() {
     ? samplePlayers.filter(p => p.id === currentUser.playerId) 
     : [];
 
-  // Get children's player profiles (if they are a parent)
-  const myChildren = currentUser.childrenIds 
-    ? samplePlayers.filter(p => currentUser.childrenIds!.includes(p.id)) 
-    : [];
-
   // Show loading state while authentication is loading
   if (authLoading) {
     return (
@@ -73,49 +74,70 @@ export default function ClubsListPage() {
         />
 
         {/* Quick Access Section */}
-        {(hasMyTeams || myProfile.length > 0 || myChildren.length > 0) && (
+        {(hasMyTeams || myProfile.length > 0 || myChildrenLoading || hasMyChildren) && (
           <div className="mb-4 space-y-2">
             {/* My Children */}
-            {myChildren.length > 0 && (
+            {(myChildrenLoading || myChildrenError || hasMyChildren) && (
               <>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   My Children
                 </h2>
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {myChildren.map((player) => {
-                    const club = myClubs.find(c => c.id === player.clubId);
-                    
-                    return (
-                      <Link
-                        key={player.id}
-                        to={Routes.player(player.clubId, player.ageGroupIds[0], player.id)}
-                        className="flex items-center gap-3 p-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-colors"
-                      >
-                        {player.photo ? (
-                          <img 
-                            src={player.photo} 
-                            alt={`${player.firstName} ${player.lastName}`}
-                            className="w-12 h-12 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center text-white font-semibold">
-                            {player.firstName[0]}{player.lastName[0]}
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-gray-900 dark:text-white truncate">
-                            {player.firstName} {player.lastName}
-                          </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                            {club?.shortName} • {player.preferredPositions.join(', ')}
-                          </p>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                  {myChildrenLoading && (
+                    <div className="flex items-center justify-center py-6">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                    </div>
+                  )}
+
+                  {myChildrenError && (
+                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                      <p className="text-red-800 dark:text-red-200 font-medium">Failed to load your children</p>
+                      <p className="text-red-600 dark:text-red-300 text-sm mt-1">{myChildrenError.message}</p>
+                    </div>
+                  )}
+
+                  {hasMyChildren && (
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {myChildrenList.map((player) => {
+                        // Parse preferred positions (stored as comma-separated string)
+                        const preferredPositions = player.preferredPositions 
+                          ? player.preferredPositions.split(',').map(p => p.trim())
+                          : [];
+                        
+                        // Get the first age group for the route
+                        const firstAgeGroupId = player.ageGroups.length > 0 ? player.ageGroups[0].id : '';
+                        
+                        return (
+                          <Link
+                            key={player.id}
+                            to={Routes.player(player.clubId, firstAgeGroupId, player.id)}
+                            className="flex items-center gap-3 p-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-colors"
+                          >
+                            {player.photo ? (
+                              <img 
+                                src={player.photo} 
+                                alt={`${player.firstName} ${player.lastName}`}
+                                className="w-12 h-12 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center text-white font-semibold">
+                                {player.firstName[0]}{player.lastName[0]}
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-gray-900 dark:text-white truncate">
+                                {player.firstName} {player.lastName}
+                              </p>
+                              <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                                {player.club?.shortName} • {preferredPositions.join(', ')}
+                              </p>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
-              </div>
               </>
             )}
 

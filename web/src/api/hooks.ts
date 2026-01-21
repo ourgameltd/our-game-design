@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { apiClient, TeamListItemDto } from './client';
+import { apiClient, TeamListItemDto, ChildPlayerDto } from './client';
 
 // Generic hook state
 interface UseApiState<T> {
@@ -61,6 +61,20 @@ function useApiCall<T>(
 export function useMyTeams(): UseApiState<TeamListItemDto[]> {
   return useApiCall<TeamListItemDto[]>(
     () => apiClient.teams.getMyTeams(),
+    []
+  );
+}
+
+// ============================================================
+// User Hooks
+// ============================================================
+
+/**
+ * Hook to fetch children players for the current authenticated parent user
+ */
+export function useMyChildren(): UseApiState<ChildPlayerDto[]> {
+  return useApiCall<ChildPlayerDto[]>(
+    () => apiClient.users.getMyChildren(),
     []
   );
 }

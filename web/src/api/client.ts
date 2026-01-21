@@ -74,6 +74,39 @@ export interface TeamListItemDto {
   club?: TeamClubDto;
 }
 
+// Child player club DTO
+export interface ChildPlayerClubDto {
+  name: string;
+  shortName: string;
+  logo?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+}
+
+// Child player age group DTO
+export interface ChildPlayerAgeGroupDto {
+  id: string;
+  name: string;
+}
+
+// Child player DTO
+export interface ChildPlayerDto {
+  id: string;
+  clubId: string;
+  firstName: string;
+  lastName: string;
+  nickname?: string;
+  dateOfBirth?: string;
+  photo?: string;
+  associationId?: string;
+  preferredPositions: string;
+  overallRating?: number;
+  isArchived: boolean;
+  club?: ChildPlayerClubDto;
+  ageGroups: ChildPlayerAgeGroupDto[];
+}
+
 /**
  * Get the API base URL based on the environment
  * In both development and production, the API is available at /api
@@ -109,6 +142,14 @@ export const apiClient = {
      */
     getCurrentUser: async (): Promise<ApiResponse<UserProfile>> => {
       const response = await axiosInstance.get<ApiResponse<UserProfile>>('/v1/users/me');
+      return response.data;
+    },
+
+    /**
+     * Get children players for the current authenticated parent user
+     */
+    getMyChildren: async (): Promise<ApiResponse<ChildPlayerDto[]>> => {
+      const response = await axiosInstance.get<ApiResponse<ChildPlayerDto[]>>('/v1/users/me/children');
       return response.data;
     },
   },

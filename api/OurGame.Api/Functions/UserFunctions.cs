@@ -8,6 +8,8 @@ using OurGame.Api.Extensions;
 using OurGame.Application.Abstractions.Responses;
 using OurGame.Application.UseCases.Users.Queries.GetUserByAzureId;
 using OurGame.Application.UseCases.Users.Queries.GetUserByAzureId.DTOs;
+using OurGame.Application.UseCases.Players.Queries.GetMyChildren;
+using OurGame.Application.UseCases.Players.Queries.GetMyChildren.DTOs;
 using System.Net;
 
 namespace OurGame.Api.Functions;
@@ -65,6 +67,38 @@ public class UserFunctions
 
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(ApiResponse<UserProfileDto>.SuccessResponse(user));
+        return response;
+    }
+
+    /// <summary>
+    /// Get children players for the current authenticated parent user
+    /// </summary>
+    /// <param name="req">The HTTP request</param>
+    /// <returns>List of child players assigned to the authenticated parent</returns>
+    [Function("GetMyChildren")]
+    [OpenApiOperation(operationId: "GetMyChildren", tags: new[] { "Users" }, Summary = "Get my children", Description = "Retrieves all child players for the currently authenticated parent user")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ApiResponse<List<ChildPlayerDto>>), Description = "Children retrieved successfully")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.Unauthorized, contentType: "application/json", bodyType: typeof(ApiResponse<List<ChildPlayerDto>>), Description = "User not authenticated")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(ApiResponse<List<ChildPlayerDto>>), Description = "Internal server error")]
+    public async Task<HttpResponseData> GetMyChildren(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v1/users/me/children")] HttpRequestData req)
+    {
+        // Get user ID from Azure Static Web Apps authentication
+        var azureUserId = req.GetUserId();
+
+        if (string.IsNullOrEmpty(azureUserId))
+        {
+            _logger.LogWarning("Unauthorized request to /me/children endpoint");
+            var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+            await unauthorizedResponse.WriteAsJsonAsync(ApiResponse<List<ChildPlayerDto>>.ErrorResponse(
+                "User not authenticated", 401));
+            return unauthorizedResponse;
+        }
+
+        var children = await _mediator.Send(new GetMyChildrenQuery(azureUserId));
+
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        await response.WriteAsJsonAsync(ApiResponse<List<ChildPlayerDto>>.SuccessResponse(children));
         return response;
     }
 }
