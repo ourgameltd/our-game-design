@@ -51,12 +51,12 @@ export default function HomePage() {
                   <span className="relative z-10">Sign Up</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-100 to-primary-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
-                <Link 
-                  to="/login" 
+                <a 
+                  href="/dashboard" 
                   className="group relative px-8 py-3 text-base font-semibold bg-transparent text-white rounded-full transition-all duration-300 border-2 border-white/80 hover:border-white shadow-lg hover:shadow-xl backdrop-blur-sm hover:bg-white/10"
                 >
                   <span className="relative z-10">Login</span>
-                </Link>
+                </a>
               </div>
             )}
 
@@ -66,12 +66,12 @@ export default function HomePage() {
                 <p className="text-xl text-white/90 drop-shadow-lg">
                   Welcome back, {currentUser.firstName}!
                 </p>
-                <Link 
-                  to="/login" 
+                <a 
+                  href="/dashboard" 
                   className="inline-block mt-4 px-8 py-3 text-base font-semibold bg-white text-primary-700 rounded-full hover:bg-primary-50 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  Go to Dashboard
-                </Link>
+                  Login
+                </a>
               </div>
             )}
           </div>

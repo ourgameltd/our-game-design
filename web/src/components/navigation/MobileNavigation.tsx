@@ -1114,13 +1114,13 @@ export default function MobileNavigation() {
             </li>
 
             <li className="mobile-nav-item">
-              <Link 
-                to="/.auth/logout" 
+              <a 
+                href="/.auth/logout?post_logout_redirect_uri=/" 
                 className="mobile-nav-link text-red-600 dark:text-red-400"
               >
                 <LogOut className="mobile-nav-icon" />
                 <span className="mobile-nav-text">Logout</span>
-              </Link>
+              </a>
             </li>
           </ul>
         </div>
