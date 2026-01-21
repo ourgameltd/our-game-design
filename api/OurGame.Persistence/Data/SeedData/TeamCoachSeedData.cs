@@ -9,6 +9,15 @@ public static class TeamCoachSeedData
     {
         return new List<TeamCoach>
         {
+            // Michael Law - Reds 2014 (head coach)
+            new TeamCoach 
+            { 
+                Id = Guid.NewGuid(),
+                TeamId = TeamSeedData.Reds2014_Id, 
+                CoachId = CoachSeedData.MichaelLaw_Id, 
+                AssignedAt = new DateTime(2024, 8, 1, 0, 0, 0, DateTimeKind.Utc)
+            },
+
             // Michael Robertson - Reds 2014 (head coach from TypeScript coaches data)
             new TeamCoach 
             { 

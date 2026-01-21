@@ -64,21 +64,25 @@ public class GetMyChildrenHandler : IRequestHandler<GetMyChildrenQuery, List<Chi
 
         // Get age groups for each player
         var playerIds = playerData.Select(p => p.Id).ToList();
-        var ageGroupSql = @"
+        
+        // Build parameterized query with proper GUID parameters
+        var parameters = playerIds.Select((id, index) => 
+            new Microsoft.Data.SqlClient.SqlParameter($"@p{index}", id)).ToArray();
+        
+        var parameterNames = string.Join(", ", parameters.Select(p => p.ParameterName));
+        
+        var ageGroupSql = $@"
             SELECT 
                 pag.PlayerId,
                 ag.Id,
                 ag.Name
-            FROM player_age_groups pag
-            INNER JOIN age_groups ag ON pag.AgeGroupId = ag.Id
-            WHERE pag.PlayerId IN ({0})
+            FROM PlayerAgeGroups pag
+            INNER JOIN AgeGroups ag ON pag.AgeGroupId = ag.Id
+            WHERE pag.PlayerId IN ({parameterNames})
             ORDER BY ag.Name";
 
         var ageGroupData = await _db.Database
-            .SqlQueryRaw<PlayerAgeGroupRawDto>(
-                ageGroupSql, 
-                string.Join(",", playerIds.Select(id => $"'{id}'"))
-            )
+            .SqlQueryRaw<PlayerAgeGroupRawDto>(ageGroupSql, parameters)
             .ToListAsync(cancellationToken);
 
         // Group age groups by player

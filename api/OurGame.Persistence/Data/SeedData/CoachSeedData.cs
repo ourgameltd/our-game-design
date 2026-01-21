@@ -6,6 +6,7 @@ namespace OurGame.Persistence.Data.SeedData;
 public static class CoachSeedData
 {
     // Coach IDs from TypeScript data
+    public static readonly Guid MichaelLaw_Id = Guid.Parse("c0a1b2c3-d4e5-f6a7-b8c9-d0e1f2a3b4c5");
     public static readonly Guid MichaelRobertson_Id = Guid.Parse("c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6");
     public static readonly Guid SarahMcKenzie_Id = Guid.Parse("c2a3b4c5-d6e7-f8a9-b0c1-d2e3f4a5b6c7");
     public static readonly Guid DavidCampbell_Id = Guid.Parse("c3a4b5c6-d7e8-f9a0-b1c2-d3e4f5a6b7c8");
@@ -19,6 +20,26 @@ public static class CoachSeedData
         
         return new List<Coach>
         {
+            new Coach
+            {
+                Id = MichaelLaw_Id,
+                ClubId = ClubSeedData.ValeFC_Id,
+                FirstName = "Michael",
+                LastName = "Law",
+                DateOfBirth = new DateOnly(1982, 3, 15),
+                Photo = "https://placehold.co/150/2C3E50/FFFFFF?text=ML",
+                Email = "michael.law@valefc.com",
+                Phone = "+44 7700 900129",
+                AssociationId = "SFA-25890",
+                HasAccount = true,
+                Role = CoachRole.HeadCoach,
+                Biography = "Enthusiastic head coach focused on player development and tactical awareness. Strong communication skills and experience working with youth players.",
+                Specializations = "[\"Youth Development\",\"Tactical Awareness\",\"Communication\"]",
+                UserId = UserSeedData.MichaelLaw_Id,
+                IsArchived = false,
+                CreatedAt = now,
+                UpdatedAt = now
+            },
             new Coach
             {
                 Id = MichaelRobertson_Id,
