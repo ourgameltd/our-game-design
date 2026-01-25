@@ -45,12 +45,6 @@ public partial class Club
 
     public virtual ICollection<Coach> Coaches { get; set; } = new List<Coach>();
 
-    public virtual ICollection<DrillTemplate> DrillTemplates { get; set; } = new List<DrillTemplate>();
-
-    public virtual ICollection<Drill> Drills { get; set; } = new List<Drill>();
-
-    public virtual ICollection<Formation> Formations { get; set; } = new List<Formation>();
-
     public virtual ICollection<Kit> Kits { get; set; } = new List<Kit>();
 
     public virtual ICollection<Player> Players { get; set; } = new List<Player>();

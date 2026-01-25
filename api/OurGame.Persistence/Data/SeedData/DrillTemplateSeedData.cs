@@ -24,7 +24,6 @@ public static class DrillTemplateSeedData
                 AggregatedAttributes = "[\"shortPassing\",\"ballControl\",\"dribbling\",\"agility\",\"communication\"]",
                 TotalDuration = 25,
                 Category = "technical",
-                ClubId = ClubSeedData.ValeFC_Id,
                 IsPublic = true,
                 CreatedAt = now
             },
@@ -36,7 +35,6 @@ public static class DrillTemplateSeedData
                 AggregatedAttributes = "[\"shortPassing\",\"positioning\",\"awareness\",\"vision\",\"ballControl\",\"communication\"]",
                 TotalDuration = 30,
                 Category = "tactical",
-                ClubId = ClubSeedData.ValeFC_Id,
                 IsPublic = true,
                 CreatedAt = now
             },
@@ -48,7 +46,6 @@ public static class DrillTemplateSeedData
                 AggregatedAttributes = "[\"finishing\",\"shotPower\",\"composure\",\"crossing\",\"heading\",\"attackingPosition\"]",
                 TotalDuration = 40,
                 Category = "technical",
-                ClubId = ClubSeedData.ValeFC_Id,
                 IsPublic = true,
                 CreatedAt = now
             }

@@ -28,14 +28,6 @@ public partial class Formation
 
     public string Style { get; set; }
 
-    public ScopeType ScopeType { get; set; }
-
-    public Guid? ScopeClubId { get; set; }
-
-    public Guid? ScopeAgeGroupId { get; set; }
-
-    public Guid? ScopeTeamId { get; set; }
-
     public Guid? CreatedBy { get; set; }
 
     public string Tags { get; set; }
@@ -61,8 +53,6 @@ public partial class Formation
     public virtual Formation ParentTactic { get; set; }
 
     public virtual ICollection<PositionOverride> PositionOverrides { get; set; } = new List<PositionOverride>();
-
-    public virtual Club ScopeClub { get; set; }
 
     public virtual ICollection<TacticPrinciple> TacticPrinciples { get; set; } = new List<TacticPrinciple>();
 

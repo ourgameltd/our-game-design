@@ -19,8 +19,6 @@ public partial class DrillTemplate
 
     public string Category { get; set; }
 
-    public Guid? ClubId { get; set; }
-
     public Guid? CreatedBy { get; set; }
 
     public bool IsPublic { get; set; }
@@ -28,8 +26,6 @@ public partial class DrillTemplate
     public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<AppliedTemplate> AppliedTemplates { get; set; } = new List<AppliedTemplate>();
-
-    public virtual Club Club { get; set; }
 
     public virtual Coach CreatedByNavigation { get; set; }
 

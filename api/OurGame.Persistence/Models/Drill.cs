@@ -28,8 +28,6 @@ public partial class Drill
 
     public string Variations { get; set; }
 
-    public Guid? ClubId { get; set; }
-
     public Guid? CreatedBy { get; set; }
 
     public bool IsPublic { get; set; }
@@ -37,8 +35,6 @@ public partial class Drill
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
-
-    public virtual Club Club { get; set; }
 
     public virtual Coach CreatedByNavigation { get; set; }
 

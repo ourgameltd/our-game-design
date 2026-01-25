@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OurGame.Persistence.Models;
 
@@ -11,9 +12,11 @@ using OurGame.Persistence.Models;
 namespace OurGame.Persistence.Migrations
 {
     [DbContext(typeof(OurGameContext))]
-    partial class OurGameContextModelSnapshot : ModelSnapshot
+    [Migration("20260125220306_RemoveDeprecatedScopeColumns")]
+    partial class RemoveDeprecatedScopeColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -811,6 +814,9 @@ namespace OurGame.Persistence.Migrations
 
                     b.Property<Guid?>("ParentTacticId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ScopeType")
+                        .HasColumnType("int");
 
                     b.Property<int>("SquadSize")
                         .HasColumnType("int");

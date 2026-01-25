@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OurGame.Persistence.Models;
 
@@ -11,9 +12,11 @@ using OurGame.Persistence.Models;
 namespace OurGame.Persistence.Migrations
 {
     [DbContext(typeof(OurGameContext))]
-    partial class OurGameContextModelSnapshot : ModelSnapshot
+    [Migration("20260125215911_AddDrillAndDrillTemplateLinkTables")]
+    partial class AddDrillAndDrillTemplateLinkTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -415,6 +418,9 @@ namespace OurGame.Persistence.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ClubId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -452,6 +458,8 @@ namespace OurGame.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
 
                     b.HasIndex("CreatedByNavigationId");
 
@@ -570,6 +578,9 @@ namespace OurGame.Persistence.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ClubId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -592,6 +603,8 @@ namespace OurGame.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
 
                     b.HasIndex("CreatedByNavigationId");
 
@@ -812,6 +825,18 @@ namespace OurGame.Persistence.Migrations
                     b.Property<Guid?>("ParentTacticId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ScopeAgeGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ScopeClubId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ScopeTeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ScopeType")
+                        .HasColumnType("int");
+
                     b.Property<int>("SquadSize")
                         .HasColumnType("int");
 
@@ -837,6 +862,8 @@ namespace OurGame.Persistence.Migrations
                     b.HasIndex("ParentFormationId");
 
                     b.HasIndex("ParentTacticId");
+
+                    b.HasIndex("ScopeClubId");
 
                     b.ToTable("Formations", (string)null);
                 });
@@ -2495,10 +2522,17 @@ namespace OurGame.Persistence.Migrations
 
             modelBuilder.Entity("OurGame.Persistence.Models.Drill", b =>
                 {
+                    b.HasOne("OurGame.Persistence.Models.Club", "Club")
+                        .WithMany("Drills")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("OurGame.Persistence.Models.Coach", "CreatedByNavigation")
                         .WithMany("Drills")
                         .HasForeignKey("CreatedByNavigationId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Club");
 
                     b.Navigation("CreatedByNavigation");
                 });
@@ -2573,10 +2607,17 @@ namespace OurGame.Persistence.Migrations
 
             modelBuilder.Entity("OurGame.Persistence.Models.DrillTemplate", b =>
                 {
+                    b.HasOne("OurGame.Persistence.Models.Club", "Club")
+                        .WithMany("DrillTemplates")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("OurGame.Persistence.Models.Coach", "CreatedByNavigation")
                         .WithMany("DrillTemplates")
                         .HasForeignKey("CreatedByNavigationId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Club");
 
                     b.Navigation("CreatedByNavigation");
                 });
@@ -2715,11 +2756,18 @@ namespace OurGame.Persistence.Migrations
                         .HasForeignKey("ParentTacticId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("OurGame.Persistence.Models.Club", "ScopeClub")
+                        .WithMany("Formations")
+                        .HasForeignKey("ScopeClubId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("CreatedByNavigation");
 
                     b.Navigation("ParentFormation");
 
                     b.Navigation("ParentTactic");
+
+                    b.Navigation("ScopeClub");
                 });
 
             modelBuilder.Entity("OurGame.Persistence.Models.FormationAgeGroup", b =>
@@ -3565,7 +3613,13 @@ namespace OurGame.Persistence.Migrations
 
                     b.Navigation("DrillTemplateClubs");
 
+                    b.Navigation("DrillTemplates");
+
+                    b.Navigation("Drills");
+
                     b.Navigation("FormationClubs");
+
+                    b.Navigation("Formations");
 
                     b.Navigation("Kits");
 
