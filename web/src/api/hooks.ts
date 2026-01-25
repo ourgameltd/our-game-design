@@ -21,6 +21,7 @@ import {
   ClubTrainingSessionsDto,
   ClubMatchesDto,
   ClubKitDto,
+  ClubReportCardDto,
   TacticsByScopeResponseDto,
   DrillsByScopeResponseDto,
   DrillTemplatesByScopeResponseDto
@@ -233,6 +234,16 @@ export function useClubMatches(
 export function useClubKits(clubId: string | undefined): UseApiState<ClubKitDto[]> {
   return useApiCall<ClubKitDto[]>(
     () => apiClient.clubs.getKits(clubId!),
+    [clubId]
+  );
+}
+
+/**
+ * Hook to fetch report cards for a club
+ */
+export function useClubReportCards(clubId: string | undefined): UseApiState<ClubReportCardDto[]> {
+  return useApiCall<ClubReportCardDto[]>(
+    () => apiClient.clubs.getReportCards(clubId!),
     [clubId]
   );
 }
