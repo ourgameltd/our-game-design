@@ -43,6 +43,8 @@ export type {
   ClubTeamColorsDto,
   ClubCoachDto,
   ClubCoachTeamDto,
+  ClubTrainingSessionDto,
+  ClubTrainingSessionsDto,
 } from './client';
 
 // React hooks
@@ -57,6 +59,7 @@ export {
   useClubPlayers,
   useClubTeams,
   useClubCoaches,
+  useClubTrainingSessions,
 } from './hooks';
 
 // User API

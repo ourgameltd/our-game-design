@@ -1,55 +1,96 @@
 import { useParams } from 'react-router-dom';
 import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { sampleTrainingSessions } from '@/data/training';
-import { getClubById } from '@/data/clubs';
-import { getTeamsByClubId } from '@/data/teams';
-import { getAgeGroupById } from '@/data/ageGroups';
+import { ChevronDown, ChevronUp, MapPin } from 'lucide-react';
+import { useClubById, useClubTeams, useClubTrainingSessions } from '@/api/hooks';
+import { ClubTrainingSessionDto } from '@/api/client';
 import PageTitle from '@components/common/PageTitle';
 import { Routes } from '@utils/routes';
 import { Link } from 'react-router-dom';
-import { MapPin } from 'lucide-react';
+
+// Skeleton components for loading states
+function SessionRowSkeleton() {
+  return (
+    <div className="block bg-white dark:bg-gray-800 rounded-lg md:rounded-none p-4 md:px-4 md:py-3 border border-gray-200 dark:border-gray-700 md:border-0 md:border-b animate-pulse">
+      <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-4">
+        {/* Date & Time skeleton */}
+        <div className="flex items-center gap-3 md:flex-shrink-0 md:w-[130px] md:order-1">
+          <div className="flex-shrink-0">
+            <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
+            <div className="h-3 w-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          </div>
+        </div>
+
+        {/* Team Info skeleton */}
+        <div className="md:w-[180px] md:flex-shrink-0 md:order-2">
+          <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        </div>
+
+        {/* Session Details skeleton */}
+        <div className="flex-grow md:order-3">
+          <div className="flex flex-wrap gap-2 mb-2">
+            <div className="h-6 w-24 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+            <div className="h-6 w-20 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+          </div>
+          <div className="h-4 w-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        </div>
+
+        {/* Duration skeleton - desktop only */}
+        <div className="hidden md:flex md:flex-shrink-0 md:w-[80px] md:order-4 justify-end">
+          <div className="h-4 w-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        </div>
+
+        {/* Status skeleton */}
+        <div className="md:flex-shrink-0 md:w-[90px] md:order-5 flex justify-end">
+          <div className="h-6 w-20 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FiltersSkeleton() {
+  return (
+    <div className="pt-4 border-t border-gray-200 dark:border-gray-700 animate-pulse">
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
+          <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 rounded-md"></div>
+        </div>
+        <div>
+          <div className="h-4 w-12 bg-gray-200 dark:bg-gray-700 rounded mb-1"></div>
+          <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 rounded-md"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ClubTrainingSessionsPage() {
   const { clubId } = useParams();
-  const club = getClubById(clubId!);
-  const teams = getTeamsByClubId(clubId!);
   
   const [filterAgeGroup, setFilterAgeGroup] = useState('');
   const [filterTeam, setFilterTeam] = useState('');
   const [filterStatus, setFilterStatus] = useState<'upcoming' | 'past' | 'all'>('all');
   const [showFilters, setShowFilters] = useState(false);
 
-  if (!club) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <main className="mx-auto px-4 py-4">
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Club not found</h2>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  // API hooks
+  const { data: club, isLoading: isLoadingClub, error: clubError } = useClubById(clubId);
+  const { data: teams, isLoading: isLoadingTeams } = useClubTeams(clubId);
+  const { data: trainingSessionsData, isLoading: isLoadingSessions } = useClubTrainingSessions(clubId);
 
-  // Get all team IDs for this club
-  const clubTeamIds = teams.map(t => t.id);
-
-  // Get all training sessions for this club
-  const allSessions = sampleTrainingSessions.filter(s => clubTeamIds.includes(s.teamId));
+  // Extract sessions from response
+  const allSessions = trainingSessionsData?.sessions ?? [];
 
   // Get unique age groups from teams
   const allAgeGroups = useMemo(() => {
-    const ageGroupIds = new Set<string>();
+    if (!teams) return [];
+    const ageGroupMap = new Map<string, { id: string; name: string }>();
     teams.forEach(team => {
-      ageGroupIds.add(team.ageGroupId);
+      if (!ageGroupMap.has(team.ageGroupId)) {
+        ageGroupMap.set(team.ageGroupId, { id: team.ageGroupId, name: team.ageGroupName });
+      }
     });
-    return Array.from(ageGroupIds)
-      .map(id => {
-        const ageGroup = getAgeGroupById(id);
-        return ageGroup ? { id, name: ageGroup.name } : null;
-      })
-      .filter((ag): ag is { id: string; name: string } => ag !== null)
+    return Array.from(ageGroupMap.values())
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [teams]);
 
@@ -75,15 +116,14 @@ export default function ClubTrainingSessionsPage() {
 
       // Age group filter
       if (filterAgeGroup) {
-        const team = teams.find(t => t.id === session.teamId);
-        if (!team || team.ageGroupId !== filterAgeGroup) {
+        if (session.ageGroupId !== filterAgeGroup) {
           return false;
         }
       }
 
       return true;
     });
-  }, [allSessions, filterAgeGroup, filterTeam, filterStatus, teams]);
+  }, [allSessions, filterAgeGroup, filterTeam, filterStatus]);
 
   // Sort sessions - upcoming first (soonest first), then past (most recent first)
   const sortedSessions = useMemo(() => {
@@ -100,22 +140,34 @@ export default function ClubTrainingSessionsPage() {
 
   // Get teams filtered by age group if selected
   const filteredTeams = useMemo(() => {
+    if (!teams) return [];
     if (filterAgeGroup) {
       return teams.filter(t => t.ageGroupId === filterAgeGroup);
     }
     return teams;
   }, [teams, filterAgeGroup]);
 
-  const SessionRow = ({ session }: { session: any }) => {
+  // Handle club not found (after loading completes)
+  if (!isLoadingClub && !club && clubError) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <main className="mx-auto px-4 py-4">
+          <div className="card">
+            <h2 className="text-xl font-semibold mb-4">Club not found</h2>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const SessionRow = ({ session }: { session: ClubTrainingSessionDto }) => {
     const now = new Date();
     const sessionDate = new Date(session.date);
     const isPast = sessionDate < now;
-    const team = teams.find(t => t.id === session.teamId);
-    const ageGroup = team ? getAgeGroupById(team.ageGroupId) : null;
 
     return (
       <Link
-        to={Routes.teamTrainingSessionEdit(clubId!, team!.ageGroupId, session.teamId, session.id)}
+        to={Routes.teamTrainingSessionEdit(clubId!, session.ageGroupId, session.teamId, session.id)}
         className="block bg-white dark:bg-gray-800 rounded-lg md:rounded-none p-4 md:px-4 md:py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700 md:border-0 md:border-b"
       >
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-4">
@@ -137,14 +189,14 @@ export default function ClubTrainingSessionsPage() {
               </div>
             </div>
             <span className="md:hidden text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded">
-              {session.duration} mins
+              {session.durationMinutes} mins
             </span>
           </div>
 
           {/* Team Info */}
           <div className="md:w-[180px] md:flex-shrink-0 md:order-2">
             <div className="text-sm font-medium text-gray-900 dark:text-white">
-              {ageGroup?.name} - {team?.name}
+              {session.ageGroupName} - {session.teamName}
             </div>
           </div>
 
@@ -174,7 +226,7 @@ export default function ClubTrainingSessionsPage() {
           {/* Duration - desktop only */}
           <div className="hidden md:flex md:flex-shrink-0 md:w-[80px] md:order-4 justify-end">
             <span className="text-sm text-gray-600 dark:text-gray-400">
-              {session.duration}m
+              {session.durationMinutes}m
             </span>
           </div>
 
@@ -198,11 +250,13 @@ export default function ClubTrainingSessionsPage() {
       <main className="mx-auto px-4 py-4">
         <PageTitle
           title="All Training Sessions"
-          badge={allSessions.length}
+          badge={isLoadingSessions ? undefined : allSessions.length}
           subtitle={
-            filteredSessions.length !== allSessions.length 
-              ? `Showing ${filteredSessions.length} of ${allSessions.length} training sessions`
-              : `View and manage training sessions across all teams`
+            isLoadingSessions 
+              ? 'Loading training sessions...'
+              : filteredSessions.length !== allSessions.length 
+                ? `Showing ${filteredSessions.length} of ${allSessions.length} training sessions`
+                : `View and manage training sessions across all teams`
           }
           backLink={Routes.club(clubId!)}
         />
@@ -269,50 +323,51 @@ export default function ClubTrainingSessionsPage() {
           
           {showFilters && (
             <>
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
-                    <select 
-                      value={filterAgeGroup}
-                      onChange={(e) => {
-                        setFilterAgeGroup(e.target.value);
-                        // Reset team filter if age group changes
-                        if (e.target.value) {
-                          const availableTeams = teams.filter(t => t.ageGroupId === e.target.value);
-                          if (filterTeam && !availableTeams.find(t => t.id === filterTeam)) {
-                            setFilterTeam('');
+              {isLoadingTeams ? (
+                <FiltersSkeleton />
+              ) : (
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age Group</label>
+                      <select 
+                        value={filterAgeGroup}
+                        onChange={(e) => {
+                          setFilterAgeGroup(e.target.value);
+                          // Reset team filter if age group changes
+                          if (e.target.value && teams) {
+                            const availableTeams = teams.filter(t => t.ageGroupId === e.target.value);
+                            if (filterTeam && !availableTeams.find(t => t.id === filterTeam)) {
+                              setFilterTeam('');
+                            }
                           }
-                        }
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    >
-                      <option value="">All Age Groups</option>
-                      {allAgeGroups.map(ageGroup => (
-                        <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
-                    <select 
-                      value={filterTeam}
-                      onChange={(e) => setFilterTeam(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    >
-                      <option value="">All Teams</option>
-                      {filteredTeams.map(team => {
-                        const ageGroup = getAgeGroupById(team.ageGroupId);
-                        return (
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      >
+                        <option value="">All Age Groups</option>
+                        {allAgeGroups.map(ageGroup => (
+                          <option key={ageGroup.id} value={ageGroup.id}>{ageGroup.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team</label>
+                      <select 
+                        value={filterTeam}
+                        onChange={(e) => setFilterTeam(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      >
+                        <option value="">All Teams</option>
+                        {filteredTeams.map(team => (
                           <option key={team.id} value={team.id}>
-                            {ageGroup?.name || ''} - {team.name}
+                            {team.ageGroupName || ''} - {team.name}
                           </option>
-                        );
-                      })}
-                    </select>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
           
               {/* Active filters display and clear */}
               {(filterAgeGroup || filterTeam) && (
@@ -324,7 +379,7 @@ export default function ClubTrainingSessionsPage() {
                       <button onClick={() => setFilterAgeGroup('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
                     </span>
                   )}
-                  {filterTeam && (
+                  {filterTeam && teams && (
                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded text-sm">
                       Team: {teams.find(t => t.id === filterTeam)?.name}
                       <button onClick={() => setFilterTeam('')} className="hover:text-primary-900 dark:hover:text-primary-100">×</button>
@@ -346,7 +401,13 @@ export default function ClubTrainingSessionsPage() {
         </div>
 
         {/* Sessions List */}
-        {sortedSessions.length > 0 ? (
+        {isLoadingSessions ? (
+          <div className="grid grid-cols-1 gap-4 md:gap-0 md:bg-white md:dark:bg-gray-800 md:rounded-lg md:border md:border-gray-200 md:dark:border-gray-700 md:overflow-hidden">
+            {[...Array(5)].map((_, idx) => (
+              <SessionRowSkeleton key={idx} />
+            ))}
+          </div>
+        ) : sortedSessions.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 md:gap-0 md:bg-white md:dark:bg-gray-800 md:rounded-lg md:border md:border-gray-200 md:dark:border-gray-700 md:overflow-hidden">
             {sortedSessions.map((session) => (
               <SessionRow key={session.id} session={session} />

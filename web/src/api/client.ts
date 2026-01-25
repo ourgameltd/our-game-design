@@ -384,6 +384,27 @@ export interface ClubCoachDto {
   teams: ClubCoachTeamDto[];
 }
 
+// Club Training Session DTOs
+export interface ClubTrainingSessionDto {
+  id: string;
+  teamId: string;
+  ageGroupId: string;
+  teamName: string;
+  ageGroupName: string;
+  date: string;
+  meetTime?: string;
+  durationMinutes?: number;
+  location: string;
+  focusAreas: string[];
+  status: string;
+  isLocked: boolean;
+}
+
+export interface ClubTrainingSessionsDto {
+  sessions: ClubTrainingSessionDto[];
+  totalCount: number;
+}
+
 /**
  * Get the API base URL based on the environment
  * In both development and production, the API is available at /api
@@ -507,6 +528,22 @@ export const apiClient = {
     getCoaches: async (clubId: string, includeArchived: boolean = false): Promise<ApiResponse<ClubCoachDto[]>> => {
       const params = includeArchived ? '?includeArchived=true' : '';
       const response = await axiosInstance.get<ApiResponse<ClubCoachDto[]>>(`/v1/clubs/${clubId}/coaches${params}`);
+      return response.data;
+    },
+
+    /**
+     * Get all training sessions for a club with optional filtering
+     */
+    getTrainingSessions: async (
+      clubId: string, 
+      options?: { ageGroupId?: string; teamId?: string; status?: 'upcoming' | 'past' | 'all' }
+    ): Promise<ApiResponse<ClubTrainingSessionsDto>> => {
+      const params = new URLSearchParams();
+      if (options?.ageGroupId) params.append('ageGroupId', options.ageGroupId);
+      if (options?.teamId) params.append('teamId', options.teamId);
+      if (options?.status) params.append('status', options.status);
+      const queryString = params.toString() ? `?${params.toString()}` : '';
+      const response = await axiosInstance.get<ApiResponse<ClubTrainingSessionsDto>>(`/v1/clubs/${clubId}/training-sessions${queryString}`);
       return response.data;
     },
   },
