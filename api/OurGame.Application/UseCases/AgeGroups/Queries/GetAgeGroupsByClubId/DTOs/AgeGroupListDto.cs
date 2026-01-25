@@ -1,7 +1,7 @@
 namespace OurGame.Application.UseCases.AgeGroups.Queries.GetAgeGroupsByClubId.DTOs;
 
 /// <summary>
-/// DTO for age group list item
+/// DTO for age group list item with statistics
 /// </summary>
 public class AgeGroupListDto
 {
@@ -17,4 +17,11 @@ public class AgeGroupListDto
     public string? Description { get; set; }
     public bool IsArchived { get; set; }
     public int TeamCount { get; set; }
+    public int PlayerCount { get; set; }
+    public int MatchesPlayed { get; set; }
+    public int Wins { get; set; }
+    public int Draws { get; set; }
+    public int Losses { get; set; }
+    public decimal WinRate { get; set; }
+    public int GoalDifference { get; set; }
 }

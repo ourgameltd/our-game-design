@@ -183,6 +183,13 @@ export interface AgeGroupListDto {
   description?: string;
   isArchived: boolean;
   teamCount: number;
+  playerCount: number;
+  matchesPlayed: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  winRate: number;
+  goalDifference: number;
 }
 
 export interface AgeGroupDetailDto {
