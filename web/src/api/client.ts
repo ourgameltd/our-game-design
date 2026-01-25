@@ -309,6 +309,55 @@ export interface TeamTrainingSessionDto {
   focusAreas: string[];
 }
 
+// Club Player DTOs
+export interface ClubPlayerAgeGroupDto {
+  id: string;
+  name: string;
+}
+
+export interface ClubPlayerTeamDto {
+  id: string;
+  ageGroupId: string;
+  name: string;
+  ageGroupName?: string;
+}
+
+export interface ClubPlayerDto {
+  id: string;
+  clubId: string;
+  firstName: string;
+  lastName: string;
+  nickname?: string;
+  dateOfBirth?: string;
+  photo?: string;
+  associationId?: string;
+  preferredPositions: string[];
+  overallRating?: number;
+  isArchived: boolean;
+  ageGroups: ClubPlayerAgeGroupDto[];
+  teams: ClubPlayerTeamDto[];
+}
+
+// Club Team DTOs
+export interface ClubTeamColorsDto {
+  primary?: string;
+  secondary?: string;
+}
+
+export interface ClubTeamDto {
+  id: string;
+  clubId: string;
+  ageGroupId: string;
+  ageGroupName: string;
+  name: string;
+  shortName?: string;
+  level: string;
+  season: string;
+  colors?: ClubTeamColorsDto;
+  isArchived: boolean;
+  playerCount: number;
+}
+
 /**
  * Get the API base URL based on the environment
  * In both development and production, the API is available at /api
@@ -405,6 +454,24 @@ export const apiClient = {
     getAgeGroups: async (clubId: string, includeArchived: boolean = false): Promise<ApiResponse<AgeGroupListDto[]>> => {
       const params = includeArchived ? '?includeArchived=true' : '';
       const response = await axiosInstance.get<ApiResponse<AgeGroupListDto[]>>(`/v1/clubs/${clubId}/age-groups${params}`);
+      return response.data;
+    },
+
+    /**
+     * Get all players for a club
+     */
+    getPlayers: async (clubId: string, includeArchived: boolean = false): Promise<ApiResponse<ClubPlayerDto[]>> => {
+      const params = includeArchived ? '?includeArchived=true' : '';
+      const response = await axiosInstance.get<ApiResponse<ClubPlayerDto[]>>(`/v1/clubs/${clubId}/players${params}`);
+      return response.data;
+    },
+
+    /**
+     * Get all teams for a club
+     */
+    getTeams: async (clubId: string, includeArchived: boolean = false): Promise<ApiResponse<ClubTeamDto[]>> => {
+      const params = includeArchived ? '?includeArchived=true' : '';
+      const response = await axiosInstance.get<ApiResponse<ClubTeamDto[]>>(`/v1/clubs/${clubId}/teams${params}`);
       return response.data;
     },
   },

@@ -36,6 +36,11 @@ export type {
   TeamMatchSummaryDto,
   TeamPerformerDto,
   TeamTrainingSessionDto,
+  ClubPlayerDto,
+  ClubPlayerAgeGroupDto,
+  ClubPlayerTeamDto,
+  ClubTeamDto,
+  ClubTeamColorsDto,
 } from './client';
 
 // React hooks
@@ -47,6 +52,8 @@ export {
   useClubStatistics,
   useAgeGroupsByClubId,
   useAgeGroupStatistics,
+  useClubPlayers,
+  useClubTeams,
 } from './hooks';
 
 // User API
